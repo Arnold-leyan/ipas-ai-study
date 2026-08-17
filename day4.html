@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 4 機器學習與生成式 AI — iPAS 考取衝刺班</title>
+<meta name="description" content="W1 Day 4：機器學習三種學習方式、深度學習 CNN／RNN／GAN、生成式 AI 訓練兩階段。學習指引 p.3-12～3-19。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W1 · Day 4 · 8/20（四）</p>
+        <h1>機器學習、深度學習與生成式 AI</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>官方練習題出最多的一天，10 題裡有 4 題出自今天的範圍。三種學習方式必須背到反射動作。</p>
+    <div class="mast-meta">
+      <span class="tag">p.3-12 ～ 3-19</span>
+      <span class="tag">閱讀約 30 分鐘</span>
+      <span class="tag">測驗 6 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="index.html">總覽</a></li>
+    <li><a href="day1.html" data-day="1">Day 1</a></li>
+    <li><a href="day2.html" data-day="2">Day 2</a></li>
+    <li><a href="day3.html" data-day="3">Day 3</a></li>
+    <li><a href="day4.html" data-day="4" aria-current="page">Day 4</a></li>
+    <li><a href="day5.html" data-day="5">Day 5</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>今天要讀的</h2>
+
+  <h3>機器學習的三個步驟 <span class="pref">p.3-12～3-13</span></h3>
+  <ol>
+    <li><strong>準備訓練資料</strong>：資料的蒐集、過濾雜訊及前處理</li>
+    <li><strong>訓練模型</strong>：把資料輸入演算法，適度調整參數，使模型儘量符合資料的模式或分佈</li>
+    <li><strong>測試及評估模型</strong>：測試並評估效能、反覆訓練；<b>多次調校仍不佳時，改選其他模型再重複前述流程</b></li>
+  </ol>
+  <p>一般而言，<b>資料量愈大且經過完整的資料處理，模型效果通常會更好</b>。</p>
+
+  <h3>三種學習方式 <span class="pref">p.3-13～3-14</span></h3>
+  <div class="tw"><table>
+    <tr><th>方式</th><th>資料</th><th>任務</th><th>應用</th></tr>
+    <tr><td>監督式</td><td><b>有標記</b>（Labeled Data）</td><td>分類、迴歸</td><td>垃圾郵件過濾、影像識別、房價預測、銷售額預測</td></tr>
+    <tr><td>非監督式</td><td><b>無標記</b></td><td>分群、資料探索、特徵提取、數據降維</td><td>市場區隔分析、異常偵測、推薦系統、影像壓縮</td></tr>
+    <tr><td>強化學習</td><td>基於<b>回饋（反饋）機制</b></td><td>試錯學習、長期規劃</td><td>遊戲 AI、機器人控制、自動駕駛</td></tr>
+  </table></div>
+  <p>監督式再細分兩種目標：<b>分類</b>模型學「如何把輸入分配到不同類別」，<b>迴歸</b>模型學「輸入變數與連續數值之間的映射關係」。</p>
+
+  <div class="note">
+    <span class="lbl">看到這些字就選強化學習</span>
+    <b>動態、重複互動、試錯、長期規劃、下圍棋、自動駕駛、機器人控制。</b><br>
+    核心是讓<b>代理（Agent）</b>透過與環境互動，學習選擇最佳行動策略，以獲得<b>最大的累積回報</b>。
+  </div>
+
+  <h3>深度學習與三大經典模型 <span class="pref">p.3-14～3-16</span></h3>
+  <p>深度學習是機器學習的<b>子領域</b>，透過多層人工神經網路，從大量文本、語音、影像中<b>自動學習特徵</b>。
+  相較傳統機器學習，<span class="hl">深度學習不需要人類專家手動設計特徵</span>，這是它最關鍵的差異。</p>
+
+  <div class="tw"><table>
+    <tr><th>模型</th><th>結構／原理</th><th>優點</th><th>缺點</th><th>應用</th></tr>
+    <tr><td>CNN<br>卷積神經網路</td><td><b>卷積層</b>（提取邊緣、紋理等局部特徵）、<b>池化層</b>（降維、防過擬合）、<b>全連接層</b>（映射到輸出做分類或迴歸）。靈感來自動物視覺皮層</td><td>適合高維數據，參數量比全連接網路少；能提取層次化特徵</td><td>—</td><td>影像辨識（人臉、MNIST）、物件偵測、圖像分割</td></tr>
+    <tr><td>RNN<br>循環神經網路</td><td>網路中有<b>循環連接</b>，每個節點除當前輸入外還記住前一時刻狀態。改進版：<b>LSTM</b>（遺忘門／輸入門／輸出門，解決梯度消失）、<b>GRU</b>（比 LSTM 簡單，效果相近）</td><td>能捕捉長期依賴；支援變長序列</td><td>訓練易梯度消失或爆炸；長序列計算效率低</td><td>機器翻譯、文本生成、語音轉文字、股價預測</td></tr>
+    <tr><td>GAN<br>生成對抗網路</td><td><b>生成器</b>接收隨機雜訊生成模擬樣本、<b>判別器</b>區分真假。生成器想「欺騙」判別器，判別器想提高判斷準確性，對抗學習共同進步</td><td>能生成高品質樣本；數據增強與模擬潛力大</td><td>訓練不穩定，可能<b>模式崩潰</b>；需大量計算資源</td><td>圖像生成、文本生成、語音合成</td></tr>
+  </table></div>
+
+  <h3>生成式 AI <span class="pref">p.3-17～3-19</span></h3>
+  <p>運作原理：依輸入的提示詞，模型在大量文本訓練後建立的<span class="hl">「文字機率分布」</span>中，尋找<b>最可能接續的文字</b>，以此<b>逐字生成</b>回應。參數數量與理解提示詞的能力、生成品質息息相關——參數越多，越能捕捉語言的細微差異。</p>
+
+  <div class="tw"><table>
+    <tr><th>階段</th><th>子步驟</th><th>內容</th></tr>
+    <tr><td rowspan="3">訓練階段</td><td>數據準備</td><td>數據蒐集（量與品質直接影響效果）、數據清洗（去雜訊與異常值）、數據預處理（例如文本轉數字向量）</td></tr>
+    <tr><td>模型選擇與搭建</td><td>常見模型：<b>GAN、VAE（變分自編碼器）、Transformer</b>；搭建輸入層、隱藏層、輸出層</td></tr>
+    <tr><td>模型訓練</td><td><b>損失函數</b>衡量生成與真實數據的差異、<b>優化器</b>（Adam、SGD）更新參數、<b>迭代訓練</b>直到收斂</td></tr>
+    <tr><td rowspan="2">微調階段</td><td>特定任務優化</td><td>調整學習率、批量大小等<b>超參數</b>；添加特定於任務的層</td></tr>
+    <tr><td>數據精調</td><td>使用特定任務的數據集；<b>數據增強</b>（旋轉、翻轉等變換）提高泛化能力</td></tr>
+  </table></div>
+  <p>影響生成模型效果的四個因素：<b>數據品質、模型結構、超參數設置、計算資源</b>。</p>
+
+  <div class="note">
+    <span class="lbl">兩題必考，答案很像但要分清楚</span>
+    生成式 AI 最核心的<b>能力</b>是「<b>生成新的、原創的內容</b>」——不是「從大量數據中學習」，那是所有 AI 都在做的事。<br>
+    生成式 AI 發展的重要<b>基礎技術</b>是「<b>神經網路</b>」——不是決策樹、線性迴歸或貝氏分類，那些不擅長生成新內容。
+  </div>
+</section>
+
+<section id="quiz">
+  <h2>今日測驗</h2>
+  <p class="lede">6 題，全部選完才能送出。今天官方原題比例最高。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名</label>
+    <p class="hint">請填本名，方便召集人對進度表。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 6 題</span>
+    <span class="score">4 題官方原題 · 2 題自編</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="pager">
+    <a href="day3.html">← Day 3：資料分析與演算法</a>
+    <a href="day5.html">Day 5：統計與假設檢定 →</a>
+  </div>
+</section>
+
+<footer>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引－科目一」3.1 節，已比對 114.04 版勘誤表。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js"></script>
+<script src="assets/quiz.js"></script>
+<script>
+Study.initQuiz({
+  day: 4,
+  dayTitle: '機器學習、深度學習與生成式 AI',
+  questions: [
+    {
+      q: '下列何者最適合訓練電腦下圍棋、自動駕駛等動態重複地互動的問題？',
+      o: ['監督式學習（Supervised Learning）', '非監督式學習（Unsupervised Learning）', '半監督式學習（Semi-supervised Learning）', '強化學習（Reinforcement Learning）'],
+      a: 3,
+      src: '官方原題 · 學習指引 p.3-20 第 1 題',
+      e: '強化學習讓代理（Agent）透過與環境不斷互動，學習一系列動作以最大化累積獎勵。這種學習方式非常適合訓練電腦在動態、複雜的環境中做出決策，例如下圍棋、自動駕駛。'
+    },
+    {
+      q: '深度學習模型中，下列哪一項通常用來降低過擬合問題？',
+      o: ['增加訓練數據量', '增加模型的複雜度', '增加學習率', '增加正則化項'],
+      a: 3,
+      src: '官方原題 · 學習指引 p.3-21 第 6 題',
+      e: '過擬合是模型過度學習訓練數據中的雜訊或特徵，導致測試集表現不佳。正則化是在模型中加入額外項來懲罰複雜模型，常見有 L1、L2 正則化，能使模型更簡單、降低過擬合風險、提高泛化能力。'
+    },
+    {
+      q: '生成式人工智慧最核心的能力是什麼？',
+      o: ['從大量數據中學習', '執行複雜的數學計算', '生成新的、原創的內容', '控制機器人'],
+      a: 2,
+      src: '官方原題 · 學習指引 p.3-21 第 7 題',
+      e: '生成式 AI 的最大特徵就是能夠生成全新的文本、圖像、音樂等內容，這與傳統 AI 主要用於分析或預測已有數據不同。（A）是所有 AI 的共通行為，不是「最核心」的差異點。'
+    },
+    {
+      q: '下列哪項技術是生成式 AI 發展的重要基礎？',
+      o: ['決策樹', '神經網路', '線性迴歸', '貝氏分類'],
+      a: 1,
+      src: '官方原題 · 學習指引 p.3-21 第 8 題',
+      e: '神經網路尤其是深度學習模型，是生成式 AI 的基石，能學習數據中的複雜模式並生成與訓練數據相似但不完全相同的新數據。決策樹、線性迴歸、貝氏分類雖也是重要的機器學習方法，但並不擅長生成新內容。'
+    },
+    {
+      q: '相較於傳統的機器學習方法，深度學習最關鍵的差異是什麼？',
+      o: ['深度學習不需要任何訓練資料', '深度學習不需要人類專家手動設計特徵，由模型自行學習', '深度學習只能處理結構化數據', '深度學習的計算資源需求比傳統機器學習低'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-14',
+      e: '指引明確寫：「相較於傳統的機器學習方法，深度學習不需要人類專家手動設計特徵，而是讓模型自行學習。」深度學習仍需大量資料、擅長處理非結構化數據，且計算資源需求更高。'
+    },
+    {
+      q: '生成對抗網路（GAN）的兩個組成部分，以及其常見缺點，下列敘述何者正確？',
+      o: ['由編碼器與解碼器組成，缺點是無法處理影像', '由生成器與判別器組成，缺點是訓練過程不穩定、可能出現模式崩潰', '由卷積層與池化層組成，缺點是梯度消失', '由遺忘門與輸入門組成，缺點是計算效率低'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-16',
+      e: 'GAN 由生成器（接收隨機雜訊生成模擬樣本）和判別器（區分真實與生成數據）組成，透過對抗學習共同進步。缺點是訓練過程不穩定、可能出現模式崩潰（Mode Collapse），且需要大量計算資源。（C）是 CNN 的結構、（D）是 LSTM 的結構與 RNN 的缺點。'
+    }
+  ]
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,352 @@
+/* iPAS 考取衝刺班 — 共用前端邏輯
+ * 主題切換、姓名記憶、每日測驗、成績回傳 Google Apps Script。
+ * 後端寫入方式與鑑別測驗網站相同：fetch POST、不設 Content-Type
+ * （瀏覽器送 text/plain，避開 CORS preflight）。
+ */
+(function (global) {
+  'use strict';
+
+  var KEYS = ['A', 'B', 'C', 'D'];
+  var NAME_KEY = 'ipas_w1_name';
+  var THEME_KEY = 'ipas_theme';
+
+  /* ---------- localStorage 安全存取 ---------- */
+  function lsGet(k) {
+    try { return localStorage.getItem(k); } catch (e) { return null; }
+  }
+  function lsSet(k, v) {
+    try { localStorage.setItem(k, v); } catch (e) { /* 無痕模式等，忽略 */ }
+  }
+  function lsDel(k) {
+    try { localStorage.removeItem(k); } catch (e) {}
+  }
+  function dayKey(n) { return 'ipas_w1_day' + n; }
+
+  function getDayResult(n) {
+    var raw = lsGet(dayKey(n));
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch (e) { return null; }
+  }
+
+  /* ---------- 主題 ---------- */
+  function initTheme() {
+    var saved = lsGet(THEME_KEY);
+    if (saved === 'dark' || saved === 'light') {
+      document.documentElement.setAttribute('data-theme', saved);
+    }
+    var btn = document.querySelector('.theme-btn');
+    if (!btn) return;
+    function paint() {
+      var cur = document.documentElement.getAttribute('data-theme');
+      var isDark = cur === 'dark' ||
+        (!cur && global.matchMedia && global.matchMedia('(prefers-color-scheme: dark)').matches);
+      btn.textContent = isDark ? '☀' : '☾';
+      btn.setAttribute('aria-label', isDark ? '切換為淺色主題' : '切換為深色主題');
+    }
+    paint();
+    btn.addEventListener('click', function () {
+      var cur = document.documentElement.getAttribute('data-theme');
+      var isDark = cur === 'dark' ||
+        (!cur && global.matchMedia && global.matchMedia('(prefers-color-scheme: dark)').matches);
+      var next = isDark ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      lsSet(THEME_KEY, next);
+      paint();
+    });
+  }
+
+  /* ---------- 導覽列標記已完成的天 ---------- */
+  function markNav() {
+    var links = document.querySelectorAll('.daynav a[data-day]');
+    Array.prototype.forEach.call(links, function (a) {
+      if (getDayResult(a.getAttribute('data-day'))) a.classList.add('done');
+    });
+  }
+
+  /* ---------- 首頁的每日卡片狀態 ---------- */
+  function paintDayCards() {
+    var cards = document.querySelectorAll('.daycard[data-day]');
+    Array.prototype.forEach.call(cards, function (card) {
+      var res = getDayResult(card.getAttribute('data-day'));
+      var badge = card.querySelector('.badge');
+      if (!badge) return;
+      if (res) {
+        badge.textContent = '已完成 ' + res.percent + '%';
+        badge.classList.add('ok');
+      } else {
+        badge.textContent = '未作答';
+        badge.classList.remove('ok');
+      }
+    });
+    var doneCount = 0;
+    for (var i = 1; i <= 5; i++) { if (getDayResult(i)) doneCount++; }
+    var prog = document.getElementById('week-progress');
+    if (prog) {
+      prog.textContent = '本週進度 ' + doneCount + ' / 5 天';
+    }
+  }
+
+  /* ---------- 後端回傳 ---------- */
+  function setSync(el, text, cls) {
+    if (!el) return;
+    el.textContent = text;
+    el.className = 'sync ' + (cls || 'idle');
+  }
+
+  function submitResult(data, syncEl) {
+    var url = global.GAS_WEB_APP_URL;
+    if (!url) {
+      setSync(syncEl, '已完成作答（本站尚未啟用自動記錄，成績只留在這台裝置）', 'idle');
+      return;
+    }
+    if (data.submitted) {
+      setSync(syncEl, '✓ 已完成，成績已記錄', 'ok');
+      return;
+    }
+    setSync(syncEl, '正在回傳成績…', 'idle');
+
+    var payload = {
+      type: 'daily',
+      name: data.name || '未具名',
+      week: (global.WEEK_INFO && global.WEEK_INFO.week) || 'W1',
+      day: data.day,
+      dayTitle: data.dayTitle,
+      percent: data.percent,
+      correct: data.correct,
+      total: data.total,
+      wrongList: data.wrongList,
+      detail: data.detail
+    };
+
+    fetch(url, { method: 'POST', body: JSON.stringify(payload) })
+      .then(function (res) { return res.json(); })
+      .then(function (res) {
+        if (res && res.status === 'ok') {
+          data.submitted = true;
+          lsSet(dayKey(data.day), JSON.stringify(data));
+          setSync(syncEl, '✓ 已完成，成績已記錄', 'ok');
+        } else {
+          throw new Error('backend error');
+        }
+      })
+      .catch(function () {
+        setSync(syncEl, '⚠ 成績回傳失敗（不影響你的作答）。請截圖此畫面回報召集人，或稍後按「重新回傳」。', 'warn');
+        var retry = document.getElementById('retry-btn');
+        if (retry) retry.hidden = false;
+      });
+  }
+
+  /* ---------- 每日測驗 ---------- */
+  function initQuiz(cfg) {
+    var list = document.getElementById('quiz-list');
+    if (!list) return;
+
+    var nameInput = document.getElementById('name-input');
+    var scoreEl = document.getElementById('quiz-progress');
+    var submitBtn = document.getElementById('submit-btn');
+    var retakeBtn = document.getElementById('retake-btn');
+    var retryBtn = document.getElementById('retry-btn');
+    var syncEl = document.getElementById('sync-status');
+    var resultBox = document.getElementById('result-box');
+    var scoreBig = document.getElementById('result-score');
+    var scoreSub = document.getElementById('result-sub');
+
+    var total = cfg.questions.length;
+    var picked = new Array(total).fill(null);
+    var graded = false;
+
+    var savedName = lsGet(NAME_KEY);
+    if (savedName && nameInput) nameInput.value = savedName;
+    if (nameInput) {
+      nameInput.addEventListener('input', function () {
+        lsSet(NAME_KEY, nameInput.value.trim());
+      });
+    }
+
+    var boxes = [];
+
+    cfg.questions.forEach(function (item, i) {
+      var box = document.createElement('div');
+      box.className = 'q';
+
+      var stem = document.createElement('div');
+      stem.className = 'stem';
+      var qn = document.createElement('span');
+      qn.className = 'qn';
+      qn.textContent = (i + 1 < 10 ? '0' : '') + (i + 1);
+      var qt = document.createElement('span');
+      qt.textContent = item.q;
+      stem.appendChild(qn);
+      stem.appendChild(qt);
+      box.appendChild(stem);
+
+      if (item.src) {
+        var src = document.createElement('p');
+        src.className = 'src';
+        src.textContent = item.src;
+        box.appendChild(src);
+      }
+
+      var opts = document.createElement('div');
+      opts.className = 'opts';
+      var exp = document.createElement('div');
+      exp.className = 'exp';
+      exp.hidden = true;
+
+      item.o.forEach(function (text, j) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt';
+        var k = document.createElement('span');
+        k.className = 'k';
+        k.textContent = '(' + KEYS[j] + ')';
+        var t = document.createElement('span');
+        t.textContent = text;
+        btn.appendChild(k);
+        btn.appendChild(t);
+        btn.addEventListener('click', function () {
+          if (graded) return;
+          picked[i] = j;
+          Array.prototype.forEach.call(opts.children, function (o) { o.classList.remove('picked'); });
+          btn.classList.add('picked');
+          refresh();
+        });
+        opts.appendChild(btn);
+      });
+
+      box.appendChild(opts);
+      box.appendChild(exp);
+      list.appendChild(box);
+      boxes.push({ box: box, opts: opts, exp: exp, item: item });
+    });
+
+    function answeredCount() {
+      return picked.filter(function (p) { return p !== null; }).length;
+    }
+
+    function refresh() {
+      if (graded) return;
+      var n = answeredCount();
+      if (scoreEl) scoreEl.textContent = '已選 ' + n + ' / ' + total + ' 題';
+      if (submitBtn) submitBtn.disabled = n < total;
+    }
+
+    function reveal(answers, showPicked) {
+      graded = true;
+      boxes.forEach(function (b, i) {
+        var mine = answers[i];
+        Array.prototype.forEach.call(b.opts.children, function (o, oi) {
+          o.disabled = true;
+          o.classList.remove('picked');
+          if (oi === b.item.a) o.classList.add('right');
+          else if (showPicked && oi === mine) o.classList.add('wrong');
+        });
+        b.exp.innerHTML = '';
+        var head = document.createElement('b');
+        head.textContent = 'Ans（' + KEYS[b.item.a] + '）';
+        b.exp.appendChild(head);
+        b.exp.appendChild(document.createTextNode('　' + b.item.e));
+        b.exp.hidden = false;
+      });
+      if (submitBtn) submitBtn.hidden = true;
+      if (retakeBtn) retakeBtn.hidden = false;
+      if (scoreEl) scoreEl.textContent = '已作答';
+    }
+
+    function showResult(data) {
+      if (resultBox) resultBox.hidden = false;
+      if (scoreBig) scoreBig.textContent = data.percent + '%';
+      if (scoreSub) {
+        scoreSub.textContent = data.name
+          ? data.name + '　答對 ' + data.correct + ' / ' + data.total + ' 題'
+          : '答對 ' + data.correct + ' / ' + data.total + ' 題';
+      }
+    }
+
+    function grade() {
+      var correct = 0;
+      var wrong = [];
+      var detail = {};
+      picked.forEach(function (p, i) {
+        detail['Q' + (i + 1)] = p === null ? '-' : KEYS[p];
+        if (p === cfg.questions[i].a) correct++;
+        else wrong.push(i + 1);
+      });
+      var data = {
+        name: (nameInput ? nameInput.value.trim() : '') || '未具名',
+        day: cfg.day,
+        dayTitle: cfg.dayTitle,
+        correct: correct,
+        total: total,
+        percent: Math.round((correct / total) * 100),
+        wrongList: wrong.join('、'),
+        detail: detail,
+        answers: picked.slice(),
+        date: new Date().toLocaleString('zh-TW'),
+        submitted: false
+      };
+      lsSet(dayKey(cfg.day), JSON.stringify(data));
+      return data;
+    }
+
+    if (submitBtn) {
+      submitBtn.addEventListener('click', function () {
+        if (answeredCount() < total) return;
+        var data = grade();
+        reveal(data.answers, true);
+        showResult(data);
+        submitResult(data, syncEl);
+        markNav();
+        if (resultBox) resultBox.scrollIntoView({ block: 'nearest' });
+      });
+    }
+
+    if (retakeBtn) {
+      retakeBtn.addEventListener('click', function () {
+        lsDel(dayKey(cfg.day));
+        global.location.reload();
+      });
+    }
+
+    if (retryBtn) {
+      retryBtn.addEventListener('click', function () {
+        var saved = getDayResult(cfg.day);
+        if (saved) {
+          saved.submitted = false;
+          retryBtn.hidden = true;
+          submitResult(saved, syncEl);
+        }
+      });
+    }
+
+    /* 已作答過：直接顯示結果與解析 */
+    var prev = getDayResult(cfg.day);
+    if (prev && prev.answers && prev.answers.length === total) {
+      picked = prev.answers.slice();
+      reveal(picked, true);
+      showResult(prev);
+      if (prev.submitted) {
+        setSync(syncEl, '✓ 已完成，成績已記錄', 'ok');
+      } else {
+        setSync(syncEl, '成績尚未回傳成功，可按「重新回傳」再試一次。', 'warn');
+        if (retryBtn) retryBtn.hidden = false;
+      }
+    } else {
+      refresh();
+    }
+  }
+
+  global.Study = {
+    initTheme: initTheme,
+    markNav: markNav,
+    paintDayCards: paintDayCards,
+    initQuiz: initQuiz,
+    getDayResult: getDayResult
+  };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initTheme();
+    markNav();
+    paintDayCards();
+  });
+})(window);

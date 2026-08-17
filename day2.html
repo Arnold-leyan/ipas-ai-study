@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 2 AI 架構與資料處理 — iPAS 考取衝刺班</title>
+<meta name="description" content="W1 Day 2：AI 三層架構與資料處理四步驟（蒐集、清洗、轉換）。學習指引 p.3-3～3-7。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W1 · Day 2 · 8/18（二）</p>
+        <h1>AI 三層架構與資料處理四步驟</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>今天全是名詞分類題的產區。重點不是理解得多深，是「哪個名詞屬於哪一步」不要串錯。</p>
+    <div class="mast-meta">
+      <span class="tag">p.3-3 ～ 3-7</span>
+      <span class="tag">閱讀約 25 分鐘</span>
+      <span class="tag">測驗 6 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="index.html">總覽</a></li>
+    <li><a href="day1.html" data-day="1">Day 1</a></li>
+    <li><a href="day2.html" data-day="2" aria-current="page">Day 2</a></li>
+    <li><a href="day3.html" data-day="3">Day 3</a></li>
+    <li><a href="day4.html" data-day="4">Day 4</a></li>
+    <li><a href="day5.html" data-day="5">Day 5</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>今天要讀的</h2>
+
+  <h3>AI 的三層架構 <span class="pref">p.3-3～3-4</span></h3>
+  <div class="card">
+    <h4>① 技術底層</h4>
+    <p class="lede">提供計算能力、數據支撐與核心演算法。五個要素：</p>
+    <ul>
+      <li><strong>資料處理與分析</strong>：數據清理、整合、儲存、分析。關鍵技術如 <b>ETL</b>（Extract, Transform, Load）、資料庫管理、大數據處理平台（Hadoop、Spark）</li>
+      <li><strong>演算法</strong>：解決問題與決策支援的邏輯基石。迴歸分析、分類演算法、決策樹、基因演算法</li>
+      <li><strong>機器學習</strong>：透過資料訓練模型來預測或分類。監督式、非監督式、強化學習</li>
+      <li><strong>深度學習</strong>：建於人工神經網路之上，適用<b>非結構化</b>數據（語音、影像、NLP）。框架如 TensorFlow、PyTorch</li>
+      <li><strong>專家系統</strong>：基於<span class="hl">規則與知識庫</span>模擬人類專家的決策過程，用於醫療診斷、財務分析</li>
+    </ul>
+    <h4>② 開發應用</h4>
+    <p>把基礎技術轉化為實際功能與服務：<b>模型設計 → 訓練 → 測試 → 部署</b>。目標是解決特定業務需求。</p>
+    <h4>③ 實際運用</h4>
+    <ul>
+      <li>設計行業解決方案：智慧醫療、智慧物流、智慧製造</li>
+      <li>打造產品與服務：語音助理、推薦演算法、智慧監控系統</li>
+      <li>優化業務流程：提高運營效率與競爭力</li>
+    </ul>
+  </div>
+
+  <h3>資料處理四步驟 <span class="pref">p.3-4～3-7</span></h3>
+  <p class="lede">蒐集 → 清洗 → 轉換 → 分析。今天讀前三步，第四步（分析）明天讀。</p>
+
+  <h4>① 數據蒐集：三種數據結構</h4>
+  <div class="tw"><table>
+    <tr><th>類型</th><th>特徵</th><th>儲存形式與例子</th></tr>
+    <tr><td>結構化</td><td>清晰且固定結構，行列形式，便於直接查詢分析</td><td>關聯式資料庫 MySQL、PostgreSQL、規範化電子表格</td></tr>
+    <tr><td>半結構化</td><td><span class="hl">有結構標籤但格式靈活</span>，無需嚴格遵循固定架構，適合層次化數據</td><td>文件形式：XML、JSON、CSV</td></tr>
+    <tr><td>非結構化</td><td>無固定結構，需經處理解析後才能分析</td><td>檔案形式：圖片、影像、音訊、電子郵件、文章</td></tr>
+  </table></div>
+
+  <h4>常見蒐集方法</h4>
+  <ul>
+    <li><strong>問卷與調查</strong>：線上或線下直接蒐集第一手數據，用於市場研究、用戶回饋</li>
+    <li><strong>自有產品數據</strong>：自有網站、App，或實體裝置如智慧手錶、汽車</li>
+    <li><strong>外部公開數據</strong>：API 調用（政府開放平臺）或網路爬蟲擷取公開數據</li>
+    <li><strong>外部付費數據購買</strong>：與第三方數據提供商合作，如市場調查、人口統計數據</li>
+  </ul>
+
+  <h4>② 數據清洗：四種值</h4>
+  <div class="tw"><table>
+    <tr><th>問題</th><th>怎麼處理</th></tr>
+    <tr><td>遺缺值<br>Missing</td><td><b>填補</b>（平均值／中位數／眾數、插補法 Interpolation、迴歸等預測模型）或<b>刪除記錄</b>（占比高或不可修復時，需評估對樣本代表性的影響）</td></tr>
+    <tr><td>重複值<br>Duplicate</td><td>透過主鍵、唯一識別碼或關鍵欄位<b>識別</b>，保留一份正確記錄、刪除其他</td></tr>
+    <tr><td>錯誤值<br>Error</td><td>檢測並修正不符合合理範圍的值。例：年齡 −5 歲、Taiwan 拼成 Taiwwn</td></tr>
+    <tr><td>離群值<br>Outlier</td><td>明顯偏離其他數據點的異常值。<span class="hl">通常可能是有意義的數據而非錯誤值</span>，需依業務需求與分析目標採取適當策略</td></tr>
+  </table></div>
+
+  <div class="note">
+    <span class="lbl">最容易被出成陷阱的一句</span>
+    <b>離群值 ≠ 錯誤值。</b>錯誤值一定要修（年齡不可能是負數）；離群值可能反映真實的異常情況，也可能是雜訊，
+    <b>不能一律刪除</b>。看到選項寫「離群值應直接刪除」就要警覺。
+  </div>
+
+  <h4>③ 數據轉換：五種</h4>
+  <div class="tw"><table>
+    <tr><th>轉換</th><th>做什麼</th><th>例子</th></tr>
+    <tr><td>格式轉換</td><td>一種檔案格式轉成另一種</td><td>CSV → JSON</td></tr>
+    <tr><td>類型轉換</td><td>一種資料型別轉成另一種</td><td>字串 → 數值</td></tr>
+    <tr><td>正規化／標準化</td><td><b>縮放</b>到特定範圍，消除單位影響、使變數可比較</td><td>[0,1] 或 −1～1</td></tr>
+    <tr><td>離散化</td><td>連續型數據<b>切成區間或類別</b></td><td>年齡 → 青年／中年／老年</td></tr>
+    <tr><td>縮減</td><td>特徵選擇、特徵提取或降維，減少維度與體積</td><td>主成分分析 PCA</td></tr>
+  </table></div>
+</section>
+
+<section id="quiz">
+  <h2>今日測驗</h2>
+  <p class="lede">6 題，全部選完才能送出。這一節指引沒有附官方練習題，以下皆為依指引內容自編，考點與敘述完全比照原文。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名</label>
+    <p class="hint">請填本名，方便召集人對進度表。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 6 題</span>
+    <span class="score">6 題自編</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="pager">
+    <a href="day1.html">← Day 1：AI 定義與分類</a>
+    <a href="day3.html">Day 3：資料分析與演算法 →</a>
+  </div>
+</section>
+
+<footer>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引－科目一」3.1 節，已比對 114.04 版勘誤表。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js"></script>
+<script src="assets/quiz.js"></script>
+<script>
+Study.initQuiz({
+  day: 2,
+  dayTitle: 'AI 三層架構與資料處理四步驟',
+  questions: [
+    {
+      q: '下列何者是「專家系統（Expert System）」最主要的運作基礎？',
+      o: ['多層人工神經網路', '規則與知識庫', '大量標記訓練資料', '生成對抗學習'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-4',
+      e: '指引定義專家系統為「基於規則與知識庫，模擬人類專家的決策過程」，廣泛應用於醫療診斷、財務分析等專業領域。多層神經網路是深度學習；標記資料是監督式學習；對抗學習是 GAN。'
+    },
+    {
+      q: 'JSON 與 XML 檔案屬於下列哪一種數據結構類型？',
+      o: ['結構化數據', '半結構化數據', '非結構化數據', '不屬於數據'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-4～3-5',
+      e: '半結構化數據「具有一定結構標籤，但格式靈活，無需嚴格遵循固定架構」，通常以文件形式儲存，如 XML、JSON、CSV。結構化是行列式的資料庫；非結構化是圖片、音訊、文章。'
+    },
+    {
+      q: '關於資料清洗中的「離群值（Outlier）」，下列敘述何者最正確？',
+      o: ['離群值一定是錯誤值，應全部刪除', '離群值通常可能是有意義的數據而非錯誤值，須依業務需求決定處理策略', '離群值只能用平均值填補', '離群值與重複值是同一件事'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-6',
+      e: '指引明確寫「離群值……通常可能是有意義的數據而非錯誤值」，可能反映數據的異常情況，也可能是雜訊或錯誤，處理時需依業務需求和分析目標採取適當策略，不能一律刪除。'
+    },
+    {
+      q: '將年齡欄位由連續數值改為「青年、中年、老年」三個類別，屬於下列哪一種數據轉換？',
+      o: ['數據正規化', '數據離散化', '數據縮減', '數據格式轉換'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-7',
+      e: '離散化（Data Discretization）是把連續型數據轉換為離散的區間或類別。正規化是把數值縮放到 [0,1] 等特定範圍；縮減是降維（如 PCA）；格式轉換是 CSV 轉 JSON 這類。'
+    },
+    {
+      q: '下列何者「不屬於」學習指引所列的數據清洗處理項目？',
+      o: ['遺缺值處理', '重複值處理', '錯誤值處理', '特徵工程與模型調參'],
+      a: 3,
+      src: '自編練習題 · 對應 p.3-5～3-6',
+      e: '數據清洗的核心內容為遺缺值、重複值、錯誤值、離群值四項。特徵工程與模型調參屬於後續的模型訓練階段，不是清洗步驟。'
+    },
+    {
+      q: '主成分分析（PCA）在資料處理流程中，最直接對應下列哪一項？',
+      o: ['數據蒐集中的外部付費數據購買', '數據清洗中的重複值刪除', '數據轉換中的數據縮減', '數據分析中的因果分析'],
+      a: 2,
+      src: '自編練習題 · 對應 p.3-7',
+      e: '指引在「數據縮減（Data Reduction）」中明確舉例：透過特徵選擇、特徵提取或降維技術，如主成分分析（PCA）減少數據的維度或體積，提高分析效率並節省儲存空間。（註：PCA 在 p.3-9 探索性分析中也再次出現，但在四步驟裡歸屬於「轉換」。）'
+    }
+  ]
+});
+</script>
+</body>
+</html>

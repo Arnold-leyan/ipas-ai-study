@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 3 資料分析與演算法 — iPAS 考取衝刺班</title>
+<meta name="description" content="W1 Day 3：敘述性、探索性、診斷性、預測性四種資料分析，以及搜尋排序與三大常見演算法。學習指引 p.3-7～3-12。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W1 · Day 3 · 8/19（三）</p>
+        <h1>四種資料分析與常見演算法</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>今天是本週資訊密度最高的一天。四種分析類型的「誰負責回答什麼問題」是核心，圖表的優缺點則是送分題。</p>
+    <div class="mast-meta">
+      <span class="tag">p.3-7 ～ 3-12</span>
+      <span class="tag">閱讀約 30 分鐘</span>
+      <span class="tag">測驗 6 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="index.html">總覽</a></li>
+    <li><a href="day1.html" data-day="1">Day 1</a></li>
+    <li><a href="day2.html" data-day="2">Day 2</a></li>
+    <li><a href="day3.html" data-day="3" aria-current="page">Day 3</a></li>
+    <li><a href="day4.html" data-day="4">Day 4</a></li>
+    <li><a href="day5.html" data-day="5">Day 5</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>今天要讀的</h2>
+
+  <h3>四種資料分析 <span class="pref">p.3-7～3-11</span></h3>
+  <div class="tw"><table>
+    <tr><th>類型</th><th>回答什麼問題</th><th>常見方法</th></tr>
+    <tr><td>敘述性</td><td>發生了什麼？<br>描述基本特徵與分佈</td><td>平均值、中位數、標準差、百分位數；直方圖、散佈圖、折線圖</td></tr>
+    <tr><td>探索性</td><td>資料裡有什麼？<br><b>無需預設假設</b>地找模式、關聯與異常</td><td>散佈圖矩陣、熱圖、平行坐標圖、箱型圖、相關性分析、聚類分析、PCA、異常檢測</td></tr>
+    <tr><td>診斷性</td><td><b>為什麼</b>會這樣？<br>探究特定現象的根本原因</td><td>鑽取／向下分析、關聯分析、因果分析</td></tr>
+    <tr><td>預測性</td><td>接下來會怎樣？<br>用歷史數據預測未來</td><td>迴歸模型、分類模型、時間序列模型、集成學習方法</td></tr>
+  </table></div>
+
+  <h4>敘述性：統計指標與圖表的優缺點</h4>
+  <div class="tw"><table>
+    <tr><th>指標／圖表</th><th>優點</th><th>缺點</th></tr>
+    <tr><td>平均值</td><td>計算簡單、易於理解</td><td><span class="hl">極端值影響較大</span></td></tr>
+    <tr><td>中位數</td><td>不受極端值影響，更能反映中心趨勢</td><td>對數據分布的變動性不敏感</td></tr>
+    <tr><td>標準差</td><td>量化描述分散程度，常用於跨組比較</td><td>計算相對複雜，且受極端值影響</td></tr>
+    <tr><td>百分位數</td><td>詳細描述分佈情況，不受極端值影響</td><td>計算相對複雜，大數據集計算量大</td></tr>
+    <tr><td>直方圖</td><td>直觀展示分布、集中趨勢、分散程度與異常值</td><td><b>組間隔的選擇會影響外觀</b></td></tr>
+    <tr><td>散佈圖</td><td>顯示兩變量相關性（線性、非線性、無相關），可發現異常值</td><td>數據點過多時圖形擁擠</td></tr>
+    <tr><td>折線圖</td><td>清晰展示隨時間的變化趨勢，可比較多變量</td><td>較不適合展示類別型數據</td></tr>
+  </table></div>
+
+  <div class="note">
+    <span class="lbl">考過的陷阱</span>
+    問「下列何者<b>不</b>適合做為資料分布估計」，答案是<b>雷達圖（Radar chart）</b>。
+    雷達圖是用來比較不同個體在多個維度上的表現，無法直觀呈現機率密度或某一維度上的分布。
+    要看分布請用直方圖。<b>雷達圖沒有出現在指引的正文裡</b>，只在題目中作為誘答項出現。
+  </div>
+
+  <h4>探索性：八種方法</h4>
+  <div class="tw"><table>
+    <tr><th>方法</th><th>用途</th><th>應用範例</th></tr>
+    <tr><td>散佈圖矩陣</td><td>展示多變量兩兩之間相關性，適合高維初步探索</td><td>價格、數量與地區的互動關係</td></tr>
+    <tr><td>熱圖</td><td>用色彩強度展示關聯程度</td><td>年齡與消費金額的關聯</td></tr>
+    <tr><td>平行坐標圖</td><td>分析高維數據，展示多變量趨勢</td><td>比較產品的成本、收益、風險</td></tr>
+    <tr><td>箱型圖／盒鬚圖</td><td>展示分佈，突出<b>離群值與中位數</b></td><td>比較不同地區收入分佈差異</td></tr>
+    <tr><td>相關性分析</td><td>測量兩變量相關性，如皮爾森相關係數</td><td>廣告支出與銷售收入的相關性</td></tr>
+    <tr><td>聚類分析</td><td>分組，組內相似度高、組間差異大。K-Means、層次聚類</td><td>客戶分群（高價值／一般客戶）</td></tr>
+    <tr><td>主成分分析 PCA</td><td>降維同時保留大部分資訊</td><td>簡化銷售數據的多維特徵</td></tr>
+    <tr><td>異常檢測</td><td>識別不符合預期的異常點</td><td>金融交易的欺詐行為</td></tr>
+  </table></div>
+
+  <h4>診斷性與預測性</h4>
+  <ul>
+    <li><strong>鑽取／向下分析</strong>：從宏觀逐層深入到細節。例：銷售下降時，依地區、產品類別、時間段逐步鎖定問題</li>
+    <li><strong>關聯分析</strong>：分析項目間的共現關係。方法如 <b>Apriori 演算法</b>，經典例子是「<b>啤酒與尿布</b>」</li>
+    <li><strong>因果分析</strong>：分析變量間因果關係，<span class="hl">避免混淆相關性與因果性</span>。方法如因果圖、隨機試驗（<b>A/B 測試</b>）</li>
+  </ul>
+  <div class="tw"><table>
+    <tr><th>預測性模型</th><th>用途</th><th>方法</th></tr>
+    <tr><td>迴歸模型</td><td>數值型結果預測</td><td>線性迴歸、多元迴歸、邏輯迴歸</td></tr>
+    <tr><td>分類模型</td><td>將數據分為不同類別</td><td>決策樹、隨機森林、支援向量機 SVM、深度學習</td></tr>
+    <tr><td>時間序列</td><td>捕捉趨勢、季節性與周期性</td><td>ARIMA、SARIMA、LSTM</td></tr>
+    <tr><td>集成學習</td><td>結合多個模型提高準確性</td><td>隨機森林、GBM、XGBoost</td></tr>
+  </table></div>
+
+  <h3>常見演算法 <span class="pref">p.3-11～3-12</span></h3>
+  <h4>搜尋與排序</h4>
+  <div class="tw"><table>
+    <tr><th>演算法</th><th>怎麼運作</th></tr>
+    <tr><td>線性搜尋</td><td>從第一個元素開始逐個比較，找到即成功，走完仍沒有則失敗</td></tr>
+    <tr><td>二分搜尋</td><td>先比中間元素，目標較小往左半、較大往右半，重複直到找到或範圍為空</td></tr>
+    <tr><td>深度優先 DFS</td><td>圖／樹結構。沿一條路徑<b>儘可能深</b>地走，到葉節點或已訪問節點就回溯</td></tr>
+    <tr><td>廣度優先 BFS</td><td>圖／樹結構。先訪問所有相鄰節點，再訪問它們的相鄰節點，<b>一層一層擴散</b></td></tr>
+  </table></div>
+
+  <h4>三個必記的模型</h4>
+  <div class="card">
+    <ul>
+      <li><strong>線性迴歸</strong>：預測連續數值（房價、銷售額、股價）。假設輸入與輸出間存在線性關係，找一條最佳直線（或高維超平面）擬合資料點。<br>
+        優點：簡單易懂、計算效率高。缺點：<b>只能捕捉線性關係</b>，對非線性資料擬合效果差。</li>
+      <li><strong>邏輯迴歸</strong>：<span class="hl">名稱有「迴歸」，實際上是一種分類演算法</span>。用 Sigmoid 函數把線性迴歸的輸出轉為 0～1 之間的機率值，通常設閾值 0.5 轉為類別。<br>
+        優點：簡單、效率高、輸出具機率意義。缺點：<b>只能解決二元分類</b>，多類別需擴展。</li>
+      <li><strong>KNN（K-最近鄰）</strong>：基於實例的學習。找訓練集中最接近的 K 個樣本——分類問題取<b>多數決</b>，迴歸問題取<b>平均值或中位數</b>。</li>
+    </ul>
+  </div>
+</section>
+
+<section id="quiz">
+  <h2>今日測驗</h2>
+  <p class="lede">6 題，全部選完才能送出。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名</label>
+    <p class="hint">請填本名，方便召集人對進度表。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 6 題</span>
+    <span class="score">2 題官方原題 · 4 題自編</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="pager">
+    <a href="day2.html">← Day 2：架構與資料處理</a>
+    <a href="day4.html">Day 4：機器學習與生成式 AI →</a>
+  </div>
+</section>
+
+<footer>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引－科目一」3.1 節，已比對 114.04 版勘誤表。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js"></script>
+<script src="assets/quiz.js"></script>
+<script>
+Study.initQuiz({
+  day: 3,
+  dayTitle: '四種資料分析與常見演算法',
+  questions: [
+    {
+      q: '下列何者不適合做為資料分布估計？',
+      o: ['直方圖（Histogram）', '散布圖（Scatter plot）', '雷達圖（Radar chart）', '四分位數（Quartile）'],
+      a: 2,
+      src: '官方原題 · 學習指引 p.3-20 第 4 題',
+      e: '雷達圖有幾個限制，無法直觀呈現機率密度：它主要用於比較不同個體在多個維度上的表現，而非呈現數據在每個維度上的分布情況。要了解數據在某維度上的集中程度、分散程度，需要更適合的圖形，如直方圖。'
+    },
+    {
+      q: 'K-Means 聚類算法中，K 代表什麼？',
+      o: ['數據集中特徵的數量', '數據集中樣本的數量', '所需劃分的群組數量', '迭代次數'],
+      a: 2,
+      src: '官方原題 · 學習指引 p.3-20 第 5 題',
+      e: 'K 代表我們希望將數據分為幾個群組。K 值的選擇會直接影響最終的聚類結果，因此是一個非常重要的參數。'
+    },
+    {
+      q: '某零售商發現本季銷售下滑，於是依地區、產品類別、時間段逐層拆解，想找出問題發生在哪。這屬於哪一種資料分析？',
+      o: ['敘述性分析', '探索性分析', '診斷性分析', '預測性分析'],
+      a: 2,
+      src: '自編練習題 · 對應 p.3-10',
+      e: '診斷性分析旨在探究特定現象或結果的根本原因，其中「鑽取／向下分析」就是從宏觀數據逐層深入到細節層級，逐步鎖定問題範圍——指引舉的例子正是銷售下降時依地區、產品類別或時間段分析。'
+    },
+    {
+      q: '關於邏輯迴歸（Logistic Regression），下列敘述何者正確？',
+      o: ['它是一種迴歸演算法，用於預測連續數值', '它實際上是一種分類演算法，使用 Sigmoid 函數輸出機率值', '它可以直接解決多類別分類問題而無需擴展', '它的輸出值範圍是負無窮到正無窮'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-12',
+      e: '指引明確指出：「邏輯迴歸雖然名稱中有『迴歸』，但實際上是一種分類演算法」，使用 Sigmoid 函數將線性迴歸的輸出轉換為介於 0 和 1 之間的機率值，通常設閾值 0.5。它只能解決二元分類，多類別需要進行擴展。'
+    },
+    {
+      q: '「啤酒與尿布」是下列哪一種分析方法的經典案例？',
+      o: ['因果分析（Causal Analysis）', '關聯分析（Association Analysis）', '聚類分析（Clustering Analysis）', '異常檢測（Anomaly Detection）'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-10',
+      e: '關聯分析用於分析數據項目之間的共現關係或模式，方法如 Apriori 演算法，指引直接以「啤酒與尿布的關聯性」為例，應用於推薦系統中發掘產品之間的購買關聯。'
+    },
+    {
+      q: '在圖形或樹狀結構中，從起始節點開始，先訪問其所有相鄰節點，再訪問這些節點的相鄰節點，一層一層擴散。這是哪一種搜尋？',
+      o: ['線性搜尋（Linear Search）', '二分搜尋（Binary Search）', '深度優先搜尋（DFS）', '廣度優先搜尋（BFS）'],
+      a: 3,
+      src: '自編練習題 · 對應 p.3-11～3-12',
+      e: '「一層一層地擴散搜尋」是廣度優先搜尋（BFS）的定義。深度優先（DFS）則相反，是沿著一條路徑儘可能深地搜尋，到葉節點或已訪問節點後回溯。'
+    }
+  ]
+});
+</script>
+</body>
+</html>

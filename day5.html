@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 5 統計量與假設檢定 — iPAS 考取衝刺班</title>
+<meta name="description" content="W1 Day 5：中央趨勢、分散度、偏態、假設檢定與 EDA/CDA。學習指引 p.3-24～3-32，含 10 題官方原題。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W1 · Day 5 · 8/21（五）</p>
+        <h1>統計量與假設檢定</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>3.2 整節。全班在這個主題正確率 84%，是最容易拿分的地方——但假設檢定的名詞沒記熟，一題就丟了。今天的 10 題全是官方原題。</p>
+    <div class="mast-meta">
+      <span class="tag">p.3-24 ～ 3-32</span>
+      <span class="tag">閱讀約 30 分鐘</span>
+      <span class="tag">測驗 10 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="index.html">總覽</a></li>
+    <li><a href="day1.html" data-day="1">Day 1</a></li>
+    <li><a href="day2.html" data-day="2">Day 2</a></li>
+    <li><a href="day3.html" data-day="3">Day 3</a></li>
+    <li><a href="day4.html" data-day="4">Day 4</a></li>
+    <li><a href="day5.html" data-day="5" aria-current="page">Day 5</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>今天要讀的</h2>
+
+  <h3>中央趨勢：三個平均 <span class="pref">p.3-24～3-25</span></h3>
+  <div class="tw"><table>
+    <tr><th>統計量</th><th>定義</th><th>受極端值影響</th><th>限制</th></tr>
+    <tr><td>平均數 Mean</td><td>所有值相加除以個數，資料的「重心」</td><td><b>會</b></td><td>有極端值時會偏離中心趨勢</td></tr>
+    <tr><td>中位數 Median</td><td>排序後位於正中間的值（偶數則取中間兩數平均）</td><td>不會</td><td>複雜的數學運算與統計推斷較不易操作</td></tr>
+    <tr><td>眾數 Mode</td><td>出現頻率最高的值</td><td>不會</td><td><b>可能有多個，也可能不存在</b></td></tr>
+  </table></div>
+  <p>平均數還分算術平均數、幾何平均數、調和平均數，其中<b>算術平均數</b>因計算簡單、易於理解，在實際應用中最普遍。</p>
+
+  <div class="note">
+    <span class="lbl">選哪一個？三句話決定</span>
+    有<b>少數極端值</b>（房價中有幾間豪宅）→ 用<b>中位數</b>。<br>
+    有<b>某一項頻率遠高於其他</b>（某產品銷量遠高於別的）→ 用<b>眾數</b>。<br>
+    <b>常態分布、彼此差異不大</b> → 平均數就夠了。
+  </div>
+
+  <h3>分散度：衡量資料有多散 <span class="pref">p.3-25</span></h3>
+  <div class="tw"><table>
+    <tr><th>統計量</th><th>怎麼算</th><th>要注意</th></tr>
+    <tr><td>四分位數</td><td>由小到大排列分成四等份，三個分割點的數值</td><td>—</td></tr>
+    <tr><td>全距 R</td><td>最大值 − 最小值</td><td>只考慮兩個觀察值，<b>會受極端值影響</b></td></tr>
+    <tr><td>四分位距 IQR</td><td><span class="hl">Q3 − Q1</span>，代表中間 50% 資料的範圍</td><td>指引寫「與全距有一樣的缺點」</td></tr>
+    <tr><td>平均差</td><td>所有觀察值與平均數之間<span class="hl">絕對差值的平均</span>　<b>※已勘誤</b></td><td>數值越大表示分散程度越高</td></tr>
+    <tr><td>標準差</td><td>衡量資料點離平均值的距離</td><td>品管上<b>標準差越大 = 波動大、品質越不穩定、良率越低</b></td></tr>
+  </table></div>
+
+  <h3>偏態怎麼判斷 <span class="pref">觀念延伸</span></h3>
+  <div class="tw"><table>
+    <tr><th>分布</th><th>平均數 vs 中位數</th><th>尾巴方向</th></tr>
+    <tr><td>對稱分布</td><td>平均數 ≈ 中位數 ≈ 眾數</td><td>兩側對稱</td></tr>
+    <tr><td>正偏態</td><td>平均數 <b>&gt;</b> 中位數</td><td>尾巴向<b>右</b>延伸</td></tr>
+    <tr><td>負偏態</td><td>平均數 <b>&lt;</b> 中位數</td><td>尾巴向<b>左</b>延伸</td></tr>
+  </table></div>
+  <p>記法：<b>尾巴往哪邊，平均數就被拉往哪邊</b>。尾巴在右（正偏態），平均數被拉高，所以大於中位數。這組在指引裡<b>連考兩題</b>（第 6、8 題），正反各問一次。</p>
+
+  <h3>統計方法的分類 <span class="pref">p.3-26</span></h3>
+  <div class="tw"><table>
+    <tr><th>類型</th><th>方法</th></tr>
+    <tr><td>無因果關係</td><td>敘述性統計、複選題分析、（多重）交叉分析、卡方檢定、偏相關分析、主成份分析、因素分析、集群分析、（偏）相關分析</td></tr>
+    <tr><td>有因果關係</td><td>二元羅吉斯迴歸、區別分析、偏最小平方迴歸、迴歸分析、（多變量）變異數分析</td></tr>
+  </table></div>
+
+  <h3>假設檢定 <span class="pref">p.3-26～3-27</span></h3>
+  <p>流程：<b>猜想（假定）→ 蒐集資料 → 檢定 → 作決策（接受或拒絕猜想）</b>。</p>
+  <div class="card">
+    <h4>名詞一次記完</h4>
+    <ul>
+      <li><strong>統計假設</strong>：對母體分佈的陳述或推測</li>
+      <li><strong>虛無假設 H₀</strong>：表示<b>不存在</b>顯著效果或差異，作為檢定的基準假設</li>
+      <li><strong>對立假設 Hₐ</strong>（或 H₁、K）：與虛無假設相對，表示<b>存在</b>顯著效果或差異</li>
+      <li><strong>簡單假設</strong>：完全確定母體分佈的所有參數；<strong>複合假設</strong>：僅對部分參數作出假設</li>
+      <li><strong>統計推論</strong>：根據樣本資料，判斷是否接受或拒絕統計假設的過程　<b>※已勘誤</b></li>
+      <li><strong>接受域</strong>：使 H₀ 被接受的集合；<strong>拒絕域</strong>：使 H₀ 被拒絕的集合。決定一個檢定，就是決定拒絕域與接受域</li>
+      <li><strong>顯著水準 α</strong>：又稱檢定大小，常取 0.1、0.05 或 0.01</li>
+      <li><strong>檢定統計量 T</strong>：樣本 X 的一個實值函數，用來決定是否接受 H₀</li>
+      <li><strong>p 值</strong>：在 H₀ 為真之下，檢定統計量落在比觀測值至少同樣極端區域的機率，又稱觀測大小。<span class="hl">p 值 &lt; α 就拒絕 H₀</span></li>
+    </ul>
+  </div>
+
+  <div class="tw"><table>
+    <tr><th></th><th>H₀ 為真</th><th>H₀ 為假</th></tr>
+    <tr><td>接受 H₀</td><td>正確</td><td>Type II 錯誤（β）</td></tr>
+    <tr><td>拒絕 H₀</td><td><b>Type I 錯誤（α）</b>　※已勘誤</td><td>正確</td></tr>
+  </table></div>
+
+  <div class="note">
+    <span class="lbl">官方勘誤表已更正</span>
+    學習指引 p.3-27 原本把「拒絕 H₀ 且 H₀ 為真」印成 <b>Type II 錯誤（α）</b>，官方勘誤表（114.04 版）已更正為 <b>Type I 錯誤（α）</b>。上表為更正後版本。<br>
+    記法：<b>α 對應第一型、是「棄真」；β 對應第二型、是「取偽」</b>。
+  </div>
+
+  <p><b>例：p = 0.03、α = 0.05。</b>因為 0.03 &lt; 0.05，拒絕虛無假設，代表我們<b class="num">在 95% 的信心水準下</b>拒絕虛無假設——不是 97%，信心水準看的是 1−α，不是 1−p。</p>
+  <p>另外要分清楚：顯著水準設為 0.05，意思是<span class="hl">「容許最多 5% 的機率犯型一錯誤」</span>，<b>不是</b>「實際犯錯的機率就是 5%」。這是勘誤表特別把題目與選項重寫過的地方。</p>
+
+  <h3>EDA 與 CDA <span class="pref">p.3-27～3-28</span></h3>
+  <div class="tw"><table>
+    <tr><th></th><th>探索性資料分析 EDA</th><th>驗證性資料分析 CDA</th></tr>
+    <tr><td>時機</td><td>研究初期，對資料特徵還不熟悉</td><td>已有假設之後</td></tr>
+    <tr><td>目的</td><td>發現潛在模式、關係與異常值，<b>生成假設</b></td><td><b>驗證</b>先前提出的假設並深入挖掘</td></tr>
+    <tr><td>方法</td><td>視覺化工具、多角度靈活探索</td><td>分類、分群、相關性分析、預測模型；也可能結合定性分析</td></tr>
+  </table></div>
+</section>
+
+<section id="quiz">
+  <h2>今日測驗</h2>
+  <p class="lede">10 題，全部是學習指引 3.2 節後附的官方原題，其中第 3、7 題已套用官方勘誤表的更正版本。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名</label>
+    <p class="hint">請填本名，方便召集人對進度表。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 10 題</span>
+    <span class="score">10 題官方原題</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="pager">
+    <a href="day4.html">← Day 4：機器學習與生成式 AI</a>
+    <a href="index.html">回總覽 →</a>
+  </div>
+</section>
+
+<footer>
+  <p><b>做完了記得打卡</b>，今天 21:00 前在群組回覆三格：</p>
+  <div class="checkin">
+    ① 本週學到的一個觀念：<br>
+    ② 一題易混淆的題型：<br>
+    ③ 下週想加強的主題：
+  </div>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引－科目一」3.2 節，已比對 114.04 版勘誤表。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js"></script>
+<script src="assets/quiz.js"></script>
+<script>
+Study.initQuiz({
+  day: 5,
+  dayTitle: '統計量與假設檢定',
+  questions: [
+    {
+      q: '關於 K 平均法（K-means），下列敘述何者「不」正確？',
+      o: ['希望找出 k 個互不交集的群集', '不同的起始群集中心，可能會造成不同的分群結果', '容易受雜訊與離群值（Outlier）影響其群集中心', '可以處理類別型資料'],
+      a: 3,
+      src: '官方原題 · 學習指引 p.3-29 第 1 題',
+      e: 'K-means 的特性為隨機選取集群中心、依距離計算、各群質心為代表點、分割式分群、易受離群值影響——它處理的是數值型資料，並不適合類別型資料。'
+    },
+    {
+      q: '在品質管理中，若一產品的生產過程中標準差顯著偏大，通常意味著什麼？',
+      o: ['資料點高度集中，產品質量穩定', '生產過程波動大，產品品質不穩定', '資料無法反映產品實際狀況', '中位數數值高，品質良率較高'],
+      a: 1,
+      src: '官方原題 · 學習指引 p.3-29 第 2 題',
+      e: '標準差越大表示數據分散程度越高，在品質管理中意味著產品或過程波動大，進而產品品質不穩定。'
+    },
+    {
+      q: '下列何者「並非」K 平均數（k-means）集群法的特點？',
+      o: ['原理相對其他集群法較為複雜', '可結合其他方法，使用上較為彈性', '在特定情況下，能將集群的任務處理得足夠好', '不適合非球形、數據密度變化大或有離群數據的集群問題'],
+      a: 0,
+      src: '官方原題 · 學習指引 p.3-29 第 3 題（答案經 114.04 勘誤表由 B 更正為 A）',
+      e: '【官方勘誤表已將答案由（B）更正為（A）】K-means 的原理相對簡單，主要透過反覆分配點到最近中心、並更新中心點來最小化平方誤差和，並非複雜方法。K-means 常與 PCA（降維）、Elbow method（選 k 值）等方法結合，具有一定彈性；對於球形且大小密度接近的群體，K-means 表現良好。'
+    },
+    {
+      q: '驗證性資料分析（Confirmatory Data Analysis, CDA）與探索性資料分析（Exploratory Data Analysis, EDA）相比，主要著重於下列哪一項？',
+      o: ['對資料進行初步描述和視覺化', '驗證先前生成的假設並進行深入挖掘', '排除資料中的極端值以提高準確性', '探索數據中潛在的模式和異常'],
+      a: 1,
+      src: '官方原題 · 學習指引 p.3-29 第 4 題',
+      e: 'CDA 的重點在於檢驗先前所提出的假設，通常採用分類、分群、相關性分析或預測模型等方法進行深入分析。（A）與（D）都是 EDA 在做的事。'
+    },
+    {
+      q: '以下哪種情況下，使用中位數來描述資料的集中趨勢最為合適？',
+      o: ['一組考試成績，大部分學生分數集中在 80 分左右', '一組房屋價格數據，其中包含少數豪宅的極端高價', '一組產品銷售量數據，每個產品的銷量差異不大', '一組學生身高數據，呈現出常態分布'],
+      a: 1,
+      src: '官方原題 · 學習指引 p.3-29 第 5 題',
+      e: '平均數易受極端值影響，當資料中有極端值時可能偏離中心趨勢；中位數不受極端值影響，能更準確反映資料的中心趨勢，特別是在資料分布不對稱或有極端值的情況下。'
+    },
+    {
+      q: '一組數據中，如果平均數小於中位數，那麼這組數據的分布可能是下列哪一種？',
+      o: ['對稱分布', '正偏態分布', '負偏態分布', '無法判斷'],
+      a: 2,
+      src: '官方原題 · 學習指引 p.3-30 第 6 題',
+      e: '對稱分布：平均數、中位數和眾數通常會接近。正偏態分布：資料的尾巴向右邊延伸，平均數會大於中位數。負偏態分布：資料的尾巴向左邊延伸，平均數會小於中位數。'
+    },
+    {
+      q: '當我們進行一次假設檢定，得到的 p 值為 0.03，而我們事先設定的顯著性水準為 0.05。以下哪一個敘述最合乎統計檢定的意義？',
+      o: ['我們有 97% 的信心拒絕虛無假設', '我們在 95% 的信心水準下拒絕虛無假設', '我們無法拒絕虛無假設', '我們犯型一錯誤的機率為 5%'],
+      a: 1,
+      src: '官方原題 · 學習指引 p.3-30 第 7 題（題目與選項經 114.04 勘誤表改寫）',
+      e: '顯著性水準設定為 0.05 表示，我們容許「最多」5% 的機率犯型一錯誤（Type-I Error），並非代表實際犯錯的機率就是 5%——這是（D）錯的原因。p = 0.03 < 0.05 故拒絕 H₀；信心水準看的是 1−α = 95%，不是 1−p 的 97%。'
+    },
+    {
+      q: '一組資料中，若平均數大於中位數，則這組資料的分布可能是下列哪一種？',
+      o: ['對稱分布', '負偏態分布', '正偏態分布', '無法判斷'],
+      a: 2,
+      src: '官方原題 · 學習指引 p.3-30 第 8 題',
+      e: '與第 6 題互為反向考法。正偏態分布資料的尾巴向右邊延伸，平均數被拉高，因此大於中位數。'
+    },
+    {
+      q: '下列哪一個敘述關於四分位距（IQR）是正確的？',
+      o: ['四分位距會受到極端值的影響', '四分位距代表資料中所有數據的分散程度', '四分位距是第三四分位數與第一四分位數的差', '四分位距與平均數一樣，容易受到極端值影響'],
+      a: 2,
+      src: '官方原題 · 學習指引 p.3-30 第 9 題',
+      e: '四分位距（IQR）是第三四分位數（Q3）與第一四分位數（Q1）的差，代表資料中間 50% 的數據範圍。'
+    },
+    {
+      q: '以下哪一種情況最適合用眾數來描述資料的集中趨勢？',
+      o: ['一組學生身高資料，呈現出常態分布', '一組產品銷售量資料，其中一種產品的銷量遠高於其他產品', '一組考試成績資料，大部分學生的分數集中在 80 分左右', '一組房屋價格資料，其中包含少數豪宅的極端高價'],
+      a: 1,
+      src: '官方原題 · 學習指引 p.3-30 第 10 題',
+      e: '眾數代表資料中出現頻率最高的數值。當一種產品的銷量遠高於其他產品時，這個銷量就是眾數，能最直接反映出最受歡迎的產品。（D）有極端值的情況應該用中位數。'
+    }
+  ]
+});
+</script>
+</body>
+</html>
