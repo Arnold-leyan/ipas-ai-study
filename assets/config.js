@@ -9,7 +9,7 @@
  * 留成空字串（''）時網站照常運作，同仁一樣看得到解析與分數，
  * 只是成績只留在自己的瀏覽器、不會回傳到試算表。
  */
-var GAS_WEB_APP_URL = '';
+var GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyzmWmZfI1ycxyeM3j0_kRbjht4v-qWODGGTwOkSu8z8HTqT-Jkh5GjmpvS9yXyBPs/exec';
 
 /* 本週資訊（顯示用） */
 var WEEK_INFO = {
