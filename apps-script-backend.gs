@@ -1,29 +1,56 @@
 /**
- * iPAS AI應用規劃師 考取衝刺班 — 後端記錄腳本（v2）
+ * iPAS AI應用規劃師 考取衝刺班 — 學習網站後端
  *
- * 這一版在原本的鑑別測驗後端上，多加了「每日測驗」的路由：
- *   - payload 沒有 type 或 type === 'diagnostic' → 寫入「測驗結果」（原本的鑑別測驗，行為不變）
- *   - payload 的 type === 'daily'                → 寫入「每日測驗結果」
+ * 這是一份「獨立」的後端，與鑑別測驗的那組 Apps Script 無關，
+ * 之後讀書會要新增的功能都往這裡加。
  *
- * 所以你可以直接把這份內容覆蓋回原本的 Apps Script 專案、部署新版本，
- * 鑑別測驗網站不用改任何東西，網址也不會變。
+ * 部署方式：綁在一份新的 Google 試算表上（擴充功能 → Apps Script），
+ * 部署為網頁應用程式，把網址貼到 assets/config.js。詳見 SETUP.md。
  *
- * 部署步驟詳見 SETUP.md。
+ * ─────────────────────────────────────────────
+ * 怎麼擴充：整份檔案只有 SPECS 需要動。
+ *
+ * 每一種要記錄的資料 = SPECS 裡的一個項目，包含三件事：
+ *   sheet   要寫到哪個工作表
+ *   header  第一列的欄位名稱
+ *   row     把送過來的 payload 轉成一列資料
+ *
+ * 前端送出時 payload 帶 type，後端就會自動找到對應的項目。
+ * 新增一種類型不需要改 doPost，只要在 SPECS 加一個項目、重新部署新版本。
+ * 檔案最下方有一個「打卡」的範例，需要時把註解拿掉就能用。
+ * ─────────────────────────────────────────────
  */
 
-var SHEET_DIAG = '測驗結果';
-var SHEET_DAILY = '每日測驗結果';
+var SPECS = {
 
-var HEADER_DIAG = [
-  '提交時間', '姓名', '總分(%)', '答對題數', '總題數',
-  '科目一得分', '科目一總題', '科目二得分', '科目二總題',
-  '建議分組', '待加強主題', '各主題正確率(JSON)'
-];
+  /* 每日測驗 —— 前端 assets/quiz.js 送出 */
+  daily: {
+    sheet: '每日測驗結果',
+    header: [
+      '提交時間', '姓名', '週次', '天數', '主題',
+      '得分(%)', '答對題數', '總題數', '答錯題號', '作答明細(JSON)'
+    ],
+    row: function (d) {
+      return [
+        new Date(),
+        d.name || '未具名',
+        d.week || '',
+        d.day ? 'Day ' + d.day : '',
+        d.dayTitle || '',
+        d.percent,
+        d.correct,
+        d.total,
+        d.wrongList || '（全對）',
+        JSON.stringify(d.detail || {})
+      ];
+    }
+  }
 
-var HEADER_DAILY = [
-  '提交時間', '姓名', '週次', '天數', '主題',
-  '得分(%)', '答對題數', '總題數', '答錯題號', '作答明細(JSON)'
-];
+};
+
+/* ══════════════════════════════════════════════
+   以下不用改
+   ══════════════════════════════════════════════ */
 
 function getOrCreateSheet_(name, header) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -39,38 +66,10 @@ function getOrCreateSheet_(name, header) {
   return sheet;
 }
 
-function appendDiagnostic_(data) {
-  var sheet = getOrCreateSheet_(SHEET_DIAG, HEADER_DIAG);
-  sheet.appendRow([
-    new Date(),
-    data.name || '未具名',
-    data.percent,
-    data.totalCorrect,
-    data.total,
-    data.subj1Correct,
-    data.subj1Total,
-    data.subj2Correct,
-    data.subj2Total,
-    data.group,
-    data.weakTopics || '',
-    JSON.stringify(data.topicDetail || {})
-  ]);
-}
-
-function appendDaily_(data) {
-  var sheet = getOrCreateSheet_(SHEET_DAILY, HEADER_DAILY);
-  sheet.appendRow([
-    new Date(),
-    data.name || '未具名',
-    data.week || 'W1',
-    'Day ' + data.day,
-    data.dayTitle || '',
-    data.percent,
-    data.correct,
-    data.total,
-    data.wrongList || '（全對）',
-    JSON.stringify(data.detail || {})
-  ]);
+function jsonOut_(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 function doPost(e) {
@@ -79,76 +78,84 @@ function doPost(e) {
     // 多位同仁可能同時交卷，appendRow() 會互撞；用鎖讓寫入排隊而不是失敗。
     lock.waitLock(15000);
 
-    var data = JSON.parse(e.postData.contents);
-
-    if (data.type === 'daily') {
-      appendDaily_(data);
-    } else {
-      appendDiagnostic_(data);
+    if (!e || !e.postData || !e.postData.contents) {
+      return jsonOut_({ status: 'error', message: 'no payload' });
     }
 
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: 'ok' }))
-      .setMimeType(ContentService.MimeType.JSON);
+    var data = JSON.parse(e.postData.contents);
+    var spec = SPECS[data.type || 'daily'];
+
+    if (!spec) {
+      return jsonOut_({ status: 'error', message: 'unknown type: ' + data.type });
+    }
+
+    getOrCreateSheet_(spec.sheet, spec.header).appendRow(spec.row(data));
+
+    return jsonOut_({ status: 'ok' });
   } catch (err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: 'error', message: String(err) }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return jsonOut_({ status: 'error', message: String(err) });
   } finally {
     lock.releaseLock();
   }
 }
 
+/**
+ * 健康檢查用。刻意「不」回傳任何同仁的成績——
+ * 這個網址是「所有人可存取」，回傳資料等於公開全班分數。
+ */
 function doGet(e) {
-  return ContentService
-    .createTextOutput(JSON.stringify({
-      status: 'ok',
-      message: 'iPAS 考取衝刺班後端運作中（支援 diagnostic / daily）'
-    }))
-    .setMimeType(ContentService.MimeType.JSON);
+  return jsonOut_({
+    status: 'ok',
+    message: 'iPAS 考取衝刺班學習網站後端運作中',
+    types: Object.keys(SPECS)
+  });
 }
 
-/**
- * 選用：在試算表選單加一個「每日測驗」→「產生每日達成率摘要」。
- * 會在「每日達成率」工作表列出每天有幾人作答、平均分數。
- */
+/* ── 試算表選單：每日達成率 ───────────────────── */
+
 function onOpen() {
   SpreadsheetApp.getUi()
-    .createMenu('每日測驗')
+    .createMenu('讀書會')
     .addItem('產生每日達成率摘要', 'buildDailySummary')
+    .addSeparator()
+    .addItem('測試後端是否正常', 'selfTest')
     .addToUi();
 }
 
 function buildDailySummary() {
+  var ui = SpreadsheetApp.getUi();
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var src = ss.getSheetByName(SHEET_DAILY);
+  var spec = SPECS.daily;
+  var src = ss.getSheetByName(spec.sheet);
+
   if (!src || src.getLastRow() < 2) {
-    SpreadsheetApp.getUi().alert('「每日測驗結果」還沒有資料。');
+    ui.alert('「' + spec.sheet + '」還沒有資料。');
     return;
   }
 
-  var rows = src.getRange(2, 1, src.getLastRow() - 1, HEADER_DAILY.length).getValues();
+  var rows = src.getRange(2, 1, src.getLastRow() - 1, spec.header.length).getValues();
   var stats = {};
 
   rows.forEach(function (r) {
-    var key = r[2] + ' ' + r[3];          // 週次 + 天數
+    var key = (r[2] || '?') + ' ' + (r[3] || '?');   // 週次 + 天數
     if (!stats[key]) {
-      stats[key] = { title: r[4], people: {}, sum: 0, count: 0 };
+      stats[key] = { title: r[4], people: {} };
     }
-    // 同一人重複作答只算最後一次
-    stats[key].people[r[1]] = r[5];
     stats[key].title = r[4];
+    stats[key].people[r[1]] = Number(r[5]);          // 同一人重複作答只留最後一次
   });
 
-  var out = [['週次/天數', '主題', '作答人數', '平均分數', '未達 70 分人數']];
+  var out = [['週次/天數', '主題', '作答人數', '平均分數', '未達 70 分人數', '未達 70 分名單']];
+
   Object.keys(stats).sort().forEach(function (key) {
     var s = stats[key];
-    var scores = Object.keys(s.people).map(function (n) { return Number(s.people[n]); });
+    var names = Object.keys(s.people);
+    var scores = names.map(function (n) { return s.people[n]; });
     var avg = scores.length
       ? Math.round(scores.reduce(function (a, b) { return a + b; }, 0) / scores.length)
       : 0;
-    var low = scores.filter(function (v) { return v < 70; }).length;
-    out.push([key, s.title, scores.length, avg, low]);
+    var low = names.filter(function (n) { return s.people[n] < 70; });
+    out.push([key, s.title, names.length, avg, low.length, low.join('、')]);
   });
 
   var dst = ss.getSheetByName('每日達成率');
@@ -159,5 +166,51 @@ function buildDailySummary() {
   dst.setFrozenRows(1);
   dst.autoResizeColumns(1, out[0].length);
 
-  SpreadsheetApp.getUi().alert('已更新「每日達成率」工作表。');
+  ui.alert('已更新「每日達成率」工作表。');
 }
+
+/**
+ * 從試算表選單直接模擬一次前端送出，確認寫入正常。
+ * 會寫入一列姓名為「（測試）」的資料，確認完請自行刪除該列。
+ */
+function selfTest() {
+  var fake = {
+    postData: {
+      contents: JSON.stringify({
+        type: 'daily',
+        name: '（測試）',
+        week: 'W1',
+        day: 1,
+        dayTitle: '後端連線測試',
+        percent: 100,
+        correct: 1,
+        total: 1,
+        wrongList: '',
+        detail: { Q1: 'A' }
+      })
+    }
+  };
+  var res = JSON.parse(doPost(fake).getContent());
+  SpreadsheetApp.getUi().alert(
+    res.status === 'ok'
+      ? '後端正常，已在「每日測驗結果」寫入一列測試資料（姓名為「（測試）」），確認後請自行刪除該列。'
+      : '後端有問題：' + res.message
+  );
+}
+
+/* ══════════════════════════════════════════════
+   擴充範例：週五打卡
+   之後想讓同仁直接在網站上打卡，把下面的註解拿掉，
+   加進上面的 SPECS 裡，重新部署新版本即可。
+
+  checkin: {
+    sheet: '週五打卡',
+    header: ['提交時間', '姓名', '週次', '學到的觀念', '易混淆題型', '下週想加強'],
+    row: function (d) {
+      return [new Date(), d.name || '未具名', d.week || '', d.learned || '', d.confused || '', d.next || ''];
+    }
+  }
+
+   前端送出時 payload 就寫：
+   { type: 'checkin', name: '王小明', week: 'W1', learned: '...', confused: '...', next: '...' }
+   ══════════════════════════════════════════════ */

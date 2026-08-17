@@ -1,13 +1,15 @@
 /* 全站設定 — 只有這個檔案需要改。
  *
- * GAS_WEB_APP_URL：Google Apps Script 部署後的「網頁應用程式」網址。
- * 下面預填的是鑑別測驗已在用的那一組。只要你把 apps-script-backend.gs
- * 的新版貼回同一個 Apps Script 專案並「部署新版本」，網址不會變，
- * 這裡就不用動。若你另外開了新專案，把新網址換上來即可。
+ * GAS_WEB_APP_URL：這個讀書會網站「自己的」Apps Script 網頁應用程式網址。
+ * 跟鑑別測驗那組是分開的兩份，不要混用。
  *
- * 留成空字串（''）的話，網站照常運作，只是不會回傳成績到試算表。
+ * 取得方式見 SETUP.md：開一份新試算表 → 貼上 apps-script-backend.gs
+ * → 部署為網頁應用程式 → 複製結尾是 /exec 的網址貼在下面。
+ *
+ * 留成空字串（''）時網站照常運作，同仁一樣看得到解析與分數，
+ * 只是成績只留在自己的瀏覽器、不會回傳到試算表。
  */
-var GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyCVc_xM8eai7HDLhAAwZvCJ-zKk2qYfFA-CfAlYjCJJY-iVZvB6myCgarjgvRkpfw/exec';
+var GAS_WEB_APP_URL = '';
 
 /* 本週資訊（顯示用） */
 var WEEK_INFO = {

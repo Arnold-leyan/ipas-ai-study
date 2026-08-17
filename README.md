@@ -32,7 +32,7 @@
 │   ├── style.css           共用樣式（深淺主題）
 │   ├── config.js           ★ 只有這個檔案需要改設定
 │   └── quiz.js             測驗引擎與後端回傳
-├── apps-script-backend.gs  Google Apps Script 後端（v2）
+├── apps-script-backend.gs  Google Apps Script 後端（獨立一份，與鑑別測驗分開）
 ├── SETUP.md                後端設定步驟
 └── .nojekyll               讓 GitHub Pages 不要跑 Jekyll
 ```
@@ -62,10 +62,19 @@ git push -u origin main
 
 ## 成績記錄
 
-見 [SETUP.md](SETUP.md)。簡單說：把 `apps-script-backend.gs` 貼回原本鑑別測驗的
-Apps Script 專案、部署新版本即可，網址不變、鑑別測驗網站不受影響。
+見 [SETUP.md](SETUP.md)。簡單說：開一份新的 Google 試算表 →
+貼上 `apps-script-backend.gs` → 部署為網頁應用程式 →
+把網址填進 `assets/config.js`。
 
-成績會寫進同一份試算表的「每日測驗結果」工作表。
+這是讀書會網站**自己的**後端，跟鑑別測驗那份 Apps Script 是分開的兩套，
+之後要加的功能都往這一份加。成績寫進「每日測驗結果」工作表。
+
+要擴充時只需要改 `apps-script-backend.gs` 最上面的 `SPECS`：
+每種要記錄的資料就是一個項目（寫到哪個工作表、欄位、怎麼轉成一列），
+新增類型不用改 `doPost`。檔案最下方附了「週五打卡」的現成範例。
+
+> 改完程式碼一定要「部署 → 管理部署作業 → 版本選新版本 → 部署」，
+> 只按 Ctrl+S 儲存不會生效。
 
 ## 下一週要加內容時
 
