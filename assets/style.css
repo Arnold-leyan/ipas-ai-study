@@ -30,32 +30,9 @@
   --body:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;
   --mono:ui-monospace,"SF Mono","Cascadia Mono",Consolas,"Courier New",monospace;
 }
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --primary:#F2A0B8;
-    --primary-deep:#F7BACC;
-    --accent:#F2B366;
-    --accent-deep:#F2B366;
-    --hl:#6E4A28;
-    --ground:#2A2124;
-    --surface:#362A2E;
-    --surface-2:#43343A;
-    --ink:#F4E6E0;
-    --muted:#C0A79E;
-    --rule:#523F46;
-    --good:#79C295;
-    --warn:#F0937A;
-    --shadow:0 1px 2px rgba(0,0,0,.28), 0 8px 22px rgba(0,0,0,.22);
-    --btn-fg:#2A2124;
-    --tick:#2A2124;
-    --mast-bg:linear-gradient(135deg,#412E36 0%,#382A31 55%,#43312E 100%);
-    --mast-fg:#F4E6E0;
-    --mast-dim:#C0A79E;
-    --mast-eyebrow:#F2B366;
-    --tag-bg:rgba(255,255,255,.07);
-    --tag-border:rgba(255,255,255,.14);
-  }
-}
+/* 預設一律淺色 —— 刻意不跟隨作業系統的深色模式。
+   同仁多半在手機上開，系統深色的人不少，但這份教材以淺色為主要設計，
+   深色只在使用者自己按右上角切換時才套用（選擇會記在 localStorage）。 */
 :root[data-theme="dark"]{
   --primary:#F2A0B8;
   --primary-deep:#F7BACC;

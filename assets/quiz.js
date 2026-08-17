@@ -36,18 +36,15 @@
     }
     var btn = document.querySelector('.theme-btn');
     if (!btn) return;
+    // 預設淺色，不跟隨系統深色設定；只有 data-theme="dark" 才是深色。
     function paint() {
-      var cur = document.documentElement.getAttribute('data-theme');
-      var isDark = cur === 'dark' ||
-        (!cur && global.matchMedia && global.matchMedia('(prefers-color-scheme: dark)').matches);
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       btn.textContent = isDark ? '☀' : '☾';
       btn.setAttribute('aria-label', isDark ? '切換為淺色主題' : '切換為深色主題');
     }
     paint();
     btn.addEventListener('click', function () {
-      var cur = document.documentElement.getAttribute('data-theme');
-      var isDark = cur === 'dark' ||
-        (!cur && global.matchMedia && global.matchMedia('(prefers-color-scheme: dark)').matches);
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       var next = isDark ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       lsSet(THEME_KEY, next);
