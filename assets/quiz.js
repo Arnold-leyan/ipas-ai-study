@@ -237,11 +237,16 @@
     var picked = new Array(total).fill(null);
     var graded = false;
 
+    function nameValue() {
+      return nameInput ? nameInput.value.trim() : '';
+    }
+
     var savedName = lsGet(NAME_KEY);
     if (savedName && nameInput) nameInput.value = savedName;
     if (nameInput) {
       nameInput.addEventListener('input', function () {
-        lsSet(NAME_KEY, nameInput.value.trim());
+        lsSet(NAME_KEY, nameValue());
+        refresh();
       });
     }
 
@@ -309,8 +314,18 @@
     function refresh() {
       if (graded) return;
       var n = answeredCount();
-      if (scoreEl) scoreEl.textContent = '已選 ' + n + ' / ' + total + ' 題';
-      if (submitBtn) submitBtn.disabled = n < total;
+      var hasName = nameValue().length > 0;
+
+      if (scoreEl) {
+        scoreEl.textContent = '已選 ' + n + ' / ' + total + ' 題' +
+          (hasName ? '' : '　·　請先填姓名');
+      }
+      if (submitBtn) submitBtn.disabled = n < total || !hasName;
+      // 題目都選完了卻還沒填姓名，把姓名欄標紅提醒
+      if (nameInput) {
+        if (!hasName && n === total) nameInput.classList.add('needed');
+        else nameInput.classList.remove('needed');
+      }
     }
 
     function reveal(answers, showPicked) {
@@ -355,7 +370,7 @@
         else wrong.push(i + 1);
       });
       var data = {
-        name: (nameInput ? nameInput.value.trim() : '') || '未具名',
+        name: nameValue() || '未具名',   // 送出鈕已擋空白，這裡只是保險
         day: cfg.day,
         dayTitle: cfg.dayTitle,
         correct: correct,
@@ -374,6 +389,14 @@
     if (submitBtn) {
       submitBtn.addEventListener('click', function () {
         if (answeredCount() < total) return;
+        if (!nameValue()) {
+          if (nameInput) {
+            nameInput.classList.add('needed');
+            nameInput.focus();
+            nameInput.scrollIntoView({ block: 'center' });
+          }
+          return;
+        }
         var data = grade();
         reveal(data.answers, true);
         showResult(data);

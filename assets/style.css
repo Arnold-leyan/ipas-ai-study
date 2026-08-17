@@ -202,6 +202,12 @@ input[type="text"]{
   background:var(--ground);border:1.5px solid var(--rule);border-radius:999px;padding:10px 16px;
 }
 input[type="text"]:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+input[type="text"].needed{border-color:var(--warn);background:var(--surface)}
+.req{
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;
+  color:var(--warn);border:1px solid var(--warn);border-radius:999px;
+  padding:1px 8px;margin-left:6px;vertical-align:2px;
+}
 .btn{
   font-family:var(--body);font-size:15px;font-weight:700;
   background:var(--primary);color:var(--btn-fg);border:1.5px solid var(--primary);
