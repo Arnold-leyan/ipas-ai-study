@@ -133,8 +133,93 @@
       });
   }
 
+  /* ---------- 帶去自己的 AI 繼續問 ---------- */
+
+  function buildAiPrompt(cfg) {
+    var ai = cfg.ai || {};
+    var p = [
+      '我正在準備台灣 iPAS「初級 AI 應用規劃師」能力鑑定，科目一「人工智慧基礎概論」。',
+      '',
+      '今天讀的範圍是官方學習指引 ' + (ai.pages || '') + '，主題是：',
+      ai.topics || cfg.dayTitle,
+      '',
+      '請用繁體中文，幫我做這四件事：',
+      '',
+      '1. 用白話把上面的主題重講一次，每個關鍵名詞都給一個台灣職場情境的例子。',
+      '2. 整理這個範圍最容易混淆的名詞對照表，說明怎麼一眼分辨。',
+      '3. 出 5 題選擇題（四選一）考我。先只給題目，等我回答完再一題一題講解。',
+      '4. 給我 2-3 個好記的口訣或記憶法。',
+      '',
+      '注意：請以官方學習指引的定義為準。如果你不確定某個說法是否符合 iPAS 的教材，',
+      '請直接說「這點請回查指引」，不要自己編。'
+    ];
+
+    var res = getDayResult(cfg.day);
+    if (res && res.answers && res.answers.length === cfg.questions.length) {
+      var wrong = [];
+      res.answers.forEach(function (pick, i) {
+        var q = cfg.questions[i];
+        if (pick !== q.a) {
+          wrong.push('- 第 ' + (i + 1) + ' 題：' + q.q +
+            '（我選了 ' + (pick === null ? '未作答' : KEYS[pick]) + '，正確答案是 ' + KEYS[q.a] + '）');
+        }
+      });
+      if (wrong.length) {
+        p.push('');
+        p.push('另外，我剛做完今天的自我測驗，' + res.total + ' 題中答錯了 ' + wrong.length + ' 題：');
+        p.push('');
+        p.push.apply(p, wrong);
+        p.push('');
+        p.push('請針對上面這幾題背後的觀念，多花一點篇幅解釋我為什麼會選錯。');
+      } else {
+        p.push('');
+        p.push('補充：我剛做完今天的自我測驗 ' + res.total + ' 題全對，請把題目出難一點。');
+      }
+    }
+
+    return p.join('\n');
+  }
+
+  function initAiCopy(cfg) {
+    var btn = document.getElementById('copy-ai-btn');
+    if (!btn) return;
+    var status = document.getElementById('copy-status');
+    var fallback = document.getElementById('ai-fallback');
+
+    function say(msg, cls) {
+      if (!status) return;
+      status.textContent = msg;
+      status.className = 'copy-status ' + (cls || '');
+    }
+
+    function showFallback(text) {
+      if (!fallback) return;
+      fallback.value = text;
+      fallback.hidden = false;
+      fallback.focus();
+      fallback.select();
+      say('這個瀏覽器不給自動複製，請長按下面的文字全選後複製。', 'warn');
+    }
+
+    btn.addEventListener('click', function () {
+      var text = buildAiPrompt(cfg);
+      if (global.navigator && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          say('✓ 已複製！貼到 ChatGPT／Claude／Gemini 都可以', 'ok');
+          if (fallback) fallback.hidden = true;
+        }).catch(function () {
+          showFallback(text);
+        });
+      } else {
+        showFallback(text);
+      }
+    });
+  }
+
   /* ---------- 每日測驗 ---------- */
   function initQuiz(cfg) {
+    initAiCopy(cfg);
+
     var list = document.getElementById('quiz-list');
     if (!list) return;
 
@@ -338,7 +423,8 @@
     markNav: markNav,
     paintDayCards: paintDayCards,
     initQuiz: initQuiz,
-    getDayResult: getDayResult
+    getDayResult: getDayResult,
+    buildAiPrompt: buildAiPrompt
   };
 
   document.addEventListener('DOMContentLoaded', function () {

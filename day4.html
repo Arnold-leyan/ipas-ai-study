@@ -127,6 +127,14 @@
     <p class="sync idle" id="sync-status"></p>
   </div>
 
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對今天的範圍再教你一次、多出幾題考你。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製今天的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
   <div class="pager">
     <a href="day3.html">← Day 3：資料分析與演算法</a>
     <a href="day5.html">Day 5：統計與假設檢定 →</a>
@@ -145,6 +153,10 @@
 Study.initQuiz({
   day: 4,
   dayTitle: '機器學習、深度學習與生成式 AI',
+  ai: {
+    pages: 'p.3-12～3-19',
+    topics: '機器學習的三種學習方式（監督式、非監督式、強化學習）、深度學習三大模型（CNN、RNN 與 LSTM／GRU、GAN）、生成式 AI 的運作原理與訓練／微調兩階段'
+  },
   questions: [
     {
       q: '下列何者最適合訓練電腦下圍棋、自動駕駛等動態重複地互動的問題？',

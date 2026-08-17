@@ -111,6 +111,14 @@
     <p class="sync idle" id="sync-status"></p>
   </div>
 
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對今天的範圍再教你一次、多出幾題考你。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製今天的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
   <div class="pager">
     <a href="index.html">← 回總覽</a>
     <a href="day2.html">Day 2：AI 三層架構與資料處理 →</a>
@@ -129,6 +137,10 @@
 Study.initQuiz({
   day: 1,
   dayTitle: 'AI 定義、分類與應用領域',
+  ai: {
+    pages: 'p.3-1～3-2',
+    topics: 'AI 的定義與三種分類（分析型、預測型、生成型）、五大應用領域（醫療保健、金融、製造業、交通、娛樂）、AI 治理的透明性與國際合作'
+  },
   questions: [
     {
       q: '關於 AI 的定義，下列敘述何者較為正確？',
