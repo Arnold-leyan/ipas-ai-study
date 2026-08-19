@@ -49,6 +49,35 @@ var SPECS = {
 };
 
 /* ══════════════════════════════════════════════
+   統計設定 —— 改這裡就好
+   ══════════════════════════════════════════════ */
+
+/* 填答時用的暱稱 → 本名。同仁換名字填答時加在這裡。 */
+var NAME_MAP = {
+  'Fanny': '陳詩婷',
+  'Emily': '黃敬淳',
+  '派瑞斯': '黃靖雯'
+};
+
+/* 不列入統計的填答者（家長、下一梯次、測試資料等） */
+var IGNORE = ['呂水鈺', '連于萱', '張淑娟', '（測試）', '（連線測試，請刪除）'];
+
+/* 同一人同一天重複作答時保留哪一次：'first' 最早、'last' 最晚 */
+var KEEP = 'first';
+
+/* 本梯次名單，用來算未完成名單 */
+var ROSTER = [
+  '邱璽', '李建德', '徐佩鈴', '洪益祥', '黃靖雯', '蘇詠哲', '韋懿慈', '鄧名媛',
+  '陳詩婷', '黃湘雰', '黃敬淳', '呂佳柔', '施怡如', '陳宜君', '楊昱峰', '陳冠汝',
+  '溫增宜', '林俊宏', '張靖欣', '黃偉晉', '邱品潔', '張家祥', '邱珞', '陳信宏'
+];
+
+function normName_(n) {
+  n = String(n || '').trim();
+  return NAME_MAP[n] || n;
+}
+
+/* ══════════════════════════════════════════════
    以下不用改
    ══════════════════════════════════════════════ */
 
@@ -135,17 +164,28 @@ function buildDailySummary() {
 
   var rows = src.getRange(2, 1, src.getLastRow() - 1, spec.header.length).getValues();
   var stats = {};
+  var ignored = 0, deduped = 0;
 
+  // 列序即送出順序，所以 first 就是最早、last 就是最晚
   rows.forEach(function (r) {
-    var key = (r[2] || '?') + ' ' + (r[3] || '?');   // 週次 + 天數
-    if (!stats[key]) {
-      stats[key] = { title: r[4], people: {} };
-    }
+    var name = normName_(r[1]);
+    if (IGNORE.indexOf(name) > -1) { ignored++; return; }
+
+    var key = r[2] + ' ' + r[3];
+    if (!stats[key]) stats[key] = { title: r[4], people: {} };
     stats[key].title = r[4];
-    stats[key].people[r[1]] = Number(r[5]);          // 同一人重複作答只留最後一次
+
+    if (stats[key].people[name]) {
+      deduped++;
+      if (KEEP === 'first') return;   // 已有較早的，跳過
+    }
+    stats[key].people[name] = Number(r[5]);
   });
 
-  var out = [['週次/天數', '主題', '作答人數', '平均分數', '未達 70 分人數', '未達 70 分名單']];
+  var out = [[
+    '週次/天數', '主題', '作答人數', '平均分數',
+    '未達 70 分人數', '未達 70 分名單', '尚未作答人數', '尚未作答名單'
+  ]];
 
   Object.keys(stats).sort().forEach(function (key) {
     var s = stats[key];
@@ -155,18 +195,29 @@ function buildDailySummary() {
       ? Math.round(scores.reduce(function (a, b) { return a + b; }, 0) / scores.length)
       : 0;
     var low = names.filter(function (n) { return s.people[n] < 70; });
-    out.push([key, s.title, names.length, avg, low.length, low.join('、')]);
+    var todo = ROSTER.filter(function (n) { return names.indexOf(n) < 0; });
+    out.push([key, s.title, names.length, avg, low.length, low.join('、'), todo.length, todo.join('、')]);
   });
+
+  out.push([]);
+  out.push(['說明', '重複作答取' + (KEEP === 'first' ? '最早' : '最晚') + '一次，已忽略 ' +
+    ignored + ' 筆非本梯次紀錄、合併 ' + deduped + ' 筆重複作答；名單共 ' + ROSTER.length + ' 人']);
 
   var dst = ss.getSheetByName('每日達成率');
   if (!dst) dst = ss.insertSheet('每日達成率');
   dst.clear();
-  dst.getRange(1, 1, out.length, out[0].length).setValues(out);
+  dst.getRange(1, 1, out.length, out[0].length).setValues(
+    out.map(function (r) {
+      while (r.length < out[0].length) r.push('');
+      return r;
+    })
+  );
   dst.getRange(1, 1, 1, out[0].length).setFontWeight('bold');
   dst.setFrozenRows(1);
   dst.autoResizeColumns(1, out[0].length);
 
-  ui.alert('已更新「每日達成率」工作表。');
+  ui.alert('已更新「每日達成率」工作表。忽略 ' + ignored + ' 筆非本梯次紀錄，合併 ' +
+    deduped + ' 筆重複作答（取' + (KEEP === 'first' ? '最早' : '最晚') + '）。');
 }
 
 /**
