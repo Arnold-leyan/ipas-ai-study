@@ -147,6 +147,8 @@ function onOpen() {
     .createMenu('讀書會')
     .addItem('產生每日達成率摘要', 'buildDailySummary')
     .addSeparator()
+    .addItem('清除重複作答（保留最早一次）', 'dedupeDaily')
+    .addSeparator()
     .addItem('測試後端是否正常', 'selfTest')
     .addToUi();
 }
@@ -218,6 +220,67 @@ function buildDailySummary() {
 
   ui.alert('已更新「每日達成率」工作表。忽略 ' + ignored + ' 筆非本梯次紀錄，合併 ' +
     deduped + ' 筆重複作答（取' + (KEEP === 'first' ? '最早' : '最晚') + '）。');
+}
+
+/**
+ * 清除「每日測驗結果」中同一人同一天的重複作答，只保留最早那一次。
+ * 保留最早＝那是還沒看過解析時作答的結果，才有鑑別意義。
+ *
+ * 刪除前會先把要移除的列完整複製到「重複作答備份」工作表，不會真的消失。
+ */
+function dedupeDaily() {
+  var ui = SpreadsheetApp.getUi();
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var spec = SPECS.daily;
+  var sheet = ss.getSheetByName(spec.sheet);
+
+  if (!sheet || sheet.getLastRow() < 2) {
+    ui.alert('「' + spec.sheet + '」還沒有資料。');
+    return;
+  }
+
+  var n = spec.header.length;
+  var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, n).getValues();
+
+  // 列序即送出順序：第一次出現的就是最早那次
+  var seen = {}, toDelete = [];
+  rows.forEach(function (r, i) {
+    var key = normName_(r[1]) + '|' + r[2] + '|' + r[3];
+    if (seen[key]) toDelete.push({ sheetRow: i + 2, data: r });
+    else seen[key] = true;
+  });
+
+  if (!toDelete.length) {
+    ui.alert('沒有重複作答，不需要清理。');
+    return;
+  }
+
+  var resp = ui.alert(
+    '清除重複作答',
+    '找到 ' + toDelete.length + ' 筆重複作答（同一人同一天做第二次以後）。' +
+    '\n\n將保留每個人每天最早的那一次，其餘移到「重複作答備份」工作表後刪除。' +
+    '\n\n要繼續嗎？',
+    ui.ButtonSet.YES_NO);
+  if (resp !== ui.Button.YES) return;
+
+  // 先備份
+  var bak = ss.getSheetByName('重複作答備份');
+  if (!bak) {
+    bak = ss.insertSheet('重複作答備份');
+    bak.appendRow(['刪除時間'].concat(spec.header));
+    bak.getRange(1, 1, 1, n + 1).setFontWeight('bold');
+    bak.setFrozenRows(1);
+  }
+  var stamp = new Date();
+  bak.getRange(bak.getLastRow() + 1, 1, toDelete.length, n + 1)
+     .setValues(toDelete.map(function (d) { return [stamp].concat(d.data); }));
+
+  // 由下往上刪，列號才不會位移
+  toDelete.slice().sort(function (a, b) { return b.sheetRow - a.sheetRow; })
+    .forEach(function (d) { sheet.deleteRow(d.sheetRow); });
+
+  ui.alert('完成：已刪除 ' + toDelete.length + ' 筆重複作答，備份在「重複作答備份」工作表。' +
+    '目前剩下 ' + (sheet.getLastRow() - 1) + ' 筆紀錄。');
 }
 
 /**
