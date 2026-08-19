@@ -137,8 +137,17 @@
 
   function buildAiPrompt(cfg) {
     var ai = cfg.ai || {};
+    var base = global.SITE_BASE || (location.origin + location.pathname.replace(/[^/]*$/, ''));
+    var pageUrl = base + 'day' + cfg.day + '.html';
+
     var p = [
       '我正在準備台灣 iPAS「初級 AI 應用規劃師」能力鑑定，科目一「人工智慧基礎概論」。',
+      '',
+      '今天的教材與測驗題目都在這個網頁：',
+      pageUrl,
+      '',
+      '如果你可以開啟網址，請先讀過整頁內容（包含表格、補充說明與測驗題目的選項）再回答；',
+      '如果你無法開啟網址，就依照下面的主題描述回答，並在開頭告訴我你沒讀到網頁。',
       '',
       '今天讀的範圍是官方學習指引 ' + (ai.pages || '') + '，主題是：',
       ai.topics || cfg.dayTitle,
@@ -156,18 +165,25 @@
 
     var res = getDayResult(cfg.day);
     if (res && res.answers && res.answers.length === cfg.questions.length) {
-      var wrong = [];
+      var wrong = [], wrongCount = 0;
       res.answers.forEach(function (pick, i) {
         var q = cfg.questions[i];
         if (pick !== q.a) {
-          wrong.push('- 第 ' + (i + 1) + ' 題：' + q.q +
-            '（我選了 ' + (pick === null ? '未作答' : KEYS[pick]) + '，正確答案是 ' + KEYS[q.a] + '）');
+          var mine = pick === null
+            ? '未作答'
+            : KEYS[pick] + ' ' + q.o[pick];
+          wrongCount++;
+          wrong.push('- 第 ' + (i + 1) + ' 題：' + q.q);
+          wrong.push('  我選了：' + mine);
+          wrong.push('  正確答案：' + KEYS[q.a] + ' ' + q.o[q.a]);
+          wrong.push('');
         }
       });
-      if (wrong.length) {
+      if (wrongCount) {
         p.push('');
-        p.push('另外，我剛做完今天的自我測驗，' + res.total + ' 題中答錯了 ' + wrong.length + ' 題：');
+        p.push('另外，我剛做完今天的自我測驗，' + res.total + ' 題中答錯了 ' + wrongCount + ' 題：');
         p.push('');
+        if (wrong[wrong.length - 1] === '') wrong.pop();
         p.push.apply(p, wrong);
         p.push('');
         p.push('請針對上面這幾題背後的觀念，多花一點篇幅解釋我為什麼會選錯。');

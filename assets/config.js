@@ -11,6 +11,13 @@
  */
 var GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyzmWmZfI1ycxyeM3j0_kRbjht4v-qWODGGTwOkSu8z8HTqT-Jkh5GjmpvS9yXyBPs/exec';
 
+
+/* 網站的公開網址，結尾要有斜線。
+ * 用在「複製 AI 提問」——提問裡會附上當天頁面的網址，
+ * 讓同仁的 AI 可以直接讀到題目與選項。
+ * 就算同仁是從本機或其他地方開網頁，附的也會是這個公開網址。 */
+var SITE_BASE = 'https://arnold-leyan.github.io/ipas-ai-study/';
+
 /* 本週資訊（顯示用） */
 var WEEK_INFO = {
   week: 'W1',
