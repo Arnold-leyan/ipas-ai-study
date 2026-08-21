@@ -63,23 +63,29 @@
   /* ---------- 首頁的每日卡片狀態 ---------- */
   function paintDayCards() {
     var cards = document.querySelectorAll('.daycard[data-day]');
+    var doneCount = 0, totalDays = 0;
     Array.prototype.forEach.call(cards, function (card) {
-      var res = getDayResult(card.getAttribute('data-day'));
+      var d = card.getAttribute('data-day');
+      var res = getDayResult(d);
       var badge = card.querySelector('.badge');
-      if (!badge) return;
-      if (res) {
-        badge.textContent = '已完成 ' + res.percent + '%';
-        badge.classList.add('ok');
-      } else {
-        badge.textContent = '未作答';
-        badge.classList.remove('ok');
+      if (badge) {
+        if (res) {
+          badge.textContent = '已完成 ' + res.percent + '%';
+          badge.classList.add('ok');
+        } else {
+          badge.textContent = '未作答';
+          badge.classList.remove('ok');
+        }
+      }
+      // 只有數字 day（不是 'w1test' 這種總測驗）才算進本週五天的進度。
+      if (/^\d+$/.test(d)) {
+        totalDays++;
+        if (res) doneCount++;
       }
     });
-    var doneCount = 0;
-    for (var i = 1; i <= 5; i++) { if (getDayResult(i)) doneCount++; }
     var prog = document.getElementById('week-progress');
-    if (prog) {
-      prog.textContent = '本週進度 ' + doneCount + ' / 5 天';
+    if (prog && totalDays) {
+      prog.textContent = '本週進度 ' + doneCount + ' / ' + totalDays + ' 天';
     }
   }
 
@@ -105,7 +111,7 @@
     var payload = {
       type: 'daily',
       name: data.name || '未具名',
-      week: (global.WEEK_INFO && global.WEEK_INFO.week) || 'W1',
+      week: data.week || (global.WEEK_INFO && global.WEEK_INFO.week) || 'W1',
       day: data.day,
       dayLabel: data.dayLabel || '',   // 有值時後端直接用它當「天數」欄
       dayTitle: data.dayTitle,
@@ -144,8 +150,9 @@
     // 每日頁講「今天」，總測驗講「這一週」。
     var when = cfg.scopeWord || '今天';
 
+    var subject = cfg.subject || '科目一「人工智慧基礎概論」';
     var p = [
-      '我正在準備台灣 iPAS「初級 AI 應用規劃師」能力鑑定，科目一「人工智慧基礎概論」。',
+      '我正在準備台灣 iPAS「初級 AI 應用規劃師」能力鑑定，' + subject + '。',
       '',
       when + '的教材在這個網頁：',
       pageUrl,
@@ -393,6 +400,7 @@
       });
       var data = {
         name: nameValue() || '未具名',   // 送出鈕已擋空白，這裡只是保險
+        week: cfg.week || '',
         day: cfg.day,
         dayLabel: cfg.dayLabel || '',
         dayTitle: cfg.dayTitle,
@@ -464,11 +472,98 @@
     }
   }
 
+  /* ---------- 週總覽頁：輸入姓名，向後端查這個人的完成進度 ---------- */
+  function initWeekLookup() {
+    var bar = document.getElementById('lookup-bar');
+    if (!bar) return;
+
+    var input = document.getElementById('lookup-name');
+    var btn = document.getElementById('lookup-btn');
+    var statusEl = document.getElementById('lookup-status');
+
+    function say(text, cls) {
+      if (!statusEl) return;
+      statusEl.textContent = text;
+      statusEl.className = 'sync ' + (cls || 'idle');
+    }
+
+    // 後端有資料的天數才升級成「已完成」，沒有的天數維持 paintDayCards() 已經畫好的狀態
+    // （本機 localStorage 沒回傳成功時還是能看到自己剛做完的那天），不會被查詢結果打回「未作答」。
+    function applyResult(days) {
+      var cards = document.querySelectorAll('.daycard[data-day]');
+      var doneCount = 0, totalDays = 0;
+      Array.prototype.forEach.call(cards, function (card) {
+        var d = card.getAttribute('data-day');
+        var isNumberDay = /^\d+$/.test(d);
+        if (isNumberDay) totalDays++;
+        var hit = days[d];
+        if (hit) {
+          var badge = card.querySelector('.badge');
+          if (badge) {
+            badge.textContent = '已完成 ' + hit.percent + '%';
+            badge.classList.add('ok');
+          }
+          if (isNumberDay) doneCount++;
+        } else if (isNumberDay && getDayResult(d)) {
+          doneCount++;
+        }
+      });
+      var prog = document.getElementById('week-progress');
+      if (prog && totalDays) prog.textContent = '本週進度 ' + doneCount + ' / ' + totalDays + ' 天';
+    }
+
+    function runQuery(name) {
+      var url = global.GAS_WEB_APP_URL;
+      if (!url) { say('本站尚未啟用自動記錄，無法查詢。', 'idle'); return; }
+      say('查詢中…', 'idle');
+      fetch(url + '?name=' + encodeURIComponent(name))
+        .then(function (res) { return res.json(); })
+        .then(function (res) {
+          if (!res || res.status !== 'ok') throw new Error('bad response');
+          if (!Object.keys(res.days || {}).length) {
+            say('查無「' + res.name + '」的作答紀錄——姓名打法不同的話可以換暱稱試試，或者還沒開始作答。', 'warn');
+            return;
+          }
+          applyResult(res.days);
+          say('✓ 已依「' + res.name + '」的作答紀錄更新完成狀態', 'ok');
+        })
+        .catch(function () {
+          say('⚠ 查詢失敗，可能是網路問題，稍後再試一次。', 'warn');
+        });
+    }
+
+    if (btn) {
+      btn.addEventListener('click', function () {
+        var name = input ? input.value.trim() : '';
+        if (!name) {
+          if (input) { input.classList.add('needed'); input.focus(); }
+          return;
+        }
+        if (input) input.classList.remove('needed');
+        lsSet(NAME_KEY, name);
+        runQuery(name);
+      });
+    }
+    if (input) {
+      input.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter') { ev.preventDefault(); if (btn) btn.click(); }
+      });
+    }
+
+    // 之前在某一天測驗頁填過姓名的話，這裡自動帶入並直接查一次，不用重打。
+    var saved = lsGet(NAME_KEY);
+    if (saved) {
+      if (input) input.value = saved;
+      runQuery(saved);
+    }
+  }
+
   global.Study = {
     initTheme: initTheme,
     markNav: markNav,
     paintDayCards: paintDayCards,
     initQuiz: initQuiz,
+    initWeekLookup: initWeekLookup,
     getDayResult: getDayResult,
     buildAiPrompt: buildAiPrompt
   };

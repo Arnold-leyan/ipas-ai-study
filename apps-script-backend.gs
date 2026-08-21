@@ -134,15 +134,54 @@ function doPost(e) {
 }
 
 /**
- * 健康檢查用。刻意「不」回傳任何同仁的成績——
- * 這個網址是「所有人可存取」，回傳資料等於公開全班分數。
+ * 沒帶 name 參數時是健康檢查，不回傳任何同仁的成績。
+ * 帶了 name 參數時，回傳「這個人自己」每一天的完成狀態（給網站的登入/查詢進度功能用）——
+ * 只回傳查詢者自己那筆，不會一次吐出全班成績。
+ * 這個網址仍是「所有人可存取」，只要知道／猜到姓名就能查到那個人的完成度，
+ * 這是刻意的取捨（跟送出測驗時姓名沒有身分驗證是同一個道理），不是拿來放高敏感資料的地方。
  */
 function doGet(e) {
+  var name = e && e.parameter && e.parameter.name;
+  if (name) return queryStatus_(name);
+
   return jsonOut_({
     status: 'ok',
     message: 'iPAS 考取衝刺班學習網站後端運作中',
     types: Object.keys(SPECS)
   });
+}
+
+/**
+ * 依姓名（含暱稱，會透過 NAME_MAP 轉換成本名）查這個人每一天的完成狀態。
+ * 同一天重複作答時，取試算表裡「最後一次」送出的那筆。
+ *
+ * 回傳格式：{ status:'ok', name:'本名', days:{ '6':{percent,dayTitle,week}, 'w2test':{...} } }
+ * key 是數字字串時對應每日頁的 data-day；'w1test'/'w2test' 對應各週總測驗。
+ */
+function queryStatus_(rawName) {
+  var name = normName_(rawName);
+  var spec = SPECS.daily;
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(spec.sheet);
+  var days = {};
+
+  if (sheet && sheet.getLastRow() >= 2) {
+    var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, spec.header.length).getValues();
+    rows.forEach(function (r) {
+      if (normName_(r[1]) !== name) return;
+
+      var week = String(r[2] || '');
+      var label = String(r[3] || '');
+      var dayMatch = label.match(/^Day\s+(\d+)$/);
+      var key = dayMatch ? dayMatch[1] : (/總測驗/.test(label) && week ? week.toLowerCase() + 'test' : null);
+      if (!key) return;
+
+      // 列序即送出順序，後面的列會覆蓋前面的，等於自動取最後一次作答。
+      days[key] = { percent: Number(r[5]), dayTitle: String(r[4] || ''), week: week };
+    });
+  }
+
+  return jsonOut_({ status: 'ok', name: name, days: days });
 }
 
 /* ── 試算表選單：每日達成率 ───────────────────── */

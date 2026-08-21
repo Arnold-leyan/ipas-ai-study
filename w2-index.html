@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W2 No Code／Low Code 與生成式 AI 應用 — iPAS 考取衝刺班</title>
+<meta name="description" content="iPAS 初級 AI 應用規劃師 考取衝刺班 第二週學習頁：學習指引科目二 p.3-1～3-15，每天一頁、每天一份小測驗。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">iPAS 初級 AI 應用規劃師 · 考取衝刺班</p>
+        <h1>第二週：No Code／Low Code 與生成式 AI 應用</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>STEP 1 日常目標第 2 週，換成科目二「生成式 AI 應用與規劃」。每天 20–30 分鐘：讀一小節、做當天的小測驗。五天讀完後有一份 <b>W2 總測驗</b>（20 題，涵蓋整週）。</p>
+    <div class="mast-meta">
+      <span class="tag">8/24 – 8/28</span>
+      <span class="tag">科目二 p.3-1 ～ 3-15</span>
+      <span class="tag" id="week-progress">本週進度 0 / 5 天</span>
+      <a class="tag" href="index.html">📚 課程首頁</a>
+      <a class="tag" href="w1-index.html">← 第一週</a>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w2-index.html" aria-current="page">總覽</a></li>
+    <li><a href="day6.html" data-day="6">Day 1</a></li>
+    <li><a href="day7.html" data-day="7">Day 2</a></li>
+    <li><a href="day8.html" data-day="8">Day 3</a></li>
+    <li><a href="day9.html" data-day="9">Day 4</a></li>
+    <li><a href="day10.html" data-day="10">Day 5</a></li>
+    <li><a href="w2-test.html" data-day="w2test">總測驗</a></li>
+    <li><a href="#confuse">易混淆對照</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<div class="namebar" id="lookup-bar">
+  <label for="lookup-name">輸入姓名，查你已經完成哪幾天</label>
+  <p class="hint">跟平常測驗填的姓名一致就好，暱稱也可以（例如 Fanny、Emily、派瑞斯）。之前填過的話這裡會自動帶入。換裝置、換瀏覽器也查得到，因為是直接查後端試算表。</p>
+  <div class="namerow">
+    <input type="text" id="lookup-name" placeholder="例：王小明" autocomplete="name">
+    <button type="button" class="btn" id="lookup-btn">查詢進度</button>
+  </div>
+  <p class="sync idle" id="lookup-status"></p>
+</div>
+
+<section id="days">
+  <h2>本週五天</h2>
+  <p class="lede">每天一頁，各附 6 題小測驗（Day 5 是 10 題）。五天做完再做最後那份 20 題總測驗。作答完會自動回傳成績，召集人週日彙整。</p>
+
+  <div class="daygrid">
+    <a class="daycard" href="day6.html" data-day="6">
+      <div class="row">
+        <span class="dnum">DAY 1 · 8/24（一）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">No Code、Low Code 是什麼？跟生成式 AI 怎麼結合</span></div>
+      <div class="dsub">科目二 p.3-1～3-2 ｜ No Code／Low Code 定義、生成式 AI 結合的 6 種方式　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day7.html" data-day="7">
+      <div class="row">
+        <span class="dnum">DAY 2 · 8/25（二）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">生成式 AI 在各行各業的應用</span></div>
+      <div class="dsub">科目二 p.3-2～3-4 ｜ 醫療、製造、金融、零售、教育、客服六大領域實例　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day8.html" data-day="8">
+      <div class="row">
+        <span class="dnum">DAY 3 · 8/26（三）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">怎麼選平台？結合生成式 AI 又會遇到什麼問題</span></div>
+      <div class="dsub">科目二 p.3-4～3-7 ｜ 平台選擇 6 因素、結合挑戰與解方　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day9.html" data-day="9">
+      <div class="row">
+        <span class="dnum">DAY 4 · 8/27（四）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">No Code / Low Code 的市場價值與未來趨勢</span></div>
+      <div class="dsub">科目二 p.3-8～3-10 ｜ 市場價值三面向、AI 發展趨勢　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day10.html" data-day="10">
+      <div class="row">
+        <span class="dnum">DAY 5 · 8/28（五）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">對 AI 民主化的影響</span></div>
+      <div class="dsub">科目二 p.3-10～3-15 ｜ AI 民主化定義、5 項影響、伴隨的挑戰　<b>10 題</b></div>
+    </a>
+
+    <a class="daycard" href="w2-test.html" data-day="w2test">
+      <div class="row">
+        <span class="dnum">W2 總測驗 · 五天讀完後做</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">W2 總測驗（Day 1～Day 5）</span></div>
+      <div class="dsub">科目二 p.3-1～3-15 ｜ 集中在這週最容易搞混的觀念，做完附完整解析　<b>20 題</b></div>
+    </a>
+  </div>
+
+  <div class="note">
+    <span class="lbl">為什麼這週排這個主題</span>
+    上週把科目一「人工智慧基礎概論」收尾，這週開始科目二「生成式AI應用與規劃」的第一節：
+    No Code / Low Code 平台如何讓更多人用上生成式 AI。內容比上週單純，重點在把六大應用領域、
+    平台選擇因素、AI 民主化這幾組清單背熟，考試常出「下列何者不是」這種題型。
+  </div>
+</section>
+
+<section id="confuse">
+  <h2>本週易混淆對照</h2>
+  <p class="lede">這幾組是本週最容易互相搞混的，也是 W2 總測驗最愛考的地方。考前掃一遍就好。</p>
+
+  <div class="tw"><table>
+    <tr><th>容易搞混的</th><th>分辨方式</th><th>出處</th></tr>
+    <tr><td>No Code vs Low Code</td><td>差在<b>要不要寫程式碼、寫多少</b>，不是有沒有介面（兩者都有視覺化介面）</td><td>Day 1</td></tr>
+    <tr><td>TCO vs ROI</td><td>TCO 算<b>投入</b>（購買維護培訓成本）；ROI 算<b>產出</b>（效益回報）</td><td>Day 3</td></tr>
+    <tr><td>降低技術門檻 vs 擴大 AI 可訪問性</td><td>前者解決「<b>會不會用</b>」（直觀界面）；後者解決「<b>用不用得起</b>」（成本降低）</td><td>Day 5</td></tr>
+    <tr><td>市場發展與效益 vs 未來發展方向與潛力</td><td>前者講<b>現在已達成</b>的成果；後者講<b>接下來要往哪走</b></td><td>Day 4</td></tr>
+    <tr><td>病歷自動生成 vs 自動化合規監管</td><td>前者是<b>醫療保健</b>；後者是<b>金融業</b>，別跨領域挪用</td><td>Day 2</td></tr>
+    <tr><td>個人化行銷 vs 顧客體驗優化（都在零售業）</td><td>前者著重<b>生成行銷內容</b>；後者著重<b>購物建議與產品推薦</b></td><td>Day 2</td></tr>
+    <tr><td>虛擬智慧客服（客服） vs 顧客體驗優化（零售）</td><td>前者是<b>對話與回應</b>；後者是<b>購物推薦</b>，領域不同</td><td>Day 2</td></tr>
+    <tr><td>AI 驅動的 UI/UX 設計 vs 模板設計優化</td><td>前者是<b>從文字描述直接生成</b>設計方案；後者是 AI <b>提供建議</b>、範圍較籠統</td><td>Day 1</td></tr>
+    <tr><td>4 項挑戰 vs 克服挑戰的 4 大面向</td><td>不是一對一配對，看情境描述的<b>做法</b>判斷屬於哪個面向</td><td>Day 3</td></tr>
+    <tr><td>AI 民主化 vs No Code/Low Code 平台</td><td>民主化是<b>目標</b>（更多人受益於 AI）；平台是達成目標的<b>工具</b></td><td>Day 5</td></tr>
+  </table></div>
+</section>
+
+<footer>
+  <p><b>本週收尾，接下來兩件事：</b></p>
+  <div class="checkin">
+    ① <b>W2 總測驗</b>——涵蓋 Day 1～Day 5 共 20 題，<a href="w2-test.html">現在就可以做</a>。<br>
+    ② <b>對讀書會有什麼想法，歡迎在群組直接說。</b>進度太快或太慢、題目太難或太簡單、想多補哪個主題，都可以提。
+  </div>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引－科目二 生成式AI應用與規劃」3.1 節，頁碼標示為指引原始頁碼。本週範圍在 114.04 版學習指引勘誤表中沒有相關更正（科目二勘誤僅一處，位於 p.3-32，不在本週範圍內）。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js"></script>
+<script src="assets/quiz.js"></script>
+<script>Study.initWeekLookup();</script>
+</body>
+</html>
