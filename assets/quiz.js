@@ -489,6 +489,9 @@
 
     // 每次查詢都是「換一個人」，所以查詢結果要完全取代畫面上的狀態——
     // 不能只疊加命中的天數，不然換了名字查，上一個人查到的「已完成」會殘留在畫面上。
+    // 這包含兩組獨立畫的 UI：本週卡片的 badge，跟導覽列的 ♥ 記號（markNav() 畫的，
+    // 原本只認這台裝置自己的 localStorage，查詢別人時一樣要蓋過去，不然導覽列還是顯示
+    // 「這台裝置自己」做過的天數，看起來就像查詢結果抓到別人的舊紀錄。
     function resetBadges() {
       var cards = document.querySelectorAll('.daycard[data-day]');
       var totalDays = 0;
@@ -502,6 +505,9 @@
       });
       var prog = document.getElementById('week-progress');
       if (prog && totalDays) prog.textContent = '本週進度 0 / ' + totalDays + ' 天';
+
+      var navLinks = document.querySelectorAll('.daynav a[data-day]');
+      Array.prototype.forEach.call(navLinks, function (a) { a.classList.remove('done'); });
     }
 
     function applyResult(days) {
@@ -523,6 +529,11 @@
       });
       var prog = document.getElementById('week-progress');
       if (prog && totalDays) prog.textContent = '本週進度 ' + doneCount + ' / ' + totalDays + ' 天';
+
+      var navLinks = document.querySelectorAll('.daynav a[data-day]');
+      Array.prototype.forEach.call(navLinks, function (a) {
+        if (days[a.getAttribute('data-day')]) a.classList.add('done');
+      });
     }
 
     function runQuery(name) {
