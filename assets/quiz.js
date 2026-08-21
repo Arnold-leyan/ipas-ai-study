@@ -70,7 +70,7 @@
       var badge = card.querySelector('.badge');
       if (badge) {
         if (res) {
-          badge.textContent = '已完成 ' + res.percent + '%';
+          badge.textContent = '已完成';
           badge.classList.add('ok');
         } else {
           badge.textContent = '未作答';
@@ -521,7 +521,7 @@
         if (hit) {
           var badge = card.querySelector('.badge');
           if (badge) {
-            badge.textContent = '已完成 ' + hit.percent + '%';
+            badge.textContent = '已完成';
             badge.classList.add('ok');
           }
           if (isNumberDay) doneCount++;
