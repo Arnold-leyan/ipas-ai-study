@@ -487,8 +487,23 @@
       statusEl.className = 'sync ' + (cls || 'idle');
     }
 
-    // 後端有資料的天數才升級成「已完成」，沒有的天數維持 paintDayCards() 已經畫好的狀態
-    // （本機 localStorage 沒回傳成功時還是能看到自己剛做完的那天），不會被查詢結果打回「未作答」。
+    // 每次查詢都是「換一個人」，所以查詢結果要完全取代畫面上的狀態——
+    // 不能只疊加命中的天數，不然換了名字查，上一個人查到的「已完成」會殘留在畫面上。
+    function resetBadges() {
+      var cards = document.querySelectorAll('.daycard[data-day]');
+      var totalDays = 0;
+      Array.prototype.forEach.call(cards, function (card) {
+        if (/^\d+$/.test(card.getAttribute('data-day'))) totalDays++;
+        var badge = card.querySelector('.badge');
+        if (badge) {
+          badge.textContent = '未作答';
+          badge.classList.remove('ok');
+        }
+      });
+      var prog = document.getElementById('week-progress');
+      if (prog && totalDays) prog.textContent = '本週進度 0 / ' + totalDays + ' 天';
+    }
+
     function applyResult(days) {
       var cards = document.querySelectorAll('.daycard[data-day]');
       var doneCount = 0, totalDays = 0;
@@ -504,8 +519,6 @@
             badge.classList.add('ok');
           }
           if (isNumberDay) doneCount++;
-        } else if (isNumberDay && getDayResult(d)) {
-          doneCount++;
         }
       });
       var prog = document.getElementById('week-progress');
@@ -515,6 +528,7 @@
     function runQuery(name) {
       var url = global.GAS_WEB_APP_URL;
       if (!url) { say('本站尚未啟用自動記錄，無法查詢。', 'idle'); return; }
+      resetBadges();   // 先清掉畫面上可能殘留的上一個人的查詢結果，避免舊資料混進新的一次查詢
       say('查詢中…', 'idle');
       fetch(url + '?name=' + encodeURIComponent(name))
         .then(function (res) { return res.json(); })
