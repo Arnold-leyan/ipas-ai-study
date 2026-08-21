@@ -155,8 +155,10 @@ function doGet(e) {
  * 依姓名（含暱稱，會透過 NAME_MAP 轉換成本名）查這個人每一天的完成狀態。
  * 同一天重複作答時，取試算表裡「最後一次」送出的那筆。
  *
- * 回傳格式：{ status:'ok', name:'本名', days:{ '6':{percent,dayTitle,week}, 'w2test':{...} } }
+ * 回傳格式：{ status:'ok', name:'本名', days:{ '6':{percent,dayTitle,week,correct,total,wrongList,detail}, 'w2test':{...} } }
  * key 是數字字串時對應每日頁的 data-day；'w1test'/'w2test' 對應各週總測驗。
+ * detail 是每題選了哪個選項（{"Q1":"B",...}），前端用它把換裝置後空白的測驗頁
+ * 還原成「已作答，看解析」的狀態，不用重新回答。
  */
 function queryStatus_(rawName) {
   var name = normName_(rawName);
@@ -176,8 +178,19 @@ function queryStatus_(rawName) {
       var key = dayMatch ? dayMatch[1] : (/總測驗/.test(label) && week ? week.toLowerCase() + 'test' : null);
       if (!key) return;
 
+      var detail = null;
+      try { detail = r[9] ? JSON.parse(r[9]) : null; } catch (err) { detail = null; }
+
       // 列序即送出順序，後面的列會覆蓋前面的，等於自動取最後一次作答。
-      days[key] = { percent: Number(r[5]), dayTitle: String(r[4] || ''), week: week };
+      days[key] = {
+        percent: Number(r[5]),
+        dayTitle: String(r[4] || ''),
+        week: week,
+        correct: Number(r[6]),
+        total: Number(r[7]),
+        wrongList: String(r[8] || ''),
+        detail: detail
+      };
     });
   }
 

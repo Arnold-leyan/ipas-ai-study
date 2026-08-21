@@ -455,6 +455,51 @@
       });
     }
 
+    /* 換裝置、換瀏覽器時本機沒有紀錄——如果之前填過名字，向後端查這一天有沒有作答過，
+     * 有的話直接還原成「已作答、看解析」，不用重新回答一次。 */
+    function restoreFromBackend() {
+      var url = global.GAS_WEB_APP_URL;
+      var name = lsGet(NAME_KEY);
+      if (!url || !name) return;
+      fetch(url + '?name=' + encodeURIComponent(name))
+        .then(function (res) { return res.json(); })
+        .then(function (res) {
+          if (!res || res.status !== 'ok' || !res.days) return;
+          var hit = res.days[String(cfg.day)];
+          if (!hit || !hit.detail) return;
+
+          var answers = new Array(total).fill(null);
+          for (var i = 0; i < total; i++) {
+            var letter = hit.detail['Q' + (i + 1)];
+            var idx = letter ? KEYS.indexOf(letter) : -1;
+            if (idx > -1) answers[i] = idx;
+          }
+          if (answers.indexOf(null) !== -1) return;   // 題目對不起來（例如題目後來改過），不強行還原
+
+          var data = {
+            name: res.name,
+            week: cfg.week || hit.week || '',
+            day: cfg.day,
+            dayLabel: cfg.dayLabel || '',
+            dayTitle: cfg.dayTitle,
+            correct: hit.correct,
+            total: hit.total || total,
+            percent: hit.percent,
+            wrongList: hit.wrongList || '',
+            detail: hit.detail,
+            answers: answers,
+            date: '',
+            submitted: true
+          };
+          lsSet(dayKey(cfg.day), JSON.stringify(data));
+          picked = answers.slice();
+          reveal(picked, true);
+          showResult(data);
+          setSync(syncEl, '✓ 已從後端還原你之前的作答紀錄（' + res.name + '）', 'ok');
+        })
+        .catch(function () { /* 還原失敗就當作沒查到，維持空白測驗，不影響正常作答 */ });
+    }
+
     /* 已作答過：直接顯示結果與解析 */
     var prev = getDayResult(cfg.day);
     if (prev && prev.answers && prev.answers.length === total) {
@@ -469,6 +514,7 @@
       }
     } else {
       refresh();
+      restoreFromBackend();
     }
   }
 
