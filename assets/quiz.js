@@ -107,6 +107,7 @@
       name: data.name || '未具名',
       week: (global.WEEK_INFO && global.WEEK_INFO.week) || 'W1',
       day: data.day,
+      dayLabel: data.dayLabel || '',   // 有值時後端直接用它當「天數」欄
       dayTitle: data.dayTitle,
       percent: data.percent,
       correct: data.correct,
@@ -138,12 +139,15 @@
   function buildAiPrompt(cfg) {
     var ai = cfg.ai || {};
     var base = global.SITE_BASE || (location.origin + location.pathname.replace(/[^/]*$/, ''));
-    var pageUrl = base + 'day' + cfg.day + '.html';
+    // 一般每日頁是 dayN.html；總測驗這類頁面用 cfg.pageFile 指定自己的檔名。
+    var pageUrl = base + (cfg.pageFile || ('day' + cfg.day + '.html'));
+    // 每日頁講「今天」，總測驗講「這一週」。
+    var when = cfg.scopeWord || '今天';
 
     var p = [
       '我正在準備台灣 iPAS「初級 AI 應用規劃師」能力鑑定，科目一「人工智慧基礎概論」。',
       '',
-      '今天的教材在這個網頁：',
+      when + '的教材在這個網頁：',
       pageUrl,
       '',
       '如果你可以開啟網址，請先讀過整頁的教材內容（表格、重點整理、補充說明）再回答。',
@@ -151,7 +155,7 @@
       '不用特別說明，也不用試圖找出原題——我答錯的題目會直接列在下面。',
       '如果你連教材內容都讀不到，就依照下面的主題描述回答，並在開頭告訴我。',
       '',
-      '今天讀的範圍是官方學習指引 ' + (ai.pages || '') + '，主題是：',
+      when + '讀的範圍是官方學習指引 ' + (ai.pages || '') + '，主題是：',
       ai.topics || cfg.dayTitle,
       '',
       '請用繁體中文，幫我做這四件事：',
@@ -183,7 +187,7 @@
       });
       if (wrongCount) {
         p.push('');
-        p.push('另外，我剛做完今天的自我測驗，' + res.total + ' 題中答錯了 ' + wrongCount + ' 題：');
+        p.push('另外，我剛做完' + when + '的自我測驗，' + res.total + ' 題中答錯了 ' + wrongCount + ' 題：');
         p.push('');
         if (wrong[wrong.length - 1] === '') wrong.pop();
         p.push.apply(p, wrong);
@@ -191,7 +195,7 @@
         p.push('請針對上面這幾題背後的觀念，多花一點篇幅解釋我為什麼會選錯。');
       } else {
         p.push('');
-        p.push('補充：我剛做完今天的自我測驗 ' + res.total + ' 題全對，請把題目出難一點。');
+        p.push('補充：我剛做完' + when + '的自我測驗 ' + res.total + ' 題全對，請把題目出難一點。');
       }
     }
 
@@ -390,6 +394,7 @@
       var data = {
         name: nameValue() || '未具名',   // 送出鈕已擋空白，這裡只是保險
         day: cfg.day,
+        dayLabel: cfg.dayLabel || '',
         dayTitle: cfg.dayTitle,
         correct: correct,
         total: total,

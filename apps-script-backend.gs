@@ -35,7 +35,7 @@ var SPECS = {
         new Date(),
         d.name || '未具名',
         d.week || '',
-        d.day ? 'Day ' + d.day : '',
+        d.dayLabel ? d.dayLabel : (d.day ? 'Day ' + d.day : ''),
         d.dayTitle || '',
         d.percent,
         d.correct,
