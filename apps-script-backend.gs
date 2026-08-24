@@ -60,6 +60,16 @@ var NAME_MAP = {
   'EMMA': '連于萱'
 };
 
+/* 每一週在網站上對應的全站唯一 day 編號範圍（跟每天頁面 initQuiz 裡的 day 一致）。
+ * 網站畫面上每一天都叫「Day 1～Day 5」（比較好讀），但 day 編號跨週不能重複，
+ * 所以 W2 的 day6～day10 頁面會把 dayLabel 設回「Day 1」～「Day 5」給試算表看，
+ * queryStatus_() 再用這張表把「這週第幾天」換算回全站唯一的 day 編號。
+ * 之後加新的一週，這裡補一行就好。 */
+var WEEK_RANGES = {
+  'W1': [1, 5],
+  'W2': [6, 10]
+};
+
 /* 不列入統計的填答者（家長、下一梯次、測試資料等） */
 var IGNORE = [
   '呂水鈺',                        // 同仁家長，非參加同仁
@@ -176,7 +186,17 @@ function queryStatus_(rawName) {
       var week = String(r[2] || '');
       var label = String(r[3] || '');
       var dayMatch = label.match(/^Day\s+(\d+)$/);
-      var key = dayMatch ? dayMatch[1] : (/總測驗/.test(label) && week ? week.toLowerCase() + 'test' : null);
+      var key = null;
+      if (dayMatch) {
+        var n = parseInt(dayMatch[1], 10);
+        var range = WEEK_RANGES[week];
+        // n 落在這一週原本的全站編號範圍內，代表是還沒套用 dayLabel 之前寫入的舊資料，
+        // 直接當全站編號用；否則就是「這週第幾天」，換算成全站編號。
+        if (range && (n < range[0] || n > range[1])) n = range[0] + n - 1;
+        key = String(n);
+      } else if (/總測驗/.test(label) && week) {
+        key = week.toLowerCase() + 'test';
+      }
       if (!key) return;
 
       var detail = null;
