@@ -629,12 +629,176 @@
     }
   }
 
+  /* ---------- 錯題複習頁：輸入姓名，把這週答錯的題目連解析一起列出來 ---------- */
+  function initReview(cfg) {
+    var bar = document.getElementById('lookup-bar');
+    if (!bar) return;
+
+    var input = document.getElementById('lookup-name');
+    var btn = document.getElementById('lookup-btn');
+    var statusEl = document.getElementById('lookup-status');
+    var summaryEl = document.getElementById('review-summary');
+    var listEl = document.getElementById('review-list');
+
+    function say(text, cls) {
+      if (!statusEl) return;
+      statusEl.textContent = text;
+      statusEl.className = 'sync ' + (cls || 'idle');
+    }
+
+    // 後端的「答錯題號」是像 '1、3、5' 或 '（全對）' 這樣的字串，轉成題號陣列。
+    function parseWrongNums(wrongList) {
+      if (!wrongList || wrongList.indexOf('全對') > -1) return [];
+      return wrongList.split(/[、,，]/)
+        .map(function (s) { return parseInt(s.trim(), 10); })
+        .filter(function (n) { return !isNaN(n); });
+    }
+
+    function renderQuestionCard(dayTitle, qNum, qItem, myLetter) {
+      var box = document.createElement('div');
+      box.className = 'q';
+
+      var stem = document.createElement('div');
+      stem.className = 'stem';
+      var qn = document.createElement('span');
+      qn.className = 'qn';
+      qn.textContent = '第 ' + qNum + ' 題';
+      var qt = document.createElement('span');
+      qt.textContent = qItem.q;
+      stem.appendChild(qn);
+      stem.appendChild(qt);
+      box.appendChild(stem);
+
+      if (qItem.src) {
+        var src = document.createElement('p');
+        src.className = 'src';
+        src.textContent = qItem.src;
+        box.appendChild(src);
+      }
+
+      var opts = document.createElement('div');
+      opts.className = 'opts';
+      var myIdx = myLetter ? KEYS.indexOf(myLetter) : -1;
+      qItem.o.forEach(function (text, j) {
+        var optEl = document.createElement('div');
+        optEl.className = 'opt';
+        if (j === qItem.a) optEl.classList.add('right');
+        else if (j === myIdx) optEl.classList.add('wrong');
+        var k = document.createElement('span');
+        k.className = 'k';
+        k.textContent = '(' + KEYS[j] + ')';
+        var t = document.createElement('span');
+        t.textContent = text;
+        optEl.appendChild(k);
+        optEl.appendChild(t);
+        opts.appendChild(optEl);
+      });
+      box.appendChild(opts);
+
+      var exp = document.createElement('div');
+      exp.className = 'exp';
+      exp.hidden = false;
+      var head = document.createElement('b');
+      head.textContent = 'Ans（' + KEYS[qItem.a] + '）';
+      exp.appendChild(head);
+      exp.appendChild(document.createTextNode('　' + qItem.e));
+      box.appendChild(exp);
+
+      return box;
+    }
+
+    function runQuery(name) {
+      var url = global.GAS_WEB_APP_URL;
+      if (!url) { say('本站尚未啟用自動記錄，無法查詢。', 'idle'); return; }
+      say('查詢中…', 'idle');
+      if (summaryEl) summaryEl.innerHTML = '';
+      if (listEl) listEl.innerHTML = '';
+
+      fetch(url + '?name=' + encodeURIComponent(name))
+        .then(function (res) { return res.json(); })
+        .then(function (res) {
+          if (!res || res.status !== 'ok') throw new Error('bad response');
+
+          var dayKeys = Object.keys(cfg.data);
+          var doneCount = 0, wrongTotal = 0;
+          var undone = [];
+          var frag = document.createDocumentFragment();
+
+          dayKeys.forEach(function (key) {
+            var dayInfo = cfg.data[key];
+            var hit = res.days ? res.days[key] : null;
+            if (!hit) { undone.push(dayInfo.dayTitle); return; }
+            doneCount++;
+
+            var wrongNums = parseWrongNums(hit.wrongList);
+            if (!wrongNums.length) return;
+
+            var section = document.createElement('div');
+            var h3 = document.createElement('h3');
+            h3.textContent = dayInfo.dayTitle + '　錯了 ' + wrongNums.length + ' 題';
+            section.appendChild(h3);
+
+            wrongNums.forEach(function (n) {
+              var qItem = dayInfo.questions[n - 1];
+              if (!qItem) return;
+              var myLetter = hit.detail ? hit.detail['Q' + n] : null;
+              section.appendChild(renderQuestionCard(dayInfo.dayTitle, n, qItem, myLetter));
+              wrongTotal++;
+            });
+            frag.appendChild(section);
+          });
+
+          var msg = '已依「' + res.name + '」查到 ' + doneCount + ' / ' + dayKeys.length + ' 天的作答紀錄';
+          if (wrongTotal) msg += '，共 ' + wrongTotal + ' 題答錯，整理如下：';
+          else if (doneCount) msg += '，這幾天全對，沒有錯題可以複習！';
+          else msg += '，還沒有任何一天的資料。';
+          say('✓ ' + msg, 'ok');
+
+          if (undone.length && summaryEl) {
+            var note = document.createElement('p');
+            note.className = 'lede';
+            note.textContent = '還沒作答：' + undone.join('、');
+            summaryEl.appendChild(note);
+          }
+          if (listEl) listEl.appendChild(frag);
+        })
+        .catch(function () {
+          say('⚠ 查詢失敗，可能是網路問題，稍後再試一次。', 'warn');
+        });
+    }
+
+    if (btn) {
+      btn.addEventListener('click', function () {
+        var name = input ? input.value.trim() : '';
+        if (!name) {
+          if (input) { input.classList.add('needed'); input.focus(); }
+          return;
+        }
+        if (input) input.classList.remove('needed');
+        lsSet(NAME_KEY, name);
+        runQuery(name);
+      });
+    }
+    if (input) {
+      input.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter') { ev.preventDefault(); if (btn) btn.click(); }
+      });
+    }
+
+    var saved = lsGet(NAME_KEY);
+    if (saved) {
+      if (input) input.value = saved;
+      runQuery(saved);
+    }
+  }
+
   global.Study = {
     initTheme: initTheme,
     markNav: markNav,
     paintDayCards: paintDayCards,
     initQuiz: initQuiz,
     initWeekLookup: initWeekLookup,
+    initReview: initReview,
     getDayResult: getDayResult,
     buildAiPrompt: buildAiPrompt
   };
