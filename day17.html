@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 17 導入規劃①②：準備階段與設計階段 — iPAS 考取衝刺班</title>
+<meta name="description" content="W4 Day 2：生成式AI 導入規劃的準備階段（挑選應用方案）與設計階段（確認生成規格）。學習指引（科目二）p.3-34～3-39。">
+<link rel="stylesheet" href="assets/style.css?v=5">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W4 · Day 2 · 9/8（二）</p>
+        <h1>導入規劃①②：準備階段與設計階段</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>昨天講了「為什麼要評估」跟評估標準，今天開始講完整的導入規劃流程，一共四個階段：準備 → 設計 → 驗證 POC → 實施營運。今天先講前兩個。</p>
+    <div class="mast-meta">
+      <span class="tag">科目二 p.3-34～3-39</span>
+      <span class="tag">閱讀約 20 分鐘</span>
+      <span class="tag">測驗 6 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w4-index.html">總覽</a></li>
+    <li><a href="day16.html" data-day="16">Day 1</a></li>
+    <li><a href="day17.html" data-day="17" aria-current="page">Day 2</a></li>
+    <li><a href="day18.html" data-day="18">Day 3</a></li>
+    <li><a href="day19.html" data-day="19">Day 4</a></li>
+    <li><a href="day20.html" data-day="20">Day 5</a></li>
+    <li><a href="w4-test.html" data-day="w4test">總測驗</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>今天要讀的</h2>
+
+  <h3>導入規劃的大原則 <span class="pref">p.3-34～3-35</span></h3>
+  <p>規劃初期，企業首先需明確<b>經營目標</b>（市場定位、核心產品服務價值、長期成長策略），精確鎖定能最大化影響績效的 AI 應用領域，並比較市場上不同 AI 解決方案、考量企業資源狀況。完成初步規劃後，依<b>導入難易度、預期效益、企業成熟度</b>對各方案排優先順序。</p>
+
+  <h3>階段①準備階段（挑選 AI 應用方案） <span class="pref">p.3-35～3-38</span></h3>
+  <div class="tw"><table>
+    <tr><th>步驟</th><th>重點</th></tr>
+    <tr><td><b>A. 掌握企業課題</b></td><td>設立明確目標（從營運數據、員工交流、客戶訪談確定要解決的問題）→ 選定應用範圍（從簡單可行的核心專案開始，如客服回應、內部資料檢索）→ 提取改善項目（繪製業務流程圖找出瓶頸，優先挑選重複性、規則性、標準化的工作）</td></tr>
+    <tr><td><b>B. 檢視AI 方案與企業資源</b></td><td>檢視數據完整性與技術基礎設施 → AI 相關方案選擇（商業產品／開源平台／客製化服務，評估成本結構） → 規劃預算與專案管理架構</td></tr>
+    <tr><td><b>C. 確定應用領域優先順序</b></td><td>評估導入容易程度（核心需求對應性、技術靈活性、長期適應能力）→ 方案導入優先順序（商業價值、技術可行性、資源投入、長期戰略目標）</td></tr>
+  </table></div>
+
+  <div class="card">
+    <h4>白話一點：準備階段像「開餐廳前先決定要不要做外送」</h4>
+    <p>先搞清楚生意卡在哪（<b>掌握企業課題</b>：內用排隊太久還是外送單處理不過來？），再看市面上有哪些工具可以解決（<b>檢視方案與資源</b>：自己開發訂餐系統，還是直接用現成的外送平台？），最後決定先做哪一個（<b>確定優先順序</b>：先從最容易上手、最快看到效果的「客服自動回覆」做起，而不是一開始就挑戰最複雜的全流程改造）。</p>
+  </div>
+
+  <h3>階段②設計（確認 AI 生成規格） <span class="pref">p.3-38～3-39</span></h3>
+  <div class="tw"><table>
+    <tr><th>項目</th><th>重點</th></tr>
+    <tr><td><b>A. 確認導入最終目標</b></td><td>讓 AI 方案設計與公司策略一致，定義短期／長期目標，設立可量化的成功標準，制定 <b>KPI</b> 追蹤模型效能</td></tr>
+    <tr><td><b>B. 確認數據狀態</b></td><td>收集多來源數據確保多樣性與代表性，額外查證數據正確性，建立<b>持續更新</b>的數據流程避免模型因過時數據失去效能</td></tr>
+    <tr><td><b>C. 確認使用情境</b></td><td>依實際業務需求規劃 AI 分析項目（如自動化客服、數據分析、預測性維護），評估技術可行性與業務擴展潛力，規劃模型部署策略</td></tr>
+    <tr><td><b>D. 估算 AI 導入成本</b></td><td>技術開發成本（模型構建、測試、部署、優化再訓練）＋硬體與雲端服務成本＋人員培訓與維護升級成本</td></tr>
+  </table></div>
+
+  <div class="note">
+    <span class="lbl">準備階段 vs 設計階段，別搞混</span>
+    <b>準備階段</b>回答的是「<b>要不要做、做什麼</b>」（掌握課題、挑方案、排優先順序）；<b>設計階段</b>回答的是「<b>怎麼做出規格</b>」（確認目標、數據、使用情境、成本估算）。準備階段還沒定案，設計階段已經在為實際開發打地基。
+  </div>
+</section>
+
+<section id="quiz">
+  <h2>今日測驗</h2>
+  <p class="lede">6 題，全部選完才能送出。送出後會顯示解析，成績自動回傳給召集人。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。填過一次之後其他天會自動帶入。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 6 題</span>
+    <span class="score">2 題官方原題 · 4 題自編</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對今天的範圍再教你一次、多出幾題考你。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製今天的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="day16.html">← Day 1：為什麼企業要導入生成式AI？5 項評估標準</a>
+    <a href="day18.html">Day 3：導入規劃③④：驗證 POC 與實施營運 →</a>
+  </div>
+</section>
+
+<footer>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引－科目二 生成式AI應用與規劃」3.3 節（生成式AI 導入評估規劃）。本週範圍在 114.04 版勘誤表中僅第③項評估標準標題有更正（詳見 Day 1），不影響今天內容。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=5"></script>
+<script src="assets/quiz.js?v=5"></script>
+<script>
+Study.initQuiz({
+  day: 17,
+  week: 'W4',
+  dayLabel: 'Day 2',
+  dayTitle: '導入規劃①②：準備階段與設計階段',
+  subject: '科目二「生成式AI應用與規劃」',
+  ai: {
+    pages: '科目二 p.3-34～3-39',
+    topics: '生成式AI 導入規劃四階段中的準備階段（掌握企業課題、檢視AI 方案與企業資源、確定應用領域優先順序）與設計階段（確認導入最終目標與KPI、確認數據狀態、確認使用情境、估算AI 導入成本）'
+  },
+  questions: [
+    {
+      q: '企業導入生成式AI 的第一步應是什麼？',
+      o: ['確保硬體設備升級', '設定可量化、可追蹤的經營目標', '安排員工進行AI 相關培訓', '購買生成式AI 相關軟體'],
+      a: 1,
+      src: '官方原題 · 科目二學習指引 p.3-52 第 1 題',
+      e: '設定明確目標是規劃AI 導入的基礎，其他步驟（培訓、採購、硬體升級）都需要以此為依據，對應設計階段「確認導入最終目標」的內容。'
+    },
+    {
+      q: '在導入生成式AI 的構想階段，企業應首先專注於什麼？',
+      o: ['提升內部資料儲存容量', '明確經營目標與核心價值', '進行員工AI 基礎培訓', '購買市面上的AI 軟體'],
+      a: 1,
+      src: '官方原題 · 科目二學習指引 p.3-53 第 6 題',
+      e: '企業應從經營目標、核心價值和長期策略出發，明確生成式AI 的應用方向，這是成功導入的基礎，呼應規劃初期「明確經營目標」的原則。'
+    },
+    {
+      q: '某企業想導入生成式AI，第一步是繪製各部門業務流程圖，找出重複性高、規則明確的作業（如報表生成），準備優先導入 AI。這屬於準備階段的哪一個步驟？',
+      o: ['A. 掌握企業課題', 'B. 檢視AI 方案與企業資源', 'C. 確定應用領域優先順序', '以上皆非'],
+      a: 0,
+      src: '自編練習題 · 指引 p.3-35～3-36',
+      e: '「掌握企業課題」下的「提取改善項目」正是「詳細繪製各部門的業務流程圖……從中找出可能存在的流程瓶頸，並對業務過程中的各項任務進行分類，識別具有重複性、規則性和標準化的工作」。'
+    },
+    {
+      q: '生成式AI 方案選擇時，企業需要比較商業產品、開源平台與客製化服務的功能性、適配性與可擴展性，這屬於準備階段的哪一個步驟？',
+      o: ['A. 掌握企業課題', 'B. 檢視AI 方案與企業資源', 'C. 確定應用領域優先順序', '設計階段'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-36～3-37',
+      e: '「檢視AI 方案與企業資源」下的「AI 相關方案選擇」提到「生成式AI 方案種類眾多，包括商業產品、開源平台與客製化服務，企業可以根據任務所需搭配使用其功能性、適配性與可擴展性符合需求」。'
+    },
+    {
+      q: '在設計階段「確認數據狀態」中，為什麼要建立持續更新的數據流程？',
+      o: ['為了增加數據儲存成本', '避免模型因過時數據而失去效能', '單純為了符合政府規定的格式', '跟模型效能完全無關'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-38',
+      e: '學習指引指出：「在設計時應考慮到需要建立持續更新的數據流程，以保護數據隨時間變動與保持數據是否為最新版本，避免模型因過時數據而讓模型失去效能。」'
+    },
+    {
+      q: '估算 AI 導入成本時，下列哪一項「不屬於」學習指引提到的成本範疇？',
+      o: ['技術開發成本（模型構建、測試、部署）', '硬體與雲端服務成本', '人員培訓成本', '與導入AI 完全無關的行銷廣告預算'],
+      a: 3,
+      src: '自編練習題 · 指引 p.3-39',
+      e: '學習指引提到的AI 導入成本包含技術開發成本（模型構建、測試、部署及優化再訓練）、硬體與雲端服務成本、長期的人員培訓成本、軟體維護升級需求。行銷廣告預算不屬於這個範疇，是常見的誘答選項。'
+    }
+  ]
+});
+</script>
+</body>
+</html>

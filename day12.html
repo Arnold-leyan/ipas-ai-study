@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 12 監督式與非監督式學習 — iPAS 考取衝刺班</title>
+<meta name="description" content="W3 Day 2：監督式學習（線性迴歸、SVM、神經網路）與非監督式學習（K-Means、PCA）的定義與應用。學習指引（科目一）p.3-35～3-37。">
+<link rel="stylesheet" href="assets/style.css?v=5">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W3 · Day 2 · 9/1（二）</p>
+        <h1>監督式與非監督式學習</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>昨天說機器學習分三大類型，今天先講前兩種：監督式學習（有標準答案可以對）跟非監督式學習（沒有標準答案，自己找規律）。明天再講第三種強化學習。</p>
+    <div class="mast-meta">
+      <span class="tag">科目一 p.3-35～3-37</span>
+      <span class="tag">閱讀約 18 分鐘</span>
+      <span class="tag">測驗 6 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w3-index.html">總覽</a></li>
+    <li><a href="day11.html" data-day="11">Day 1</a></li>
+    <li><a href="day12.html" data-day="12" aria-current="page">Day 2</a></li>
+    <li><a href="day13.html" data-day="13">Day 3</a></li>
+    <li><a href="day14.html" data-day="14">Day 4</a></li>
+    <li><a href="day15.html" data-day="15">Day 5</a></li>
+    <li><a href="w3-test.html" data-day="w3test">總測驗</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>今天要讀的</h2>
+
+  <h3>監督式學習（Supervised Learning） <span class="pref">p.3-35～3-36</span></h3>
+  <p>監督式學習以「<b>有標記的數據</b>」為基礎，目標是學習輸入與輸出之間的映射關係：數據集中每個樣本都包含明確的輸入特徵與對應標記，模型透過學習歷史數據來建立預測規則。主要分兩種任務：</p>
+  <div class="tw"><table>
+    <tr><th>任務</th><th>代表模型</th><th>怎麼用</th></tr>
+    <tr><td><b>迴歸</b>（預測連續值）</td><td>線性迴歸（Linear Regression）</td><td>擬合數據預測連續型結果，例如根據房屋面積、地理位置預測<b>房價</b>／<b>銷售額</b></td></tr>
+    <tr><td><b>分類</b>（二元分類）</td><td>支援向量機（SVM, Support Vector Machine）</td><td>建立最佳分類邊界（超平面），把數據分成不同類別，例如分析醫學影像判斷腫瘤<b>良性或惡性</b></td></tr>
+    <tr><td><b>分類</b>（複雜非線性）</td><td>神經網路（Neural Networks）</td><td>模仿人腦神經元運作，處理高度非線性、複雜的數據，例如語音辨識把音訊轉成文字</td></tr>
+  </table></div>
+
+  <div class="card">
+    <h4>白話一點：監督式學習像「有標準答案的練習題」</h4>
+    <p>老師發給你一疊<b>已經批改好</b>的考卷（輸入＝題目，標記＝正確答案），你照著這些範例練習，抓出「什麼樣的題目對應什麼樣的答案」的規律。之後拿到新題目（沒看過的數據），你就能套用學到的規律給出答案。這就是「有標記的數據」的意思——每筆訓練資料都附標準答案。</p>
+  </div>
+
+  <h3>非監督式學習（Unsupervised Learning） <span class="pref">p.3-36～3-37</span></h3>
+  <p>與監督式學習不同，非監督式學習<b>不依賴有標記的數據</b>，而是分析數據的內在結構找出潛在模式。核心目標是「<b>聚類</b>」和「<b>降維</b>」：</p>
+  <div class="tw"><table>
+    <tr><th>任務</th><th>代表模型</th><th>怎麼用</th></tr>
+    <tr><td><b>聚類</b>（把相似的分成一群）</td><td>K 均值聚類（K-Means Clustering）</td><td>把數據分成若干群組，例如分析客戶購買行為做<b>市場區隔</b>；也用於<b>異常檢測</b>（如網路安全找出異常流量）</td></tr>
+    <tr><td><b>降維</b>（精簡特徵、保留重點）</td><td>主成分分析（PCA, Principal Component Analysis）</td><td>把高維數據壓縮到低維空間、同時保留主要訊息，例如<b>圖像壓縮</b>、<b>基因數據分析</b>找代表性特徵</td></tr>
+  </table></div>
+
+  <div class="card">
+    <h4>白話一點：非監督式學習像「把一堆衣服自己分類，沒人告訴你分類標準」</h4>
+    <p><b>K-Means（聚類）</b>：把一堆散亂的衣服（顧客資料）自己分成幾堆——你沒有「這件是上衣、那件是褲子」的標籤，但憑款式、顏色的相似度，自然而然分出幾群。<b>PCA（降維）</b>：整理行李箱時，你不會把每件衣服的每個細節都記下來，而是抓幾個重點（顏色、季節）就能大致分辨，捨去不重要的細節、留住最關鍵的資訊，這就是「壓縮到低維空間、保留主要訊息」。</p>
+  </div>
+
+  <div class="note">
+    <span class="lbl">今天最容易搞混的地方</span>
+    分辨監督式 vs 非監督式，別看「模型名稱」，看<b>數據有沒有標記</b>：有標準答案可以對照＝監督式（線性迴歸、SVM、神經網路）；沒有標準答案、系統自己找結構＝非監督式（K-Means、PCA）。SVM 是<b>分類</b>不是聚類，K-Means 是<b>聚類</b>不是分類，這兩個常被拿來互換出題。
+  </div>
+</section>
+
+<section id="quiz">
+  <h2>今日測驗</h2>
+  <p class="lede">6 題，全部選完才能送出。送出後會顯示解析，成績自動回傳給召集人。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。填過一次之後其他天會自動帶入。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 6 題</span>
+    <span class="score">3 題官方原題 · 3 題自編</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對今天的範圍再教你一次、多出幾題考你。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製今天的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="day11.html">← Day 1：機器學習是什麼？基本原理與挑戰</a>
+    <a href="day13.html">Day 3：強化學習 →</a>
+  </div>
+</section>
+
+<footer>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引－科目一 人工智慧基礎概論」3.3 節（機器學習概念）。本週範圍（p.3-33～3-47）在 114.04 版勘誤表中沒有相關更正。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=5"></script>
+<script src="assets/quiz.js?v=5"></script>
+<script>
+Study.initQuiz({
+  day: 12,
+  week: 'W3',
+  dayLabel: 'Day 2',
+  dayTitle: '監督式與非監督式學習',
+  subject: '科目一「人工智慧基礎概論」',
+  ai: {
+    pages: '科目一 p.3-35～3-37',
+    topics: '監督式學習的定義與兩大任務（迴歸、分類）、線性迴歸、支援向量機（SVM）、神經網路的應用場景、非監督式學習的定義與兩大目標（聚類、降維）、K 均值聚類（K-Means）、主成分分析（PCA）的應用場景'
+  },
+  questions: [
+    {
+      q: '下列哪一項屬於監督式學習的特點？',
+      o: ['數據集中包含標記訊息', '僅需探索數據內部的結構', '使用代理與環境互動進行學習', '不需要驗證集來調整參數'],
+      a: 0,
+      src: '官方原題 · 科目一學習指引 p.3-44 第 2 題',
+      e: '監督式學習依賴有標記的數據集，透過學習輸入與輸出之間的映射關係來進行預測或分類。（B）是非監督式學習的特點，（C）是強化學習的特點。'
+    },
+    {
+      q: '線性迴歸模型最適合解決哪種類型的問題？',
+      o: ['圖像分類', '銷售額預測', '聚類分析', '遊戲策略學習'],
+      a: 1,
+      src: '官方原題 · 科目一學習指引 p.3-45 第 6 題',
+      e: '線性迴歸是一種典型的迴歸模型，用於解決輸出為連續值的問題，如預測銷售額或房價。'
+    },
+    {
+      q: '神經網路與傳統機器學習模型的主要區別是什麼？',
+      o: ['神經網路無法處理非線性數據', '神經網路透過多層結構學習複雜特徵', '神經網路只適用於迴歸問題', '神經網路不需要大量數據支持'],
+      a: 1,
+      src: '官方原題 · 科目一學習指引 p.3-45 第 8 題',
+      e: '神經網路具有多層結構，能夠從數據中提取高層次特徵，適合處理複雜的非線性問題，例如圖像分類和語音辨識。'
+    },
+    {
+      q: '某醫院想透過分析大量已標註「良性／惡性」的醫學影像，訓練一個模型來判斷新病患的腫瘤影像屬於哪一類。依學習指引，這最適合用下列哪一種模型？',
+      o: ['K 均值聚類（K-Means）', '支援向量機（SVM）', '主成分分析（PCA）', '以上皆非'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-36',
+      e: 'SVM 是監督式學習中常用於二元分類問題的工具，透過建立最佳分類邊界（超平面）將數據劃分為不同類別，學習指引明確舉例：SVM 能協助醫生透過醫學影像分析，識別腫瘤是良性還是惡性。'
+    },
+    {
+      q: '一間零售企業想把顧客依購買行為分成幾個沒有事先定義標籤的群組，以便制定不同的行銷策略。依學習指引，這最適合用下列哪一種方法？',
+      o: ['線性迴歸', 'K 均值聚類（K-Means Clustering）', '支援向量機（SVM）', '神經網路'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-36',
+      e: 'K 均值聚類是非監督式學習中廣泛使用的聚類演算法，能將數據分為若干群組，每個群組內數據具有高度相似性。學習指引舉的例子正是企業利用 K-Means 分析客戶購買行為做市場區隔。'
+    },
+    {
+      q: '主成分分析（PCA）的主要用途是下列何者？',
+      o: ['把有標記的數據拿去訓練分類器', '透過線性變換將高維數據壓縮到低維空間，同時保留主要訊息', '模擬環境回饋來學習最佳策略', '把連續型數值轉換為文字標記'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-37',
+      e: 'PCA 是非監督式學習中最典型的降維演算法，透過線性變換將高維數據壓縮到低維空間、同時保留數據的主要訊息，有助於減少冗餘數據並提高計算效率，常用於圖像壓縮與基因數據分析。'
+    }
+  ]
+});
+</script>
+</body>
+</html>

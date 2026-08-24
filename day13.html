@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 13 強化學習 — iPAS 考取衝刺班</title>
+<meta name="description" content="W3 Day 3：強化學習的三要素、學習流程、Q-Learning／Deep Q-Learning，以及在遊戲、機器人、自動駕駛的應用。學習指引（科目一）p.3-37～3-39。">
+<link rel="stylesheet" href="assets/style.css?v=5">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W3 · Day 3 · 9/2（三）</p>
+        <h1>強化學習</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>機器學習第三種類型：強化學習。跟前兩種都不一樣——沒有標準答案，也不是自己找結構，而是<b>靠不斷試錯、拿獎勵來學習</b>。這是這週相對獨立的一個主題，跟明天的「機器學習實現流程」沒有直接銜接。</p>
+    <div class="mast-meta">
+      <span class="tag">科目一 p.3-37～3-39</span>
+      <span class="tag">閱讀約 18 分鐘</span>
+      <span class="tag">測驗 6 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w3-index.html">總覽</a></li>
+    <li><a href="day11.html" data-day="11">Day 1</a></li>
+    <li><a href="day12.html" data-day="12">Day 2</a></li>
+    <li><a href="day13.html" data-day="13" aria-current="page">Day 3</a></li>
+    <li><a href="day14.html" data-day="14">Day 4</a></li>
+    <li><a href="day15.html" data-day="15">Day 5</a></li>
+    <li><a href="w3-test.html" data-day="w3test">總測驗</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>今天要讀的</h2>
+
+  <h3>強化學習（Reinforcement Learning）是什麼 <span class="pref">p.3-37</span></h3>
+  <p>在強化學習中，<b>代理（Agent）</b>透過探索環境執行不同行動，並根據環境提供的回饋不斷更新策略，這個過程反映了「<b>試錯學習（Trial-and-Error）</b>」的本質。核心目標是<b>最大化累積獎勵（Cumulative Reward）</b>，在長期決策中實現最佳效益。</p>
+
+  <h3>三個核心要素與流程 <span class="pref">p.3-37～3-38</span></h3>
+  <div class="tw"><table>
+    <tr><th>三要素</th><th>意思</th></tr>
+    <tr><td><b>代理（Agent）</b></td><td>負責進行決策和行動的學習系統</td></tr>
+    <tr><td><b>環境（Environment）</b></td><td>代理所處的操作環境，會根據代理的行動提供回饋</td></tr>
+    <tr><td><b>獎勵（Reward）</b></td><td>代理執行某一行動後獲得的回饋，表示行動的好壞</td></tr>
+  </table></div>
+  <p class="lede">流程：<b>初始狀態</b>（取得當前 State）→ <b>選擇行動</b>（依策略 Policy 選擇 Action，可能是隨機探索 Exploration 或依經驗 Exploitation）→ <b>執行行動</b>（環境回傳新狀態與獎勵）→ <b>更新策略</b>（依結果更新決策策略，最大化未來累積獎勵）。</p>
+
+  <div class="card">
+    <h4>白話一點：強化學習像「訓練一隻狗學新把戲」</h4>
+    <p>你（<b>環境</b>）教狗狗（<b>代理</b>）坐下。狗狗一開始亂試各種動作（<b>探索</b>），做對了給牠一塊零食（<b>獎勵</b>），做錯了什麼都不給。狗狗不會一次就學會，而是透過<b>一次次試錯</b>，慢慢摸索出「坐下＝有零食」這個策略。之後牠看到你比手勢（<b>狀態</b>），就會直接坐下（<b>依經驗選擇行動</b>），不用每次都亂試。這整套「試了才知道對不對、靠獎勵調整行為」，就是強化學習的核心。</p>
+  </div>
+
+  <h3>Q-Learning 與 Deep Q-Learning <span class="pref">p.3-38</span></h3>
+  <div class="tw"><table>
+    <tr><th>方法</th><th>重點</th></tr>
+    <tr><td><b>Q-Learning</b></td><td>透過試錯學習找出每個行動的長期價值（Q 值），選擇能獲得最大獎勵的行動；隨學習深入不斷更新 Q 值，最終形成最佳決策策略</td></tr>
+    <tr><td><b>Deep Q-Learning（DQN）</b></td><td>Q-Learning 的延伸，結合<b>深度學習</b>解決狀態空間過大時 Q 表（Q-Table）存不下的問題——改用深度神經網路來<b>近似</b>Q 值；並引入<b>經驗回放</b>與<b>目標網路</b>技術，減少震盪與過擬合</td></tr>
+  </table></div>
+  <div class="note">
+    <span class="lbl">Q-Learning 跟 Deep Q-Learning 的差別</span>
+    Q-Learning 把所有「狀態＋行動」的組合<b>存進一張表</b>（Q-Table）；但狀態空間太大時表存不下，Deep Q-Learning 改用<b>神經網路來近似</b>Q 值，不用真的把每一種組合都存下來。記憶法：<b>Deep</b> Q-Learning 的 Deep 就是「用深度神經網路取代那張存不下的表」。
+  </div>
+
+  <h3>應用範例 <span class="pref">p.3-38～3-39</span></h3>
+  <ul>
+    <li><b>遊戲領域</b>：AlphaGo 結合深度學習與強化學習，透過自我對弈優化策略，擊敗世界頂尖棋手；Atari 遊戲中 Deep Q-Learning 讓 AI 學會最佳策略，達到甚至超越人類玩家</li>
+    <li><b>機器人控制</b>：透過試驗與學習掌握行走平衡與步態控制；工業機械臂學習抓取物體，依形狀、材質、位置精準操作</li>
+    <li><b>自動駕駛</b>：用於路徑規劃，依即時路況與目標位置動態計算最優行駛路徑</li>
+  </ul>
+</section>
+
+<section id="quiz">
+  <h2>今日測驗</h2>
+  <p class="lede">6 題，全部選完才能送出。送出後會顯示解析，成績自動回傳給召集人。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。填過一次之後其他天會自動帶入。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 6 題</span>
+    <span class="score">6 題自編（本節官方原題已用於其他天）</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對今天的範圍再教你一次、多出幾題考你。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製今天的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="day12.html">← Day 2：監督式與非監督式學習</a>
+    <a href="day14.html">Day 4：機器學習實現流程 →</a>
+  </div>
+</section>
+
+<footer>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引－科目一 人工智慧基礎概論」3.3 節（機器學習概念）。本週範圍（p.3-33～3-47）在 114.04 版勘誤表中沒有相關更正。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=5"></script>
+<script src="assets/quiz.js?v=5"></script>
+<script>
+Study.initQuiz({
+  day: 13,
+  week: 'W3',
+  dayLabel: 'Day 3',
+  dayTitle: '強化學習',
+  subject: '科目一「人工智慧基礎概論」',
+  ai: {
+    pages: '科目一 p.3-37～3-39',
+    topics: '強化學習的定義（試錯學習、最大化累積獎勵）、三個核心要素（代理 Agent、環境 Environment、獎勵 Reward）、強化學習流程（初始狀態、選擇行動、執行行動、更新策略）、Q-Learning 與 Deep Q-Learning 的差異、強化學習在遊戲（AlphaGo）、機器人控制、自動駕駛的應用範例'
+  },
+  questions: [
+    {
+      q: '關於強化學習的核心概念，下列敘述何者最正確？',
+      o: ['強化學習依賴大量已標記的數據集進行訓練', '強化學習的代理透過探索環境執行行動，依據回饋不斷更新策略，以最大化累積獎勵', '強化學習只能用於分析數據的內在結構，不涉及行動決策', '強化學習不需要任何環境回饋即可完成學習'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-37',
+      e: '強化學習的核心正是「代理透過探索環境執行不同的行動，並根據環境提供的回饋不斷更新策略」，這反映了試錯學習的本質，核心目標是最大化累積獎勵，在長期決策中實現最佳效益。'
+    },
+    {
+      q: '在強化學習的三個核心要素中，「負責進行決策和行動的學習系統」指的是下列哪一個？',
+      o: ['環境（Environment）', '代理（Agent）', '獎勵（Reward）', '損失函數（Loss Function）'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-37',
+      e: '代理（Agent）的定義就是「負責進行決策和行動的學習系統」。環境是代理所處、會依行動提供回饋的操作場域；獎勵是代理執行行動後獲得、表示行動好壞的回饋。「損失函數」不是強化學習三要素之一，是模型訓練階段的概念（本週 Day 4 會講到）。'
+    },
+    {
+      q: '強化學習流程中，代理「基於策略選擇一個行動，可能是隨機的或基於學習經驗的」，這個步驟屬於下列哪一個階段？',
+      o: ['初始狀態', '選擇行動（Action Selection）', '執行行動', '更新策略'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-37～3-38',
+      e: '「選擇行動」階段，代理基於策略（Policy）選擇一個行動，策略可以是隨機的（Exploration，探索新可能）或基於學習經驗的（Exploitation，用已學到的知識）。'
+    },
+    {
+      q: '關於 Q-Learning 與 Deep Q-Learning 的關係，下列敘述何者正確？',
+      o: ['兩者完全無關，是不同的技術體系', 'Deep Q-Learning 是 Q-Learning 的延伸，結合深度學習用神經網路近似 Q 值，解決 Q 表在高維度環境中存不下的問題', 'Q-Learning 一定比 Deep Q-Learning 更適合處理高維度狀態空間', 'Deep Q-Learning 完全不需要透過試錯學習'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-38',
+      e: 'Deep Q-Learning 是 Q-Learning 的延伸，結合深度學習來解決 Q-Learning 在高維度環境中的限制——傳統 Q-Learning 需要把所有狀態與行動組合存入 Q 表，但狀態空間過大時不可行，因此改用深度神經網路來近似 Q 值。'
+    },
+    {
+      q: '「AlphaGo 結合深度學習與強化學習技術，透過自我對弈不斷優化策略，最終擊敗多位世界頂尖棋手」，這段描述屬於強化學習在哪一個領域的應用範例？',
+      o: ['醫療影像診斷', '遊戲領域', '文書處理自動化', '資料庫查詢優化'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-38',
+      e: 'AlphaGo 是學習指引明確舉出的遊戲領域應用範例，透過自我對弈不斷優化策略，展現了強大的策略推理能力。同一段落也提到 Atari 遊戲中 Deep Q-Learning 讓 AI 達到甚至超越人類玩家的表現。'
+    },
+    {
+      q: '工業機械臂透過不斷試驗與學習，逐步掌握根據物體形狀、材質與位置進行精準抓取，這屬於強化學習在下列哪一個領域的應用？',
+      o: ['自動駕駛路徑規劃', '機器人控制', '生成式AI 內容創作', '資料清洗'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-39',
+      e: '學習指引提到，在機器人控制領域，機器人透過不斷試驗與學習掌握行走平衡與步態控制；工業應用中機械臂透過學習抓取物體，能根據物體的形狀、材質與位置進行精準操作，提高自動化生產效率。'
+    }
+  ]
+});
+</script>
+</body>
+</html>

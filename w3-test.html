@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W3 總測驗 — iPAS 考取衝刺班</title>
+<meta name="description" content="W3 總測驗：涵蓋 Day 1～Day 5，學習指引（科目一）p.3-33～3-47 共 20 題，題目集中在這一週最容易搞混的觀念。">
+<link rel="stylesheet" href="assets/style.css?v=5">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W3 · 總測驗 · 9/4（五）</p>
+        <h1>W3 總測驗</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>涵蓋 Day 1～Day 5 全部範圍，共 20 題。題目刻意集中在這一週<b>最容易搞混的觀念</b>上，所以會比每天的小測驗難一點。做完會馬上看到每題解析。</p>
+    <div class="mast-meta">
+      <span class="tag">科目一 p.3-33～3-47</span>
+      <span class="tag">約 20 分鐘</span>
+      <span class="tag">20 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w3-index.html">總覽</a></li>
+    <li><a href="day11.html" data-day="11">Day 1</a></li>
+    <li><a href="day12.html" data-day="12">Day 2</a></li>
+    <li><a href="day13.html" data-day="13">Day 3</a></li>
+    <li><a href="day14.html" data-day="14">Day 4</a></li>
+    <li><a href="day15.html" data-day="15">Day 5</a></li>
+    <li><a href="w3-test.html" aria-current="page">總測驗</a></li>
+    <li><a href="w3-review.html">錯題複習</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>做之前先看這個</h2>
+  <p class="lede">下面是這一週<b>最容易搞混</b>的幾組觀念。花三分鐘掃過去，再開始作答。</p>
+
+  <div class="tw"><table>
+    <tr><th>容易搞混的</th><th>分辨方式</th><th>出處</th></tr>
+    <tr><td>監督式 vs 非監督式學習</td><td>看數據<span class="hl">有沒有標記</span>：有標準答案＝監督式；沒有、自己找結構＝非監督式</td><td>Day 2 · p.3-35</td></tr>
+    <tr><td>SVM vs K-Means</td><td>SVM 是<span class="hl">分類</span>；K-Means 是<span class="hl">聚類</span>，任務不同</td><td>Day 2 · p.3-36</td></tr>
+    <tr><td>Q-Learning vs Deep Q-Learning</td><td>前者用<span class="hl">Q 表</span>；後者用<span class="hl">神經網路近似</span>Q 值</td><td>Day 3 · p.3-38</td></tr>
+    <tr><td>Min-Max vs Z-score 標準化</td><td>前者映射到<span class="hl">0～1</span>；後者轉成<span class="hl">均值 0、標準差 1</span></td><td>Day 4 · p.3-40</td></tr>
+    <tr><td>Accuracy vs F1 分數</td><td>數據<span class="hl">平衡</span>用 Accuracy；<span class="hl">不平衡</span>用 F1</td><td>Day 5 · p.3-42</td></tr>
+    <tr><td>決策樹 vs 隨機森林</td><td>前者是<span class="hl">單一棵樹</span>；後者是<span class="hl">集成多棵樹投票</span></td><td>Day 5 · 補充</td></tr>
+  </table></div>
+
+  <div class="note">
+    <span class="lbl">機器學習流程三階段，一句話記住</span>
+    <b>數據處理</b>＝把食材洗乾淨切好（清洗、標準化、特徵選擇降維）。<br>
+    <b>模型訓練</b>＝照食譜下鍋煮（損失函數告訴你煮得好不好、優化演算法幫你調整火候、防過擬合避免煮過頭）。<br>
+    <b>模型評估與優化</b>＝試吃打分數再調整（指標、交叉驗證、調參）。
+  </div>
+</section>
+
+<section id="quiz">
+  <h2>總測驗</h2>
+  <p class="lede">20 題，Day 1～Day 5 各佔一部分。全部選完、填了姓名才能送出。<b>答錯不用在意分數</b>——送出後每題都有解析，把錯的那幾題看過就是這次的收穫。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 20 題</span>
+    <span class="score">涵蓋 Day 1～Day 5</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對這一週的範圍再教你一次。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製這一週的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="day15.html">← Day 5：模型評估優化與常見模型速覽</a>
+    <a href="w3-index.html">回總覽 →</a>
+  </div>
+</section>
+
+<footer>
+  <p><b>做完就把 W3 收乾淨了。</b></p>
+  <div class="checkin">
+    ① 分數不用在意，<b>回頭把答錯那幾題的解析看一遍</b>就好，不用整節重讀——<a href="w3-review.html">這裡</a>直接列出這週所有答錯的題目。<br>
+    ② 對讀書會有任何想法——進度、題目難度、想加強的主題——歡迎在群組直接說。
+  </div>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引－科目一 人工智慧基礎概論」3.3 節。本週範圍（p.3-33～3-47）在 114.04 版勘誤表中沒有相關更正。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=5"></script>
+<script src="assets/quiz.js?v=5"></script>
+<script>
+Study.initQuiz({
+  day: 'w3test',
+  week: 'W3',
+  dayLabel: 'W3 總測驗',
+  dayTitle: 'W3 總測驗（Day 1～Day 5）',
+  pageFile: 'w3-test.html',
+  scopeWord: '這一週',
+  subject: '科目一「人工智慧基礎概論」',
+  ai: {
+    pages: '科目一 p.3-33～3-47（3.3 節）',
+    topics: '機器學習的定義與基本原理、三大類型（監督式學習：線性迴歸／SVM／神經網路，非監督式學習：K-Means／PCA，強化學習：Q-Learning／Deep Q-Learning）、機器學習實現流程三階段（數據處理：清洗／標準化／特徵選擇降維，模型訓練：損失函數／優化演算法／過擬合防範，模型評估與優化：效能指標／交叉驗證／調參）、決策樹／隨機森林／GAN 等常見模型',
+  },
+  questions: [
+    {
+      q: '機器學習的三個核心要素是什麼？',
+      o: ['數據、模型、損失函數', '訓練集、測試集、驗證集', '特徵工程、優化演算法、正則化', '超參數調整、模型選擇、數據處理'],
+      a: 0,
+      src: '官方原題重考 · 科目一學習指引 p.3-44 第 1 題（Day 1 第 1 題）',
+      e: '機器學習的三個核心要素分別是數據（Data）、模型（Model）和損失函數（Loss Function），數據提供基礎，模型學習數據的規律，損失函數用於評估預測的準確性並指導模型優化。'
+    },
+    {
+      q: '關於機器學習的定義，下列敘述何者最正確？',
+      o: ['機器學習需要工程師針對每種情境手動編寫判斷規則', '機器學習是讓計算機系統從數據中學習規律，無需依賴人為編寫的規則', '機器學習只能處理結構化的表格數據', '機器學習不會隨著數據量增加而有效能上的改變'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-33',
+      e: '機器學習的核心精神是「透過對數據進行處理和分析，建立模型來發現規律」，取代依賴人為編寫的規則。它也能處理非結構化數據（圖像、文本、語音），且具有極高的可擴展性。'
+    },
+    {
+      q: '模型解釋性與透明性不足，限制了機器學習在下列哪些領域的應用最為明顯？',
+      o: ['醫療診斷、法律等對可解釋性要求高的領域', '所有領域都完全不受影響', '只有娛樂產業會受影響', '只有零售業會受影響'],
+      a: 0,
+      src: '自編練習題 · 指引 p.3-35',
+      e: '學習指引明白指出，模型的解釋性與透明性不足，限制了其在醫療、法律等對結果可解釋性要求較高領域的應用，例如醫療決策中，模型需要解釋其診斷建議的依據，否則可能無法獲得專業人士的信任。'
+    },
+    {
+      q: '下列哪一項屬於監督式學習的特點？',
+      o: ['數據集中包含標記訊息', '僅需探索數據內部的結構', '使用代理與環境互動進行學習', '不需要驗證集來調整參數'],
+      a: 0,
+      src: '官方原題重考 · 科目一學習指引 p.3-44 第 2 題（Day 2 第 1 題）',
+      e: '監督式學習依賴有標記的數據集，透過學習輸入與輸出之間的映射關係來進行預測或分類。（B）是非監督式學習的特點，（C）是強化學習的特點。'
+    },
+    {
+      q: '某醫院想透過分析大量已標註「良性／惡性」的醫學影像，訓練一個模型判斷新病患腫瘤的良惡性。依學習指引，最適合用下列哪一種模型？',
+      o: ['K 均值聚類（K-Means）', '支援向量機（SVM）', '主成分分析（PCA）', '以上皆非'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-36',
+      e: 'SVM 是監督式學習中常用於二元分類問題的工具，透過建立最佳分類邊界（超平面）將數據劃分為不同類別，學習指引明確舉例 SVM 能協助醫生透過醫學影像分析判斷腫瘤良性或惡性。'
+    },
+    {
+      q: '企業想把顧客依購買行為分成幾個沒有事先定義標籤的群組，以便制定行銷策略，這最適合用下列哪一種方法？',
+      o: ['線性迴歸', 'K 均值聚類（K-Means Clustering）', '支援向量機（SVM）', '神經網路'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-36',
+      e: 'K 均值聚類是非監督式學習中廣泛使用的聚類演算法，能將數據分為若干群組，學習指引舉的例子正是企業利用 K-Means 分析客戶購買行為做市場區隔。'
+    },
+    {
+      q: '「透過線性變換將高維數據壓縮到低維空間，同時保留數據的主要訊息」，這是下列哪一種方法的定義？',
+      o: ['主成分分析（PCA）', 'Q-Learning', '交叉熵損失', '梯度下降'],
+      a: 0,
+      src: '自編練習題 · 指引 p.3-37',
+      e: 'PCA（主成分分析）是非監督式學習中最典型的降維演算法，透過線性變換將高維數據壓縮到低維空間、同時保留主要訊息，常用於圖像壓縮與基因數據分析。'
+    },
+    {
+      q: '在強化學習的三個核心要素中，「負責進行決策和行動的學習系統」指的是下列哪一個？',
+      o: ['環境（Environment）', '代理（Agent）', '獎勵（Reward）', '損失函數'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-37',
+      e: '代理（Agent）的定義就是「負責進行決策和行動的學習系統」。環境是會依代理行動提供回饋的操作場域；獎勵是代理執行行動後獲得、表示行動好壞的回饋。'
+    },
+    {
+      q: '關於 Q-Learning 與 Deep Q-Learning 的關係，下列敘述何者正確？',
+      o: ['兩者完全無關，是不同的技術體系', 'Deep Q-Learning 結合深度學習用神經網路近似 Q 值，解決 Q 表在高維度環境中存不下的問題', 'Q-Learning 一定比 Deep Q-Learning 更適合處理高維度狀態空間', 'Deep Q-Learning 完全不需要透過試錯學習'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-38',
+      e: 'Deep Q-Learning 是 Q-Learning 的延伸——傳統 Q-Learning 需要把所有狀態與行動組合存入 Q 表，狀態空間過大時不可行，因此改用深度神經網路來近似 Q 值。'
+    },
+    {
+      q: '「AlphaGo 結合深度學習與強化學習技術，透過自我對弈不斷優化策略，最終擊敗多位世界頂尖棋手」，這屬於強化學習在哪一個領域的應用範例？',
+      o: ['醫療影像診斷', '遊戲領域', '文書處理自動化', '資料庫查詢優化'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-38',
+      e: 'AlphaGo 是學習指引明確舉出的遊戲領域應用範例，透過自我對弈不斷優化策略，展現了強大的策略推理能力。'
+    },
+    {
+      q: '機器學習模型過擬合的主要原因是什麼？',
+      o: ['模型的複雜度不足', '訓練數據樣本過多', '模型過度學習數據中的雜訊', '使用過於簡單的損失函數'],
+      a: 2,
+      src: '官方原題重考 · 科目一學習指引 p.3-44 第 3 題（Day 4 第 1 題）',
+      e: '過擬合通常是由於模型學習了訓練數據中的雜訊或特定模式，導致模型對測試數據泛化能力不足。'
+    },
+    {
+      q: '「將數據轉換為均值為 0、標準差為 1 的分佈」，這是下列哪一種數據標準化方法？',
+      o: ['Min-Max 標準化', 'Z-score 標準化', '過濾法', '主成分分析'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-40',
+      e: 'Z-score 標準化的定義正是「將數據轉換為均值為 0、標準差為 1 的分佈」。Min-Max 標準化則是把數據映射到 0 到 1 的區間，公式與結果範圍不同。'
+    },
+    {
+      q: '「根據特徵對預測結果的影響力，利用模型內置機制（如 LASSO 正則化）自動進行特徵篩選」，這屬於特徵選擇的哪一種方法？',
+      o: ['過濾法（Filter Methods）', '包裝法（Wrapper Methods）', '嵌入法（Embedded Methods）', '降維法'],
+      a: 2,
+      src: '自編練習題 · 指引 p.3-40',
+      e: '嵌入法（Embedded Methods）的定義正是「利用模型內置的機制（如 LASSO 正則化）自動進行特徵篩選」。過濾法用相關性或統計量篩選；包裝法透過模型效能指標評估特徵組合的效果。'
+    },
+    {
+      q: '機器學習的梯度下降演算法主要用於什麼？',
+      o: ['減少模型的計算複雜度', '優化模型參數以最小化損失函數', '減少數據中的雜訊干擾', '增強數據特徵的表示能力'],
+      a: 1,
+      src: '官方原題重考 · 科目一學習指引 p.3-44 第 5 題（Day 4 第 2 題）',
+      e: '梯度下降演算法是一種優化方法，透過計算損失函數相對參數的偏導數，調整模型參數使損失函數值逐漸減小。'
+    },
+    {
+      q: '交叉驗證的主要目的是什麼？',
+      o: ['提高模型的訓練速度', '驗證數據是否線性可分', '減少模型的過擬合風險', '測試模型的容錯能力'],
+      a: 2,
+      src: '官方原題重考 · 科目一學習指引 p.3-44 第 4 題（Day 5 第 1 題）',
+      e: '交叉驗證透過多次分割數據進行訓練和測試，有助於評估模型的穩健性並降低過擬合的可能性。'
+    },
+    {
+      q: '一個模型在 100 筆詐騙偵測數據中，只有 2 筆是真正的詐騙。為了公平反映模型抓出詐騙的能力，比較適合用下列哪一種指標？',
+      o: ['準確率（Accuracy）', 'F1 分數（F1 Score）', '學習率', '批次大小'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-42',
+      e: 'F1 分數綜合考慮精確率與召回率，適合處理數據不平衡的問題。這題只有 2% 是詐騙，若只看準確率，模型全部猜「不是詐騙」也能有 98% 準確率，卻完全沒抓到詐騙，無法反映真實效能。'
+    },
+    {
+      q: '決策樹的最大優勢是什麼？',
+      o: ['適合大規模數據的訓練', '具有良好的可解釋性', '不需要進行數據標準化', '適用於圖像生成任務'],
+      a: 1,
+      src: '官方原題重考 · 科目一學習指引 p.3-45 第 7 題（Day 5 第 2 題）',
+      e: '決策樹的分支結構清晰，便於直觀解釋，因此廣泛用於需要高可解釋性的任務，如醫學診斷或風險評估。'
+    },
+    {
+      q: '關於生成對抗網路（GAN）的描述正確的是哪一項？',
+      o: ['GAN 僅用於分類問題', 'GAN 由生成器和鑑別器組成', 'GAN 的結果始終高度可解釋', 'GAN 不能生成高品質的數據'],
+      a: 1,
+      src: '官方原題重考 · 科目一學習指引 p.3-46 第 9 題（Day 5 第 3 題）',
+      e: '生成對抗網路（GAN）由生成器和鑑別器組成，透過對抗學習生成高品質的數據，應用於圖像生成、文本生成等任務。'
+    },
+    {
+      q: '「隨機選擇超參數進行測試，適合高維度的參數空間」，這是下列哪一種模型調參方法？',
+      o: ['網格搜索（Grid Search）', '隨機搜索（Random Search）', '貝葉斯優化（Bayesian Optimization）', 'Early Stopping'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-43',
+      e: '隨機搜索的定義正是「隨機選擇超參數進行測試，適合高維度的參數空間」。網格搜索是逐一嘗試預定範圍內的超參數組合；貝葉斯優化則透過構建代理模型，依歷史結果逐步尋找最優參數。'
+    },
+    {
+      q: '總複習：把這週的三大類型串起來看，下列敘述何者最貼切？',
+      o: ['監督式、非監督式、強化學習的判斷依據完全相同', '監督式學習看「有沒有標記數據」；非監督式學習看「數據內在結構」；強化學習看「代理透過獎勵試錯學習」', '強化學習也需要大量已標記的訓練數據才能運作', '三大類型只是同一種演算法的不同名稱'],
+      a: 1,
+      src: '自編練習題 · 整週觀念整合',
+      e: '這週的主軸：監督式學習＝有標記數據可以對照學習（線性迴歸、SVM、神經網路）；非監督式學習＝沒有標記，靠分析數據內在結構找規律（K-Means、PCA）；強化學習＝代理透過與環境互動、依獎勵回饋不斷試錯調整策略（Q-Learning、DQN）。三者判斷依據不同，接著才是數據處理→模型訓練→評估優化這整套實現流程。'
+    }
+  ]
+});
+</script>
+</body>
+</html>

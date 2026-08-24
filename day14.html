@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 14 機器學習實現流程：數據處理與模型訓練 — iPAS 考取衝刺班</title>
+<meta name="description" content="W3 Day 4：機器學習的數據處理（清洗、標準化、特徵選擇降維）與模型訓練（損失函數、優化演算法、過擬合防範）。學習指引（科目一）p.3-39～3-42。">
+<link rel="stylesheet" href="assets/style.css?v=5">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W3 · Day 4 · 9/3（四）</p>
+        <h1>機器學習實現流程：數據處理與模型訓練</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>前三天講了機器學習「是什麼」跟三種類型。今天開始講「怎麼做出來」——機器學習的實現流程分三大階段：數據處理、模型訓練、模型評估與優化。今天先講前兩階段，明天講第三階段收尾。</p>
+    <div class="mast-meta">
+      <span class="tag">科目一 p.3-39～3-42</span>
+      <span class="tag">閱讀約 20 分鐘</span>
+      <span class="tag">測驗 6 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w3-index.html">總覽</a></li>
+    <li><a href="day11.html" data-day="11">Day 1</a></li>
+    <li><a href="day12.html" data-day="12">Day 2</a></li>
+    <li><a href="day13.html" data-day="13">Day 3</a></li>
+    <li><a href="day14.html" data-day="14" aria-current="page">Day 4</a></li>
+    <li><a href="day15.html" data-day="15">Day 5</a></li>
+    <li><a href="w3-test.html" data-day="w3test">總測驗</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>今天要讀的</h2>
+
+  <h3>階段①數據處理 <span class="pref">p.3-39～3-41</span></h3>
+  <p>數據品質高低直接影響模型的學習效果和預測能力，進入模型訓練前必經的步驟：</p>
+  <div class="tw"><table>
+    <tr><th>步驟</th><th>做什麼</th></tr>
+    <tr><td><b>數據清洗</b></td><td>處理遺缺值（均值填補／中位數或眾數填補／刪除法）、異常值（四分位距法、標準差法）</td></tr>
+    <tr><td><b>數據標準化</b></td><td>把不同量級的數據轉換到統一範圍，消除特徵間的尺度差異</td></tr>
+    <tr><td><b>特徵選擇與降維</b></td><td>篩選最具代表性的特徵、壓縮冗餘特徵，提升效率並減少計算負擔</td></tr>
+  </table></div>
+
+  <p class="lede"><b>數據標準化</b>常用兩種方法：<b>Min-Max 標準化</b>把數據映射到 0～1 區間；<b>Z-score 標準化</b>把數據轉換為均值 0、標準差 1 的分佈。這兩種技術在特徵範圍差異大、或使用梯度下降等對尺度敏感的演算法時特別重要。</p>
+
+  <p class="lede"><b>特徵選擇</b>三方法：<b>過濾法</b>（用相關性或統計量篩選，如皮爾遜相關係數）、<b>包裝法</b>（透過模型效能指標評估特徵組合，如遞迴特徵消除 RFE）、<b>嵌入法</b>（利用模型內置機制如 LASSO 正則化自動篩選）。<b>降維</b>則主要用 PCA（Day 2 學過），透過提取主成分把冗餘特徵壓縮到低維空間。</p>
+
+  <div class="card">
+    <h4>白話一點：數據清洗跟標準化像「整理食材再下鍋」</h4>
+    <p><b>數據清洗</b>：買菜回來，先挑掉爛葉子、壞掉的部分（處理異常值），沒買到的食材就用替代品湊（填補遺缺值）。<b>數據標準化</b>：食譜裡有的份量用「克」、有的用「杯」，單位不統一沒法照著做，要先換算成同一種單位（同一個尺度），不然機器學習模型看到「身高 170（公分）」跟「年薪 50（萬）」數字差太多，會誤以為年薪比身高重要很多倍。</p>
+  </div>
+
+  <h3>階段②模型訓練 <span class="pref">p.3-41～3-42</span></h3>
+  <p>目標是透過學習輸入特徵與輸出結果的映射關係，找出最優的模型參數。</p>
+  <div class="tw"><table>
+    <tr><th>環節</th><th>重點</th></tr>
+    <tr><td><b>損失函數（Loss Function）</b></td><td>衡量預測值與實際值的差異；損失越高＝誤差越大。常見：均方誤差 MSE（迴歸任務）、交叉熵損失 Cross-Entropy Loss（分類任務）</td></tr>
+    <tr><td><b>優化演算法</b></td><td>透過梯度下降（Gradient Descent）等方法<b>最小化損失函數</b>。變種：批次梯度下降 BGD（用整個數據集）、隨機梯度下降 SGD（每次用一個樣本，快但不穩）、Adam（結合動量法與 RMSProp，最廣泛使用）</td></tr>
+    <tr><td><b>過擬合防範</b></td><td>Regularization（損失函數加懲罰項，L1／L2 正則化）、Early Stopping（驗證集表現下降時停止訓練）、Data Augmentation（隨機旋轉、翻轉等擴展訓練數據）</td></tr>
+  </table></div>
+
+  <div class="note">
+    <span class="lbl">過擬合（Overfitting）是什麼</span>
+    模型在<b>訓練數據上表現優異</b>，但在<b>測試數據上表現不佳</b>——白話說就是「背答案背得很熟，但換一題就不會了」。原因通常是模型<b>過度學習了訓練數據中的雜訊</b>，而不是真正抓到規律。防範方法就是上面表格的三種：加懲罰項、提早停止、擴增訓練資料的多樣性。
+  </div>
+</section>
+
+<section id="quiz">
+  <h2>今日測驗</h2>
+  <p class="lede">6 題，全部選完才能送出。送出後會顯示解析，成績自動回傳給召集人。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。填過一次之後其他天會自動帶入。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 6 題</span>
+    <span class="score">2 題官方原題 · 4 題自編</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對今天的範圍再教你一次、多出幾題考你。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製今天的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="day13.html">← Day 3：強化學習</a>
+    <a href="day15.html">Day 5：模型評估與常見模型速覽 →</a>
+  </div>
+</section>
+
+<footer>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引－科目一 人工智慧基礎概論」3.3 節（機器學習概念）。本週範圍（p.3-33～3-47）在 114.04 版勘誤表中沒有相關更正。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=5"></script>
+<script src="assets/quiz.js?v=5"></script>
+<script>
+Study.initQuiz({
+  day: 14,
+  week: 'W3',
+  dayLabel: 'Day 4',
+  dayTitle: '機器學習實現流程：數據處理與模型訓練',
+  subject: '科目一「人工智慧基礎概論」',
+  ai: {
+    pages: '科目一 p.3-39～3-42',
+    topics: '機器學習實現流程三階段（數據處理、模型訓練、模型評估與優化）、數據清洗（遺缺值與異常值處理）、數據標準化（Min-Max、Z-score）、特徵選擇三方法（過濾法、包裝法、嵌入法）、損失函數（MSE、交叉熵損失）、優化演算法（梯度下降、SGD、Adam）、過擬合的定義與防範（Regularization、Early Stopping、Data Augmentation）'
+  },
+  questions: [
+    {
+      q: '機器學習模型過擬合的主要原因是什麼？',
+      o: ['模型的複雜度不足', '訓練數據樣本過多', '模型過度學習數據中的雜訊', '使用過於簡單的損失函數'],
+      a: 2,
+      src: '官方原題 · 科目一學習指引 p.3-44 第 3 題',
+      e: '過擬合通常是由於模型學習了訓練數據中的雜訊或特定模式，導致模型對測試數據泛化能力不足。'
+    },
+    {
+      q: '機器學習的梯度下降演算法主要用於什麼？',
+      o: ['減少模型的計算複雜度', '優化模型參數以最小化損失函數', '減少數據中的雜訊干擾', '增強數據特徵的表示能力'],
+      a: 1,
+      src: '官方原題 · 科目一學習指引 p.3-44 第 5 題',
+      e: '梯度下降演算法是一種優化方法，透過計算損失函數相對參數的偏導數，調整模型參數使損失函數值逐漸減小。'
+    },
+    {
+      q: '某數據集中有少數幾筆遺缺值，且該特徵的數據分佈明顯偏態（非常態分佈）。依學習指引，比較適合用下列哪一種方式處理？',
+      o: ['一律用平均值填補', '中位數或眾數填補', '直接刪除整個數據集', '完全不處理，直接進入模型訓練'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-39',
+      e: '學習指引指出：「中位數或眾數填補：針對偏態分佈或類別型特徵，使用中位數或眾數進行填補。」均值填補則適用於數值型、分佈較平均的特徵，偏態分佈時用均值容易被極端值拉偏。'
+    },
+    {
+      q: '「將數據轉換為均值為 0、標準差為 1 的分佈」，這是下列哪一種數據標準化方法？',
+      o: ['Min-Max 標準化', 'Z-score 標準化', '過濾法（Filter Methods）', '主成分分析（PCA）'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-40',
+      e: 'Z-score 標準化的定義正是「將數據轉換為均值為 0、標準差為 1 的分佈」。Min-Max 標準化則是把數據映射到 0 到 1 的區間，兩者都是消除特徵尺度差異的方法，但公式與結果範圍不同，容易混淆要分清楚。'
+    },
+    {
+      q: '為了避免過擬合，在驗證集上的表現開始下降時就停止訓練，這種策略叫做什麼？',
+      o: ['Regularization（正則化）', 'Data Augmentation（數據增強）', 'Early Stopping（提早停止）', 'Grid Search（網格搜索）'],
+      a: 2,
+      src: '自編練習題 · 對應 p.3-42',
+      e: 'Early Stopping 的定義就是「當模型在驗證集上的表現開始下降時，停止訓練」。Regularization 是在損失函數加懲罰項；Data Augmentation 是透過隨機旋轉、翻轉等方式擴展訓練數據集；Grid Search 屬於模型調參的方法（Day 5 會講到），不是過擬合防範措施。'
+    },
+    {
+      q: '在分類任務中，用來衡量預測概率分佈與真實分佈之間差異的損失函數，通常是下列哪一種？',
+      o: ['均方誤差（Mean Squared Error, MSE）', '交叉熵損失（Cross-Entropy Loss）', 'K 折交叉驗證', 'Adam 優化演算法'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-41',
+      e: '交叉熵損失（Cross-Entropy Loss）用於分類任務，衡量預測概率分佈與真實分佈之間的差異。均方誤差（MSE）則是用於迴歸任務，計算預測值與真實值之間平方誤差的平均值，兩者對應的任務類型不同。'
+    }
+  ]
+});
+</script>
+</body>
+</html>

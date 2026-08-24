@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W4 總測驗 — iPAS 考取衝刺班</title>
+<meta name="description" content="W4 總測驗：涵蓋 Day 1～Day 5，學習指引（科目二）p.3-31～3-51 共 20 題，題目集中在這一週最容易搞混的觀念。">
+<link rel="stylesheet" href="assets/style.css?v=5">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W4 · 總測驗 · 9/11（五）</p>
+        <h1>W4 總測驗</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>涵蓋 Day 1～Day 5 全部範圍，共 20 題。題目刻意集中在這一週<b>最容易搞混的觀念</b>上，所以會比每天的小測驗難一點。做完會馬上看到每題解析。這也是 STEP 1 日常目標的最後一份測驗。</p>
+    <div class="mast-meta">
+      <span class="tag">科目二 p.3-31～3-51</span>
+      <span class="tag">約 20 分鐘</span>
+      <span class="tag">20 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w4-index.html">總覽</a></li>
+    <li><a href="day16.html" data-day="16">Day 1</a></li>
+    <li><a href="day17.html" data-day="17">Day 2</a></li>
+    <li><a href="day18.html" data-day="18">Day 3</a></li>
+    <li><a href="day19.html" data-day="19">Day 4</a></li>
+    <li><a href="day20.html" data-day="20">Day 5</a></li>
+    <li><a href="w4-test.html" aria-current="page">總測驗</a></li>
+    <li><a href="w4-review.html">錯題複習</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>做之前先看這個</h2>
+  <p class="lede">下面是這一週<b>最容易搞混</b>的幾組觀念。花三分鐘掃過去，再開始作答。</p>
+
+  <div class="tw"><table>
+    <tr><th>容易搞混的</th><th>分辨方式</th><th>出處</th></tr>
+    <tr><td>需求現狀評估 vs 資源基礎設施評估</td><td>前者問「<span class="hl">要解決什麼問題</span>」；後者問「<span class="hl">有沒有能力解決</span>」</td><td>Day 1 · p.3-31</td></tr>
+    <tr><td>準備階段 vs 設計階段</td><td>前者「<span class="hl">要不要做、做什麼</span>」；後者「<span class="hl">怎麼做出規格</span>」</td><td>Day 2 · p.3-35</td></tr>
+    <tr><td>風險接受 vs 風險迴避</td><td>接受＝<span class="hl">忍受＋備案</span>；迴避＝<span class="hl">先不做</span></td><td>Day 4 · p.3-50</td></tr>
+    <tr><td>風險轉移 vs 風險緩解</td><td>轉移＝<span class="hl">轉給第三方</span>；緩解＝<span class="hl">自己做好管理</span></td><td>Day 4 · p.3-50～3-51</td></tr>
+    <tr><td>鑑別式AI vs 生成式AI</td><td>鑑別式做<span class="hl">分類</span>；生成式做<span class="hl">生成新樣本</span></td><td>Day 5 · p.3-48</td></tr>
+    <tr><td>TCO vs ROI</td><td>TCO 算<span class="hl">投入</span>；ROI 算<span class="hl">產出</span></td><td>Day 3、5</td></tr>
+  </table></div>
+</section>
+
+<section id="quiz">
+  <h2>總測驗</h2>
+  <p class="lede">20 題，Day 1～Day 5 各佔一部分。全部選完、填了姓名才能送出。<b>答錯不用在意分數</b>——送出後每題都有解析，把錯的那幾題看過就是這次的收穫。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 20 題</span>
+    <span class="score">涵蓋 Day 1～Day 5</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對這一週的範圍再教你一次。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製這一週的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="day20.html">← Day 5：快速複習週：鑑別式AI／生成式AI 概念、No Code 回顧</a>
+    <a href="w4-index.html">回總覽 →</a>
+  </div>
+</section>
+
+<footer>
+  <p><b>做完就把 W4 收乾淨了，STEP 1 日常目標全部完成！</b></p>
+  <div class="checkin">
+    ① 分數不用在意，<b>回頭把答錯那幾題的解析看一遍</b>就好，不用整節重讀——<a href="w4-review.html">這裡</a>直接列出這週所有答錯的題目。<br>
+    ② 對讀書會有任何想法——進度、題目難度、想加強的主題——歡迎在群組直接說，下週開始 STEP 2 知識整理。
+  </div>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引－科目二 生成式AI應用與規劃」3.3 節。本週範圍（p.3-31～3-51）僅第③項評估標準標題依勘誤表更正，詳見 W4 首頁說明。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=5"></script>
+<script src="assets/quiz.js?v=5"></script>
+<script>
+Study.initQuiz({
+  day: 'w4test',
+  week: 'W4',
+  dayLabel: 'W4 總測驗',
+  dayTitle: 'W4 總測驗（Day 1～Day 5）',
+  pageFile: 'w4-test.html',
+  scopeWord: '這一週',
+  subject: '科目二「生成式AI應用與規劃」',
+  ai: {
+    pages: '科目二 p.3-31～3-51（3.3 節）',
+    topics: '生成式AI 導入 5 項評估標準、導入規劃四階段（準備、設計、驗證POC、實施營運）、ROI／NPV／IRR 計算、生成式AI 常見風險與防範措施、6 種風險應對策略（溯源、文化、接受、緩解、迴避、轉移）、鑑別式AI 與生成式AI 概念快速複習、No Code/Low Code 重點回顧',
+  },
+  questions: [
+    {
+      q: '以下哪一項屬於企業在評估導入生成式AI 時需識別的問題領域？',
+      o: ['市場趨勢預測能力有限', '設計更高效能的運算資源', '增加銷售團隊人力', '減少AI 模型參數數量'],
+      a: 0,
+      src: '官方原題重考 · 科目二學習指引 p.3-52 第 2 題（Day 1 第 1 題）',
+      e: '評估問題領域需從企業現有瓶頸出發，市場趨勢預測能力不足是常見的挑戰，屬於「需求與現狀評估」中「痛點識別」的範疇。'
+    },
+    {
+      q: '依學習指引更正後的內容，5 項評估標準中的第③項標題正確名稱是什麼？',
+      o: ['資源與基礎設施評估', '企業導入階段性實施策略', '員工技能與文化導入', '需求與現狀評估'],
+      a: 1,
+      src: '自編練習題 · 對應勘誤表更正',
+      e: '114.04 版勘誤表已將第③項標題由誤植的「資源與基礎設施評估」（與第②項重複）更正為「企業導入階段性實施策略」，內容講的是試點應用、階段性擴展、長期目標設定與持續優化的分階段推進做法。'
+    },
+    {
+      q: '企業導入生成式AI 的第一步應是什麼？',
+      o: ['確保硬體設備升級', '設定可量化、可追蹤的經營目標', '安排員工進行AI 相關培訓', '購買生成式AI 相關軟體'],
+      a: 1,
+      src: '官方原題重考 · 科目二學習指引 p.3-52 第 1 題（Day 2 第 1 題）',
+      e: '設定明確目標是規劃AI 導入的基礎，其他步驟（培訓、採購、硬體升級）都需要以此為依據，對應設計階段「確認導入最終目標」的內容。'
+    },
+    {
+      q: '某企業想導入生成式AI，先繪製各部門業務流程圖，找出重複性高、規則明確的作業，準備優先導入 AI。這屬於哪一個階段的哪個步驟？',
+      o: ['設計階段：確認使用情境', '準備階段：掌握企業課題', '驗證POC 階段：模型開發', '實施營運階段：業務流程整合'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-35～3-36',
+      e: '「準備階段：掌握企業課題」下的「提取改善項目」正是「繪製各部門的業務流程圖……找出可能存在的流程瓶頸，並識別具有重複性、規則性和標準化的工作」。'
+    },
+    {
+      q: '用來衡量生成式AI 模型生成內容品質與語言流暢性的量化標準，學習指引提到下列哪一組指標？',
+      o: ['ROI、NPV、IRR', 'BLEU、ROUGE、Perplexity', 'GDPR、CCPA', 'TCO、KPI'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-40',
+      e: '學習指引指出，評估生成式AI 模型效能時常採用 BLEU、ROUGE、Perplexity 等量化標準，衡量模型生成內容的品質與語言流暢性；ROI、NPV、IRR 則是財務評估指標。'
+    },
+    {
+      q: '在AI 導入正式實施階段，企業應優先進行的活動是什麼？',
+      o: ['增加行銷預算', '調整產品價格', '確保相關人員熟悉新流程與工具', '減少生產規模以減少風險'],
+      a: 2,
+      src: '官方原題重考 · 科目二學習指引 p.3-53 第 7 題（Day 3 第 1 題）',
+      e: '員工熟悉新流程和工具是AI 成功應用的基礎，確保業務能順利過渡，對應實施營運階段「員工培訓」的內容。'
+    },
+    {
+      q: '企業定期檢查輸入數據的分佈變化，避免因業務場景或用戶行為改變導致模型預測準確性降低，這個現象稱為下列何者？',
+      o: ['過擬合', '數據漂移（Data Drift）', '模式崩潰', 'A/B 測試'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-42',
+      e: '數據漂移（Data Drift）指輸入數據的分佈隨業務場景或用戶行為改變而變化，可能導致模型預測準確性降低，因此需要定期檢查並及時更新訓練數據集。'
+    },
+    {
+      q: '計算 AI 導入方案的財務可行性時，學習指引提到可用哪些財務指標評估長期收益潛力？',
+      o: ['淨現值（NPV）與內部報酬率（IRR）', 'BLEU 與 ROUGE', 'Accuracy 與 F1 分數', 'GDPR 與 CCPA'],
+      a: 0,
+      src: '自編練習題 · 指引 p.3-44',
+      e: '學習指引指出，計算ROI 時可計算財務指標如淨現值（NPV）與內部報酬率（IRR），評估方案的財務可行性與長期收益潛力。'
+    },
+    {
+      q: '下列何者為風險分析階段的主要目的？',
+      o: ['找到更多的數據來源', '增強模型的效能', '評估風險的影響與發生可能性', '降低模型運行成本'],
+      a: 2,
+      src: '官方原題重考 · 科目二學習指引 p.3-53 第 8 題（Day 4 第 2 題）',
+      e: '風險分析的重點是根據影響程度與發生機率評估風險的嚴重性，從而進行分級與資源分配，這正是風險矩陣分析的核心目的。'
+    },
+    {
+      q: '若企業將資料安全管理外包給第三方服務供應商，屬於哪種風險應對策略？',
+      o: ['風險緩解', '風險轉移', '風險接受', '風險規避'],
+      a: 1,
+      src: '官方原題重考 · 科目二學習指引 p.3-54 第 9 題（Day 4 第 3 題）',
+      e: '透過外包或購買保險等方式，企業將潛在風險轉移至第三方來處理，這正是「風險轉移」的定義。'
+    },
+    {
+      q: '某企業評估後認為某項生成式AI 應用的風險影響有限、也無法完全避免，於是評估風險容忍度並制定應急計畫，繼續推行該應用。這屬於哪一種風險應對策略？',
+      o: ['風險迴避', '風險轉移', '風險接受', '風險溯源'],
+      a: 2,
+      src: '自編練習題 · 指引 p.3-50',
+      e: '風險接受適用於「風險影響有限或無法完全避免的情況」，核心在於準確評估風險容忍度並制定應急計畫，並非忽視風險，而是基於現實條件的理性選擇。'
+    },
+    {
+      q: '「透過定期培訓與教育，讓員工了解資料隱私、內容偏見和法規合規等議題，並鼓勵主動報告風險、建立獎勵政策」，這屬於 6 種風險應對策略中的哪一項？',
+      o: ['風險溯源', '風險文化', '風險緩解', '風險迴避'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-50',
+      e: '風險文化強調提高員工對生成式AI 風險的認知，透過定期培訓與教育、案例分析增強員工對風險現實性的理解，並建立風險報告機制與獎勵政策，強化基層參與。風險溯源則是針對數據來源進行審核、確保生成過程可追溯，兩者容易搞混但重點不同。'
+    },
+    {
+      q: '為了確保風險管理的持續有效性，企業應如何應對風險管理策略的效果下降？',
+      o: ['繼續沿用原策略', '停止AI 應用以防意外', '快速調整並進行必要改進', '將策略移交給外部顧問'],
+      a: 2,
+      src: '官方原題重考 · 科目二學習指引 p.3-54 第 10 題（Day 4 第 4 題）',
+      e: '當發現策略效果下降時，企業應主動調整策略並進行改進，確保風險管理的持續有效性。'
+    },
+    {
+      q: '處理個人資料以訓練生成式AI 模型時，學習指引特別提到需注意哪兩項隱私法規？',
+      o: ['GDPR 與 CCPA', 'TCO 與 ROI', 'BLEU 與 ROUGE', 'NPV 與 IRR'],
+      a: 0,
+      src: '自編練習題 · 指引 p.3-48',
+      e: '學習指引指出，生成式AI 風險管理的重要面向之一是隱私法規，特別是《一般資料保護規則》（GDPR）與《加州消費者隱私法案》（CCPA），處理個資時應採資料匿名化或假名化技術。'
+    },
+    {
+      q: '下列何者為鑑別式AI 的主要目標？',
+      o: ['學習數據的生成過程', '生成類似真實數據的新樣本', '分類或迴歸數據', '創建多樣化的數據分佈'],
+      a: 2,
+      src: '官方原題重考 · 科目一學習指引 p.3-60 第 1 題（Day 5 第 1 題）',
+      e: '鑑別式AI 專注於學習數據的條件概率 P（y|x），主要用於分類或迴歸任務，而非生成數據。'
+    },
+    {
+      q: '生成對抗網路（GAN）的兩個核心組件是什麼？',
+      o: ['編碼器與解碼器', '分類器與生成器', '生成器與鑑別器', '訓練器與推斷器'],
+      a: 2,
+      src: '官方原題重考 · 科目一學習指引 p.3-60 第 4 題（Day 5 第 2 題）',
+      e: 'GAN 的兩個核心組件為生成器（Generator）和鑑別器（Discriminator），生成器負責生成數據，鑑別器負責判斷數據真假。'
+    },
+    {
+      q: '「透過將數據映射到隱變量空間並重建原始數據來學習數據的潛在結構，包含編碼器與解碼器兩部分」，這是下列哪一種生成式AI 模型？',
+      o: ['變分自編碼器（VAE）', '支援向量機（SVM）', '決策樹', 'K 均值聚類'],
+      a: 0,
+      src: '自編練習題 · 指引 p.3-52～3-53',
+      e: '變分自編碼器（VAE）由編碼器（把數據壓縮到低維隱變量空間）與解碼器（從隱變量空間重建數據）組成，常用於數據修復、異常檢測與數據生成。'
+    },
+    {
+      q: '關於 No Code 與 Low Code 的差異，下列敘述何者最正確？',
+      o: ['兩者的差異在於有沒有視覺化介面', '差異在於要不要寫程式碼、寫多少，兩者都有視覺化介面', 'No Code 只能給專業工程師使用', 'Low Code 完全不能客製化'],
+      a: 1,
+      src: '自編練習題 · 呼應 W2 Day 1',
+      e: '兩者的分界不是「有沒有介面」，而是要不要寫程式碼、寫多少。No Code＝完全不用寫；Low Code＝可以寫一點來做客製化與複雜邏輯。'
+    },
+    {
+      q: 'TCO（總擁有成本）與 ROI（投資回報率）的差異，下列敘述何者正確？',
+      o: ['兩者是完全相同的概念', 'TCO 衡量投入（購買維護培訓成本），ROI 衡量產出（效益回報）', 'TCO 只用於生成式AI，ROI 只用於No Code 平台', 'ROI 衡量投入，TCO 衡量產出'],
+      a: 1,
+      src: '自編練習題 · 呼應 W2 Day 3、W4 Day 3',
+      e: 'TCO 算的是投入面——購買、維護、培訓等全部成本；ROI 算的是產出面——效益回報。這組概念在 W2 講平台選擇、W4 講生成式AI 導入 ROI 計算時都出現過。'
+    },
+    {
+      q: '總複習：把 W4 的主軸串起來看，下列敘述何者最貼切？',
+      o: ['導入生成式AI 只要買軟體、裝上去就好，不需要任何評估規劃', '導入生成式AI 需要從評估標準出發，經過準備、設計、驗證POC、實施營運四階段，並全程納入風險管理', '風險評估與管理跟導入規劃是完全獨立、互不相關的兩件事', '一旦模型上線，就不需要再監控或重新訓練'],
+      a: 1,
+      src: '自編練習題 · 整週觀念整合',
+      e: 'W4 的主軸：先用 5 項標準評估「該不該做、能不能做」→ 依準備、設計、驗證POC、實施營運四階段把方案落地 → ROI 計算確認財務效益 → 全程搭配風險評估與管理（常見風險、6 種應對策略）確保安全合規。四者環環相扣，不是各自獨立的步驟。'
+    }
+  ]
+});
+</script>
+</body>
+</html>

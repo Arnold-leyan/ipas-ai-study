@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W3 機器學習概念 — iPAS 考取衝刺班</title>
+<meta name="description" content="iPAS 初級 AI 應用規劃師 考取衝刺班 第三週學習頁：學習指引科目一 p.3-33～3-47，每天一頁、每天一份小測驗。">
+<link rel="stylesheet" href="assets/style.css?v=5">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">iPAS 初級 AI 應用規劃師 · 考取衝刺班</p>
+        <h1>第三週：機器學習概念</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>STEP 1 日常目標第 3 週，換回科目一「人工智慧基礎概論」，接上第一週停的地方。這是鑑別測驗全班第二弱的主題，單獨排一整週。每天 20–30 分鐘：讀一小節、做當天的小測驗。五天讀完後有一份 <b>W3 總測驗</b>（20 題，涵蓋整週）。</p>
+    <div class="mast-meta">
+      <span class="tag">8/31 – 9/4</span>
+      <span class="tag">科目一 p.3-33 ～ 3-47</span>
+      <span class="tag" id="week-progress">本週進度 0 / 5 天</span>
+      <a class="tag" href="index.html">📚 課程首頁</a>
+      <a class="tag" href="w2-index.html">← 第二週</a>
+      <a class="tag" href="w4-index.html">第四週 →</a>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w3-index.html" aria-current="page">總覽</a></li>
+    <li><a href="day11.html" data-day="11">Day 1</a></li>
+    <li><a href="day12.html" data-day="12">Day 2</a></li>
+    <li><a href="day13.html" data-day="13">Day 3</a></li>
+    <li><a href="day14.html" data-day="14">Day 4</a></li>
+    <li><a href="day15.html" data-day="15">Day 5</a></li>
+    <li><a href="w3-test.html" data-day="w3test">總測驗</a></li>
+    <li><a href="w3-review.html">錯題複習</a></li>
+    <li><a href="#confuse">易混淆對照</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<div class="namebar" id="lookup-bar">
+  <label for="lookup-name">輸入姓名，查你已經完成哪幾天</label>
+  <p class="hint">跟平常測驗填的姓名一致就好，暱稱也可以（例如 Fanny、Emily、派瑞斯）。之前填過的話這裡會自動帶入。換裝置、換瀏覽器也查得到，因為是直接查後端試算表。</p>
+  <div class="namerow">
+    <input type="text" id="lookup-name" placeholder="例：王小明" autocomplete="name">
+    <button type="button" class="btn" id="lookup-btn">查詢進度</button>
+  </div>
+  <p class="sync idle" id="lookup-status"></p>
+</div>
+
+<section id="days">
+  <h2>本週五天</h2>
+  <p class="lede">每天一頁，各附 6 題小測驗（Day 5 是 10 題）。五天做完再做最後那份 20 題總測驗。作答完會自動回傳成績，召集人週日彙整。</p>
+
+  <div class="daygrid">
+    <a class="daycard" href="day11.html" data-day="11">
+      <div class="row">
+        <span class="dnum">DAY 1 · 8/31（一）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">機器學習是什麼？基本原理與挑戰</span></div>
+      <div class="dsub">科目一 p.3-33～3-35 ｜ 機器學習定義、基本原理、技術優勢、目前的挑戰與未來方向　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day12.html" data-day="12">
+      <div class="row">
+        <span class="dnum">DAY 2 · 9/1（二）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">監督式與非監督式學習</span></div>
+      <div class="dsub">科目一 p.3-35～3-37 ｜ 線性迴歸、SVM、神經網路、K-Means、PCA　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day13.html" data-day="13">
+      <div class="row">
+        <span class="dnum">DAY 3 · 9/2（三）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">強化學習</span></div>
+      <div class="dsub">科目一 p.3-37～3-39 ｜ 三要素、學習流程、Q-Learning／DQN、遊戲與機器人應用　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day14.html" data-day="14">
+      <div class="row">
+        <span class="dnum">DAY 4 · 9/3（四）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">機器學習實現流程：數據處理與模型訓練</span></div>
+      <div class="dsub">科目一 p.3-39～3-42 ｜ 數據清洗、標準化、特徵選擇、損失函數、優化演算法、過擬合防範　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day15.html" data-day="15">
+      <div class="row">
+        <span class="dnum">DAY 5 · 9/4（五）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">模型評估優化與常見模型速覽</span></div>
+      <div class="dsub">科目一 p.3-42～3-47 ｜ 效能指標、交叉驗證、調參，加上決策樹／隨機森林／GAN　<b>10 題</b></div>
+    </a>
+
+    <a class="daycard" href="w3-test.html" data-day="w3test">
+      <div class="row">
+        <span class="dnum">W3 總測驗 · 五天讀完後做</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">W3 總測驗（Day 1～Day 5）</span></div>
+      <div class="dsub">科目一 p.3-33～3-47 ｜ 集中在這週最容易搞混的觀念，做完附完整解析　<b>20 題</b></div>
+    </a>
+  </div>
+
+  <div class="note">
+    <span class="lbl">為什麼這週排這個主題</span>
+    依 8/14 鑑別測驗結果，機器學習概念是全班第二弱的主題（正確率 71%，4 人低於 50%），所以單獨排一整週。
+    內容比較抽象，重點是把「監督式／非監督式／強化學習」三大類型的判斷依據（有沒有標記數據、有沒有環境互動）
+    背熟，再搭配數據處理、模型訓練、評估優化這整套實現流程的專有名詞。
+  </div>
+</section>
+
+<section id="confuse">
+  <h2>本週易混淆對照</h2>
+  <p class="lede">這幾組是本週最容易互相搞混的，也是 W3 總測驗最愛考的地方。考前掃一遍就好。</p>
+
+  <div class="tw"><table>
+    <tr><th>容易搞混的</th><th>分辨方式</th><th>出處</th></tr>
+    <tr><td>監督式學習 vs 非監督式學習</td><td>看數據<b>有沒有標記</b>：有標準答案可對照＝監督式；沒有標記、自己找結構＝非監督式</td><td>Day 2</td></tr>
+    <tr><td>SVM（分類） vs K-Means（聚類）</td><td>SVM 是<b>監督式分類</b>；K-Means 是<b>非監督式聚類</b>，任務性質不同</td><td>Day 2</td></tr>
+    <tr><td>Q-Learning vs Deep Q-Learning</td><td>Q-Learning 用<b>Q 表</b>存所有組合；Deep Q-Learning 用<b>神經網路近似</b>Q 值，解決高維度狀態存不下的問題</td><td>Day 3</td></tr>
+    <tr><td>Min-Max 標準化 vs Z-score 標準化</td><td>Min-Max 映射到 <b>0～1 區間</b>；Z-score 轉成<b>均值 0、標準差 1</b> 的分佈</td><td>Day 4</td></tr>
+    <tr><td>過擬合的防範：Regularization vs Early Stopping vs Data Augmentation</td><td>正則化是<b>改損失函數</b>；提早停止是<b>看時機喊停</b>；數據增強是<b>擴充訓練資料</b>，三個手段不同</td><td>Day 4</td></tr>
+    <tr><td>Accuracy vs F1 分數</td><td>數據<b>平衡</b>用 Accuracy；數據<b>不平衡</b>（如詐騙偵測）要用 F1 分數才準確</td><td>Day 5</td></tr>
+    <tr><td>K 折交叉驗證 vs K 均值聚類（K-Means）</td><td>都有「K」但完全不同：交叉驗證是<b>評估方法</b>；K-Means 是<b>非監督式聚類演算法</b></td><td>Day 5</td></tr>
+    <tr><td>決策樹 vs 隨機森林</td><td>決策樹是<b>單一棵樹</b>（可解釋性高但易過擬合）；隨機森林是<b>集成多棵樹投票</b>（降低過擬合）</td><td>Day 5</td></tr>
+    <tr><td>網格搜索 vs 隨機搜索 vs 貝葉斯優化</td><td>網格搜索<b>逐一嘗試</b>；隨機搜索<b>隨機挑選</b>（適合高維度）；貝葉斯優化<b>依歷史結果逐步逼近</b>最優解</td><td>Day 5</td></tr>
+    <tr><td>機器學習三要素（數據／模型／損失函數） vs 強化學習三要素（代理／環境／獎勵）</td><td>不是同一組概念，出現「三個核心要素」題目時先看題目問的是哪一種學習類型</td><td>Day 1、Day 3</td></tr>
+  </table></div>
+</section>
+
+<footer>
+  <p><b>本週收尾，接下來兩件事：</b></p>
+  <div class="checkin">
+    ① <b>W3 總測驗</b>——涵蓋 Day 1～Day 5 共 20 題，<a href="w3-test.html">現在就可以做</a>。<br>
+    ② <b>對讀書會有什麼想法，歡迎在群組直接說。</b>進度太快或太慢、題目太難或太簡單、想多補哪個主題，都可以提。
+  </div>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引－科目一 人工智慧基礎概論」3.3 節。本週範圍為 p.3-33～3-47，在 114.04 版學習指引勘誤表中沒有相關更正（科目一勘誤集中在 p.3-25～3-32，不在本週範圍內）。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=5"></script>
+<script src="assets/quiz.js?v=5"></script>
+<script>Study.initWeekLookup();</script>
+</body>
+</html>

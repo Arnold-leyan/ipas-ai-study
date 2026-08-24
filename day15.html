@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 15 模型評估優化與常見模型速覽 — iPAS 考取衝刺班</title>
+<meta name="description" content="W3 Day 5：模型評估指標、交叉驗證、調參方法，加上決策樹、隨機森林、GAN 等常見模型速覽。學習指引（科目一）p.3-42～3-47。">
+<link rel="stylesheet" href="assets/style.css?v=5">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W3 · Day 5 · 9/4（五）</p>
+        <h1>模型評估優化與常見模型速覽</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>這是這一節的總結主題，也是官方練習題最集中出現的地方。今天先收尾「模型評估與優化」，再補齊幾個常考但前幾天沒細講的常見模型（決策樹、隨機森林、GAN）。今天測驗 10 題，把整週的觀念收尾。</p>
+    <div class="mast-meta">
+      <span class="tag">科目一 p.3-42～3-47</span>
+      <span class="tag">閱讀約 18 分鐘</span>
+      <span class="tag">測驗 10 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w3-index.html">總覽</a></li>
+    <li><a href="day11.html" data-day="11">Day 1</a></li>
+    <li><a href="day12.html" data-day="12">Day 2</a></li>
+    <li><a href="day13.html" data-day="13">Day 3</a></li>
+    <li><a href="day14.html" data-day="14">Day 4</a></li>
+    <li><a href="day15.html" data-day="15" aria-current="page">Day 5</a></li>
+    <li><a href="w3-test.html" data-day="w3test">總測驗</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>今天要讀的</h2>
+
+  <h3>階段③模型評估與優化 <span class="pref">p.3-42～3-43</span></h3>
+  <div class="tw"><table>
+    <tr><th>環節</th><th>重點</th></tr>
+    <tr><td><b>效能評估指標</b></td><td>準確率 Accuracy（預測正確比例，適用平衡的分類問題）、F1 分數（綜合精確率與召回率，適合數據不平衡）、均方誤差 MSE（迴歸問題，反映誤差大小）</td></tr>
+    <tr><td><b>交叉驗證</b></td><td>把數據集分割成多個子集，反覆訓練與測試，降低過擬合風險、提升泛化能力。最常見是 <b>K 折交叉驗證</b>：分成 K 個子集，每次一個當測試集、其餘 K-1 個當訓練集，重複 K 次取平均</td></tr>
+    <tr><td><b>模型調參</b></td><td>網格搜索 Grid Search（逐一嘗試預定範圍內的超參數組合）、隨機搜索 Random Search（隨機選超參數，適合高維度參數空間）、貝葉斯優化 Bayesian Optimization（建構代理模型，依歷史結果逐步找最優參數）</td></tr>
+  </table></div>
+
+  <div class="note">
+    <span class="lbl">Accuracy 跟 F1 分數怎麼選</span>
+    數據<b>平衡</b>（正負樣本數量差不多）用 <b>Accuracy</b> 就夠；數據<b>不平衡</b>（例如詐騙交易只占 1%）要用 <b>F1 分數</b>，因為這時候即使模型全部猜「不是詐騙」，Accuracy 也會很高，但完全沒抓到真正的詐騙案例，F1 分數能反映這種失衡。
+  </div>
+
+  <h3>常見模型速覽：決策樹、隨機森林、GAN <span class="pref">綜合補充</span></h3>
+  <p>前幾天講了線性迴歸、SVM、神經網路、K-Means、PCA，這三個是官方練習題常考、但前面沒單獨介紹的模型，一起補齊：</p>
+  <div class="tw"><table>
+    <tr><th>模型</th><th>核心概念</th><th>優勢／用途</th></tr>
+    <tr><td><b>決策樹（Decision Tree）</b></td><td>用一連串「是／否」問題把數據逐層分類，形成樹狀分支結構</td><td>分支結構清晰、<b>可解釋性高</b>，適合醫學診斷、風險評估等需要說明依據的任務</td></tr>
+    <tr><td><b>隨機森林（Random Forest）</b></td><td>集成多棵<b>隨機生成的決策樹</b>，對結果進行<b>投票</b></td><td>改進單一決策樹容易過擬合的缺陷，有效降低過擬合風險</td></tr>
+    <tr><td><b>生成對抗網路（GAN）</b></td><td>由<b>生成器</b>和<b>鑑別器</b>組成，透過對抗學習生成高品質數據</td><td>應用於圖像生成、文本生成等任務</td></tr>
+  </table></div>
+
+  <div class="card">
+    <h4>白話一點：三個模型各配一個生活比喻</h4>
+    <p><strong>決策樹</strong>：像玩「20 個問題」猜謎遊戲——「是動物嗎？是哺乳類嗎？會飛嗎？」一路問下去，每題答案都能說清楚為什麼這樣分岔，所以特別適合需要跟別人解釋「為什麼判斷是這樣」的場合。</p>
+    <p><strong>隨機森林</strong>：一個人猜謎容易猜錯（單一決策樹容易過擬合），那就找 100 個人各自猜一次、最後<b>投票</b>選最多人選的答案——集合眾人的判斷比只聽一個人準，也比較不會被個別人的偏見帶偏。</p>
+    <p><strong>GAN</strong>：像「造假鈔的人」（生成器）跟「鑑定假鈔的警察」（鑑別器）互相較勁——造假的人不斷把鈔票做得更像真的，警察不斷練習抓出破綻，兩邊你來我往越練越強，最後生成器做出來的東西幾乎能以假亂真。</p>
+  </div>
+
+  <h3>整週回顧 <span class="pref">週總結</span></h3>
+  <p class="lede">這週的主軸：機器學習「是什麼」（數據驅動、無需人工規則）→ 三大類型（監督式／非監督式／強化學習，分別對應「有沒有標記」「有沒有環境互動」）→ 實現流程三階段（數據處理 → 模型訓練 → 評估與優化），每個階段都有對應的技術名詞跟為什麼要做的理由。考試很愛出「下列何者不屬於／不是」這種題型，把每組清單背熟是這週的重點。</p>
+</section>
+
+<section id="quiz">
+  <h2>今日測驗</h2>
+  <p class="lede">10 題，全部選完才能送出。送出後會顯示解析，成績自動回傳給召集人。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。填過一次之後其他天會自動帶入。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 10 題</span>
+    <span class="score">4 題官方原題 · 6 題自編</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對今天的範圍再教你一次、多出幾題考你。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製今天的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="day14.html">← Day 4：機器學習實現流程：數據處理與模型訓練</a>
+    <a href="w3-test.html">W3 總測驗 →</a>
+  </div>
+</section>
+
+<footer>
+  <p><b>本週收尾，接下來兩件事：</b></p>
+  <div class="checkin">
+    ① <b>W3 總測驗</b>——涵蓋 Day 1～Day 5 共 20 題，<a href="w3-test.html">現在就可以做</a>。<br>
+    ② <b>對讀書會有什麼想法，歡迎在群組直接說。</b>進度太快或太慢、題目太難或太簡單，都可以提。
+  </div>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引－科目一 人工智慧基礎概論」3.3 節（機器學習概念）。本週範圍（p.3-33～3-47）在 114.04 版勘誤表中沒有相關更正。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=5"></script>
+<script src="assets/quiz.js?v=5"></script>
+<script>
+Study.initQuiz({
+  day: 15,
+  week: 'W3',
+  dayLabel: 'Day 5',
+  dayTitle: '模型評估優化與常見模型速覽',
+  subject: '科目一「人工智慧基礎概論」',
+  ai: {
+    pages: '科目一 p.3-42～3-47',
+    topics: '模型效能評估指標（Accuracy、F1 分數、MSE）、交叉驗證與 K 折交叉驗證、模型調參方法（網格搜索、隨機搜索、貝葉斯優化）、決策樹的特性與優勢（可解釋性）、隨機森林（集成多棵決策樹投票）、生成對抗網路 GAN（生成器與鑑別器）'
+  },
+  questions: [
+    {
+      q: '交叉驗證的主要目的是什麼？',
+      o: ['提高模型的訓練速度', '驗證數據是否線性可分', '減少模型的過擬合風險', '測試模型的容錯能力'],
+      a: 2,
+      src: '官方原題 · 科目一學習指引 p.3-44 第 4 題',
+      e: '交叉驗證透過多次分割數據進行訓練和測試，有助於評估模型的穩健性並降低過擬合的可能性。'
+    },
+    {
+      q: '決策樹的最大優勢是什麼？',
+      o: ['適合大規模數據的訓練', '具有良好的可解釋性', '不需要進行數據標準化', '適用於圖像生成任務'],
+      a: 1,
+      src: '官方原題 · 科目一學習指引 p.3-45 第 7 題',
+      e: '決策樹的分支結構清晰，便於直觀解釋，因此廣泛用於需要高可解釋性的任務，如醫學診斷或風險評估。'
+    },
+    {
+      q: '下列關於生成對抗網路（GAN）的描述正確的是哪一項？',
+      o: ['GAN 僅用於分類問題', 'GAN 由生成器和鑑別器組成', 'GAN 的結果始終高度可解釋', 'GAN 不能生成高品質的數據'],
+      a: 1,
+      src: '官方原題 · 科目一學習指引 p.3-46 第 9 題',
+      e: '生成對抗網路（GAN）由生成器和鑑別器組成，透過對抗學習生成高品質的數據，應用於圖像生成、文本生成等任務。'
+    },
+    {
+      q: '隨機森林（Random Forest）改進了單一決策樹的缺陷，主要透過什麼方法實現？',
+      o: ['使用核函數映射高維空間', '集成多棵隨機生成的決策樹並投票', '增加模型參數以減少偏差', '採用生成模型替代分類器'],
+      a: 1,
+      src: '官方原題 · 科目一學習指引 p.3-47 第 10 題',
+      e: '隨機森林是決策樹的集成演算法，透過構建多棵隨機決策樹並對其結果進行投票，有效降低了過擬合的風險。'
+    },
+    {
+      q: '一個模型在 100 筆詐騙偵測數據中，只有 2 筆是真正的詐騙，其餘 98 筆都不是。為了公平反映模型抓出詐騙的能力，比較適合用下列哪一種指標？',
+      o: ['準確率（Accuracy）', 'F1 分數（F1 Score）', '學習率（Learning Rate）', '批次大小（Batch Size）'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-42',
+      e: 'F1 分數綜合考慮精確率（Precision）和召回率（Recall），適合處理數據不平衡的問題。這題只有 2% 是詐騙，若只看準確率，模型全部猜「不是詐騙」也能有 98% 準確率，卻完全沒抓到詐騙，無法反映真實效能。'
+    },
+    {
+      q: '「將數據集平均分成 K 個子集，每次選擇其中一個子集作為測試集，其餘 K-1 個子集作為訓練集，重複 K 次後取平均評估結果」，這是下列哪一種方法？',
+      o: ['K 均值聚類（K-Means Clustering）', 'K 折交叉驗證（K-Fold Cross-Validation）', 'K 近鄰演算法', '以上皆非'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-42～3-43',
+      e: 'K 折交叉驗證是交叉驗證中最常見的方法，依題目描述的流程重複 K 次後取平均，藉此獲得模型的整體表現。注意跟 Day 2 學過的「K 均值聚類（K-Means）」區分——兩者都有「K」但是完全不同的概念，一個是評估方法、一個是聚類演算法。'
+    },
+    {
+      q: '「隨機選擇超參數進行測試，適合高維度的參數空間」，這是下列哪一種模型調參方法？',
+      o: ['網格搜索（Grid Search）', '隨機搜索（Random Search）', '貝葉斯優化（Bayesian Optimization）', 'Early Stopping'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-43',
+      e: '隨機搜索的定義正是「隨機選擇超參數進行測試，適合高維度的參數空間」。網格搜索是在預定範圍內逐一嘗試超參數組合（範圍小時精確但耗時）；貝葉斯優化則透過構建代理模型，依歷史結果逐步尋找最優參數（相對更有效率）。'
+    },
+    {
+      q: '某醫院希望導入一個判斷病患是否罹患某疾病的模型，並要求模型必須能清楚跟醫生解釋「為什麼判斷是陽性」。依學習指引，下列哪一種模型最符合這個需求？',
+      o: ['深度神經網路（黑箱模型）', '決策樹（Decision Tree）', '生成對抗網路（GAN）', 'K 均值聚類（K-Means）'],
+      a: 1,
+      src: '自編練習題 · 對應 Day 5 補充',
+      e: '決策樹的最大優勢就是可解釋性高，分支結構清晰、便於直觀解釋，特別適合醫學診斷、風險評估等需要說明判斷依據的任務。GAN 是生成模型不是分類判斷模型；K-Means 是非監督式聚類，不適合「陽性／陰性」這種有標準答案的分類任務。'
+    },
+    {
+      q: '總複習：機器學習實現流程的三大階段，正確順序是下列哪一項？',
+      o: ['模型訓練 → 數據處理 → 模型評估與優化', '數據處理 → 模型訓練 → 模型評估與優化', '模型評估與優化 → 數據處理 → 模型訓練', '三個階段沒有固定順序，可以隨意調換'],
+      a: 1,
+      src: '自編練習題 · 整週觀念整合',
+      e: '機器學習的核心流程可分為「數據處理」、「模型訓練」和「模型評估與優化」三大階段：先確保餵給模型的數據夠乾淨（清洗、標準化、特徵選擇），再讓模型從數據中學習規律（設定損失函數、用優化演算法調整參數、防範過擬合），最後用指標與交叉驗證確認模型好不好、並透過調參持續優化。'
+    },
+    {
+      q: '總複習：把這週的三大類型串起來看，下列配對何者正確？',
+      o: ['監督式學習看「有沒有標記數據」；非監督式學習看「有沒有環境互動」；強化學習看「有沒有代理與獎勵」', '監督式學習看「有沒有標記數據」；非監督式學習看「數據內在結構」；強化學習看「代理透過獎勵試錯學習」', '三種類型的判斷依據完全相同，沒有區別', '強化學習也需要大量已標記的訓練數據才能運作'],
+      a: 1,
+      src: '自編練習題 · 整週觀念整合',
+      e: '三大類型的分辨關鍵：監督式學習＝有標記數據可以對照學習（線性迴歸、SVM、神經網路）；非監督式學習＝沒有標記，靠分析數據內在結構找規律（K-Means、PCA）；強化學習＝沒有標記數據，而是代理透過與環境互動、依獎勵回饋不斷試錯調整策略（Q-Learning、DQN）。三者判斷依據不同，不能混用。'
+    }
+  ]
+});
+</script>
+</body>
+</html>

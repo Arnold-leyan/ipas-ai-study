@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 11 機器學習是什麼？基本原理與挑戰 — iPAS 考取衝刺班</title>
+<meta name="description" content="W3 Day 1：機器學習的定義、基本原理、技術優勢，以及目前面臨的挑戰與未來方向。學習指引（科目一）p.3-33～3-35。">
+<link rel="stylesheet" href="assets/style.css?v=5">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W3 · Day 1 · 8/31（一）</p>
+        <h1>機器學習是什麼？基本原理與挑戰</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>這週換回科目一「人工智慧基礎概論」，接上第一週停的地方（p.3-32 之後）。今天先把機器學習的定義、基本原理、優勢跟目前的挑戰打底，後面幾天再細講三大類型跟實作流程。</p>
+    <div class="mast-meta">
+      <span class="tag">科目一 p.3-33～3-35</span>
+      <span class="tag">閱讀約 15 分鐘</span>
+      <span class="tag">測驗 6 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w3-index.html">總覽</a></li>
+    <li><a href="day11.html" data-day="11" aria-current="page">Day 1</a></li>
+    <li><a href="day12.html" data-day="12">Day 2</a></li>
+    <li><a href="day13.html" data-day="13">Day 3</a></li>
+    <li><a href="day14.html" data-day="14">Day 4</a></li>
+    <li><a href="day15.html" data-day="15">Day 5</a></li>
+    <li><a href="w3-test.html" data-day="w3test">總測驗</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>今天要讀的</h2>
+
+  <h3>機器學習是什麼 <span class="pref">p.3-33</span></h3>
+  <p><b>機器學習（Machine Learning）</b>作為人工智慧的核心支柱，是一種基於數據驅動的方法，旨在讓計算機系統<b>從經驗中學習</b>，並在此基礎上執行特定任務，<b>無需依賴人為編寫的規則</b>。透過對數據進行處理和分析，建立模型來發現規律，實現分類、迴歸、聚類以及決策策略生成等多種應用。</p>
+  <p>機器學習涵蓋三大主要類型：<b>監督式學習、非監督式學習和強化學習</b>（這週 Day 2、Day 3 會分別細講）。應用場景涵蓋醫療（疾病診斷、醫學影像判讀）、金融（市場趨勢分析、信用風險評估、交易異常檢測）、交通（自動駕駛的環境感知與決策）、語音辨識、自然語言處理、智慧推薦系統等各行各業。</p>
+
+  <div class="card">
+    <h4>白話一點：機器學習像是「靠經驗抓規律」，不是「照劇本演」</h4>
+    <p>傳統程式是工程師把規則寫死（例如「金額超過 10 萬就要人工審核」）；機器學習則是<b>給系統看大量過去的案例</b>（哪些交易是詐騙、哪些不是），讓它自己抓出規律，之後遇到新案例就能判斷。這就是「無需依賴人為編寫的規則」的意思——規則是系統從數據裡自己學出來的，不是工程師一條一條寫的。</p>
+  </div>
+
+  <h3>基本原理、特徵與技術優勢 <span class="pref">p.3-34～3-35</span></h3>
+  <div class="tw"><table>
+    <tr><th>面向</th><th>重點</th></tr>
+    <tr><td>基本原理</td><td>利用數據中的模式與規律，透過演算法構建模型來預測和決策；目的是讓系統自動從數據學習，並在沒有明確指令下不斷改進效能</td></tr>
+    <tr><td>特徵</td><td>基於數據的<b>學習和自適應能力</b>——分析大量歷史數據構建預測模型，新數據到來時能動態更新</td></tr>
+    <tr><td>技術優勢①</td><td>不同於傳統編程，能處理大規模<b>結構化與非結構化數據</b>（圖像、文本、語音）</td></tr>
+    <tr><td>技術優勢②</td><td>極高的<b>可擴展性</b>——數據規模與模型效能提升時，預測能力與效率也隨之提高</td></tr>
+  </table></div>
+
+  <h3>挑戰與未來方向 <span class="pref">p.3-35</span></h3>
+  <p>機器學習應用仍面臨幾項挑戰：</p>
+  <ul>
+    <li><b>數據品質不均、標記數據匱乏</b>：直接威脅模型準確性</li>
+    <li><b>解釋性與透明性不足</b>：限制在醫療、法律等需要高可解釋性的領域的應用（模型要能說明「為什麼」給出這個判斷，否則難獲專業人士信任）</li>
+    <li><b>隱私保護與倫理責任</b>：偏見的數據可能導致模型輸出存在歧視性</li>
+  </ul>
+  <p class="lede">未來方向：提升模型<b>解釋性</b>（視覺化技術、可解釋演算法）與<b>公平性</b>（去偏演算法），並朝跨領域整合（如結合生物訊息學推動精準醫學）發展。</p>
+
+  <div class="note">
+    <span class="lbl">今天最容易搞混的地方</span>
+    「數據品質不均」跟「解釋性不足」是<b>兩個不同的挑戰</b>，別混在一起答：前者是<b>輸入面</b>的問題（餵給模型的數據本身不夠好）；後者是<b>輸出面</b>的問題（模型判斷得出結果，但說不出為什麼）。醫療、法律領域特別在意後者。
+  </div>
+</section>
+
+<section id="quiz">
+  <h2>今日測驗</h2>
+  <p class="lede">6 題，全部選完才能送出。送出後會顯示解析，成績自動回傳給召集人。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。填過一次之後其他天會自動帶入。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 6 題</span>
+    <span class="score">1 題官方原題 · 5 題自編</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對今天的範圍再教你一次、多出幾題考你。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製今天的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="w3-index.html">← 回總覽</a>
+    <a href="day12.html">Day 2：監督式與非監督式學習 →</a>
+  </div>
+</section>
+
+<footer>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引－科目一 人工智慧基礎概論」3.3 節（機器學習概念）。本週範圍（p.3-33～3-47）在 114.04 版勘誤表中沒有相關更正。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=5"></script>
+<script src="assets/quiz.js?v=5"></script>
+<script>
+Study.initQuiz({
+  day: 11,
+  week: 'W3',
+  dayLabel: 'Day 1',
+  dayTitle: '機器學習是什麼？基本原理與挑戰',
+  subject: '科目一「人工智慧基礎概論」',
+  ai: {
+    pages: '科目一 p.3-33～3-35',
+    topics: '機器學習的定義（數據驅動、無需人為編寫規則）、機器學習的基本原理、特徵（學習與自適應能力）、技術優勢（處理非結構化數據、可擴展性）、機器學習面臨的挑戰（數據品質、解釋性透明性不足、隱私倫理）與未來方向（可解釋性、公平性、跨領域整合）'
+  },
+  questions: [
+    {
+      q: '機器學習的三個核心要素是什麼？',
+      o: ['數據、模型、損失函數', '訓練集、測試集、驗證集', '特徵工程、優化演算法、正則化', '超參數調整、模型選擇、數據處理'],
+      a: 0,
+      src: '官方原題 · 科目一學習指引 p.3-44 第 1 題',
+      e: '機器學習的三個核心要素分別是數據（Data）、模型（Model）和損失函數（Loss Function），其中數據提供基礎，模型學習數據的規律，損失函數用於評估預測的準確性並指導模型優化。'
+    },
+    {
+      q: '下列關於機器學習定義的敘述，何者最正確？',
+      o: ['機器學習需要工程師針對每種情境手動編寫判斷規則', '機器學習是讓計算機系統從經驗（數據）中學習，無需依賴人為編寫的規則', '機器學習只能處理結構化的表格數據', '機器學習的效能不會隨數據量增加而改變'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-33',
+      e: '機器學習的核心精神就是「透過對數據進行處理和分析，建立模型來發現規律」，取代「依賴人為編寫的規則」。它也能處理非結構化數據（圖像、文本、語音），且具有極高的可擴展性，數據規模與效能提升時預測能力也會提高。'
+    },
+    {
+      q: '某銀行過去用一套固定規則判斷交易是否為詐騙（例如「單筆金額超過 10 萬即攔截」），現在改用系統分析過去十萬筆交易紀錄，自動找出詐騙模式來判斷新交易。這個轉變最能說明機器學習的哪一項特徵？',
+      o: ['解釋性與透明性', '基於數據的學習和自適應能力', '完全不需要任何數據', '只能用於金融業'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-34',
+      e: '機器學習的特徵是「基於數據的學習和自適應能力」——分析大量歷史數據構建預測模型，並在新數據到來時進行動態更新，這正是題目描述的情境。'
+    },
+    {
+      q: '在醫療、法律等領域導入機器學習模型時，最常遇到的限制之一是什麼？',
+      o: ['模型的解釋性與透明性不足，難以說明判斷依據', '機器學習完全無法用於醫療領域', '這些領域的數據永遠不會有品質問題', '模型一旦訓練完成就不需要再更新'],
+      a: 0,
+      src: '自編練習題 · 對應 p.3-35',
+      e: '學習指引明白指出：模型的解釋性與透明性不足，限制了其在醫療、法律等對結果可解釋性要求較高領域的應用，例如醫療決策中，模型需要解釋其診斷建議的依據，否則可能無法獲得專業人士的信任。'
+    },
+    {
+      q: '關於機器學習未來的發展方向，下列敘述何者正確？',
+      o: ['機器學習未來會捨棄所有演算法，只依賴人工判斷', '發展重點包含提升模型的解釋性（如視覺化技術）與公平性（如去偏演算法）', '機器學習的應用範圍未來只會限縮在單一產業', '未來機器學習不再需要考慮數據品質'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-35',
+      e: '學習指引提到，未來發展將更加注重提升模型的解釋性和公平性，例如透過視覺化技術和可解釋演算法幫助用戶理解模型運作原理，並開發去偏演算法減少數據中的隱性偏見。'
+    },
+    {
+      q: '「訓練數據中若存在偏見，模型輸出可能存在歧視性」，這屬於機器學習面臨的哪一類挑戰？',
+      o: ['技術優勢不足', '隱私保護與倫理責任', '可擴展性不足', '無法處理非結構化數據'],
+      a: 1,
+      src: '自編練習題 · 對應 p.3-35',
+      e: '學習指引指出，機器學習在隱私保護和倫理責任方面的爭議，也對技術的進一步推廣提出了更高要求，另偏見的數據可能導致模型輸出存在歧視性，這正是隱私保護與倫理責任這一類挑戰。'
+    }
+  ]
+});
+</script>
+</body>
+</html>

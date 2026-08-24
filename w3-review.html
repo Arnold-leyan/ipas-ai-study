@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W3 錯題總複習 — iPAS 考取衝刺班</title>
+<meta name="description" content="輸入姓名，把第三週（機器學習概念）答錯的題目連解析一起列出來複習。">
+<link rel="stylesheet" href="assets/style.css?v=5">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W3 · 錯題總複習</p>
+        <h1>把這週錯的題目複習一遍</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>輸入姓名，系統會去後端把 Day 1～Day 5 跟 W3 總測驗裡你答錯的題目全部抓出來，附上完整解析，不用自己一天一天回去找。</p>
+    <div class="mast-meta">
+      <span class="tag">Day 1 ～ Day 5 ＋ 總測驗</span>
+      <span class="tag">📚 課程首頁</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w3-index.html">總覽</a></li>
+    <li><a href="day11.html" data-day="11">Day 1</a></li>
+    <li><a href="day12.html" data-day="12">Day 2</a></li>
+    <li><a href="day13.html" data-day="13">Day 3</a></li>
+    <li><a href="day14.html" data-day="14">Day 4</a></li>
+    <li><a href="day15.html" data-day="15">Day 5</a></li>
+    <li><a href="w3-test.html" data-day="w3test">總測驗</a></li>
+    <li><a href="w3-review.html" aria-current="page">錯題複習</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <div class="namebar" id="lookup-bar">
+    <label for="lookup-name">輸入姓名，開始複習</label>
+    <p class="hint">跟平常測驗填的姓名一致就好，暱稱也可以（例如 Fanny、Emily、派瑞斯）。之前填過的話這裡會自動帶入、直接查一次。</p>
+    <div class="namerow">
+      <input type="text" id="lookup-name" placeholder="例：王小明" autocomplete="name">
+      <button type="button" class="btn" id="lookup-btn">開始複習</button>
+    </div>
+    <p class="sync idle" id="lookup-status"></p>
+  </div>
+
+  <div id="review-summary"></div>
+</section>
+
+<section id="review-list-section">
+  <div id="review-list"></div>
+</section>
+
+<footer>
+  <p>題目與解析取自 W3 各天測驗頁（Day 1～Day 5、W3 總測驗）目前的版本；日後若題目內容有更新，複習頁會同步更新。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=5"></script>
+<script src="assets/quiz.js?v=5"></script>
+<script src="assets/data-w3.js"></script>
+<script>
+Study.initReview({ week: 'W3', data: W3_QUESTIONS });
+</script>
+</body>
+</html>

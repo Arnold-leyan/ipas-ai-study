@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 19 生成式AI 的風險評估與管理 — iPAS 考取衝刺班</title>
+<meta name="description" content="W4 Day 4：生成式AI 的常見風險、防範措施、倫理偏見、法規遵循，以及 6 種風險應對策略。學習指引（科目二）p.3-45～3-51。">
+<link rel="stylesheet" href="assets/style.css?v=5">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W4 · Day 4 · 9/10（四）</p>
+        <h1>生成式AI 的風險評估與管理</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>Day 1 提過「風險評估與管理」是 5 項評估標準之一，今天把它獨立展開細講——常見風險有哪些、怎麼防範，以及發生風險時有哪 6 種應對策略可以選。這一節是官方練習題最集中出現的地方。</p>
+    <div class="mast-meta">
+      <span class="tag">科目二 p.3-45～3-51</span>
+      <span class="tag">閱讀約 20 分鐘</span>
+      <span class="tag">測驗 6 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w4-index.html">總覽</a></li>
+    <li><a href="day16.html" data-day="16">Day 1</a></li>
+    <li><a href="day17.html" data-day="17">Day 2</a></li>
+    <li><a href="day18.html" data-day="18">Day 3</a></li>
+    <li><a href="day19.html" data-day="19" aria-current="page">Day 4</a></li>
+    <li><a href="day20.html" data-day="20">Day 5</a></li>
+    <li><a href="w4-test.html" data-day="w4test">總測驗</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>今天要讀的</h2>
+
+  <h3>常見風險與防範措施 <span class="pref">p.3-45～3-47</span></h3>
+  <div class="tw"><table>
+    <tr><th>常見風險</th><th>意思</th></tr>
+    <tr><td>訓練數據洩漏</td><td>模型生成文本時可能無意重複訓練數據中的特定片段或隱私資訊</td></tr>
+    <tr><td>反向工程</td><td>攻擊者分析模型行為推斷出模型參數或訓練數據</td></tr>
+    <tr><td>提示詞攻擊</td><td>透過多次查詢試圖推斷或重建訓練數據中的敏感資料</td></tr>
+    <tr><td>對抗性攻擊</td><td>用精心設計的輸入操控模型輸出，甚至誘導模型洩露隱私訊息</td></tr>
+  </table></div>
+  <p class="lede">防範措施：<b>身份驗證與授權機制</b>（只有經授權用戶能存取）、<b>加密技術</b>（存儲與傳輸時保護敏感資訊）、<b>差分隱私技術（Differential Privacy）</b>（導入資料雜訊技術防止敏感資料外洩）。</p>
+
+  <h3>倫理偏見與法規遵循 <span class="pref">p.3-47～3-49</span></h3>
+  <p>生成式AI 訓練數據可能反映性別、種族或文化偏見（例如語言模型描述職業時預設特定性別），降低模型的公平性與可靠性。因應做法：確保訓練數據多樣性、使用<b>去偏見技術（Bias Mitigation Techniques）</b>、建立透明的決策流程。</p>
+  <p>法規方面，特別要注意隱私法規<b>《一般資料保護規則》GDPR</b> 和<b>《加州消費者隱私法案》CCPA</b>——處理個資時要用資料匿名化或假名化技術，確保用戶知情並獲得授權；生成內容也可能涉及版權問題，要避免侵犯第三方智慧財產權。</p>
+
+  <div class="card">
+    <h4>白話一點：這幾個攻擊手法像什麼</h4>
+    <p><strong>反向工程</strong>：像有人透過觀察你每天的行為模式，反推出你家的作息習慣。<strong>提示詞攻擊</strong>：像不斷換句話問同一個問題，試圖套出你不該說的秘密。<strong>對抗性攻擊</strong>：像故意用一句話術「誘導」客服講出不該講的內部資訊。這些都是利用「多問、換個角度問」來繞過模型原本的防線，所以防範重點是身份驗證、加密，以及讓模型本身「答不出來」（差分隱私）。</p>
+  </div>
+
+  <h3>風險評估與 6 種風險應對策略 <span class="pref">p.3-49～3-51</span></h3>
+  <p>風險評估核心是<b>識別潛在風險</b>後，依<b>嚴重性與發生可能性</b>排優先級，常用<b>風險矩陣（Risk Matrix）</b>做定量與定性分析。實務上有 6 種風險應對策略：</p>
+  <div class="tw"><table>
+    <tr><th>策略</th><th>意思／適用時機</th></tr>
+    <tr><td>A. 風險<b>溯源</b></td><td>對數據來源詳細審核，確保合法性與可靠性；用可解釋性AI 技術讓生成過程可追溯</td></tr>
+    <tr><td>B. 風險<b>文化</b></td><td>提高員工對風險的認知，透過培訓與案例分析、建立風險報告機制與獎勵政策</td></tr>
+    <tr><td>C. 風險<b>接受</b></td><td>適用於風險影響<b>有限或無法完全避免</b>時，評估風險容忍度、制定應急計畫</td></tr>
+    <tr><td>D. 風險<b>緩解</b></td><td>從數據管理做起，制定明確的風險管理政策，對生成內容審查與發布</td></tr>
+    <tr><td>E. 風險<b>迴避</b></td><td>適用於<b>技術不成熟或可能導致重大損害</b>的場景，暫緩開發、設置明確迴避標準</td></tr>
+    <tr><td>F. 風險<b>轉移</b></td><td>透過<b>購買保險</b>或與外部夥伴簽協議，將部分或全部風險責任<b>轉移給第三方</b></td></tr>
+  </table></div>
+
+  <div class="note">
+    <span class="lbl">6 種策略最容易考的分辨題</span>
+    「外包給第三方服務供應商」＝<b>風險轉移</b>（不是風險緩解）；「知道有風險但影響有限，先制定應急計畫繼續做」＝<b>風險接受</b>（不是風險迴避）；「技術還不成熟，先暫緩開發」＝<b>風險迴避</b>（不是風險接受）。三個容易混，關鍵字分別是「<b>轉出去</b>」「<b>忍受＋備案</b>」「<b>先不做</b>」。
+  </div>
+</section>
+
+<section id="quiz">
+  <h2>今日測驗</h2>
+  <p class="lede">6 題，全部選完才能送出。送出後會顯示解析，成績自動回傳給召集人。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。填過一次之後其他天會自動帶入。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 6 題</span>
+    <span class="score">4 題官方原題 · 2 題自編</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對今天的範圍再教你一次、多出幾題考你。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製今天的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="day18.html">← Day 3：導入規劃③④：驗證 POC 與實施營運、ROI 計算</a>
+    <a href="day20.html">Day 5：快速複習週 →</a>
+  </div>
+</section>
+
+<footer>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引－科目二 生成式AI應用與規劃」3.3 節（生成式AI 導入評估規劃）。本週範圍在 114.04 版勘誤表中沒有相關更正。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=5"></script>
+<script src="assets/quiz.js?v=5"></script>
+<script>
+Study.initQuiz({
+  day: 19,
+  week: 'W4',
+  dayLabel: 'Day 4',
+  dayTitle: '生成式AI 的風險評估與管理',
+  subject: '科目二「生成式AI應用與規劃」',
+  ai: {
+    pages: '科目二 p.3-45～3-51',
+    topics: '生成式AI 常見風險（訓練數據洩漏、反向工程、提示詞攻擊、對抗性攻擊）與防範措施（身份驗證、加密技術、差分隱私）、倫理偏見與去偏見技術、隱私法規GDPR 與CCPA、6 種風險應對策略（風險溯源、風險文化、風險接受、風險緩解、風險迴避、風險轉移）'
+  },
+  questions: [
+    {
+      q: '在生成式AI 導入過程中，資料安全與隱私保護的哪一方面是最重要的考量？',
+      o: ['權限控管與合規要求', '增強客服回饋（反饋）能力', '資料視覺化能力', '設定目標優先級'],
+      a: 0,
+      src: '官方原題 · 科目二學習指引 p.3-52 第 4 題',
+      e: '確保權限控管和合規是保障資料安全和避免法律風險的重要措施，對應「身份驗證與授權機制」與法規遵循（GDPR、CCPA）的內容。'
+    },
+    {
+      q: '下列何者為風險分析階段的主要目的？',
+      o: ['找到更多的數據來源', '增強模型的效能', '評估風險的影響與發生可能性', '降低模型運行成本'],
+      a: 2,
+      src: '官方原題 · 科目二學習指引 p.3-53 第 8 題',
+      e: '風險分析的重點是根據影響程度與發生機率，評估風險的嚴重性，從而進行分級與資源分配，這正是風險矩陣（Risk Matrix）分析的核心目的。'
+    },
+    {
+      q: '若企業將資料安全管理外包給第三方服務供應商，屬於哪種風險應對策略？',
+      o: ['風險緩解', '風險轉移', '風險接受', '風險規避'],
+      a: 1,
+      src: '官方原題 · 科目二學習指引 p.3-54 第 9 題',
+      e: '透過外包或購買保險等方式，企業將潛在風險轉移至第三方來處理，這正是「風險轉移」的定義。'
+    },
+    {
+      q: '為了確保風險管理的持續有效性，企業應如何應對風險管理策略的效果下降？',
+      o: ['繼續沿用原策略', '停止AI 應用以防意外', '快速調整並進行必要改進', '將策略移交給外部顧問'],
+      a: 2,
+      src: '官方原題 · 科目二學習指引 p.3-54 第 10 題',
+      e: '當發現策略效果下降時，企業應主動調整策略並進行改進，確保風險管理的持續有效性，呼應「定期審核生成式AI 系統的運行情況，及時識別潛在風險並迅速調整策略」。'
+    },
+    {
+      q: '「攻擊者透過精心設計的輸入來操控模型的輸出，甚至誘導模型洩露隱私訊息」，這是下列哪一種常見風險？',
+      o: ['訓練數據洩漏', '對抗性攻擊', '差分隱私', '風險轉移'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-47',
+      e: '對抗性攻擊的定義正是「攻擊者透過精心設計的輸入來操控模型的輸出，甚至誘導模型洩露隱私訊息」。差分隱私（Differential Privacy）是防範措施，不是風險本身，注意不要選反。'
+    },
+    {
+      q: '某企業評估後認為某項生成式AI 應用的風險影響有限、也無法完全避免，於是準確評估風險容忍度並制定應急計畫，繼續推行該應用。這屬於哪一種風險應對策略？',
+      o: ['風險迴避', '風險轉移', '風險接受', '風險溯源'],
+      a: 2,
+      src: '自編練習題 · 指引 p.3-50',
+      e: '風險接受適用於「風險影響有限或無法完全避免的情況」，核心在於準確評估風險容忍度並制定應急計畫，並非忽視風險，而是基於現實條件的理性選擇。跟「風險迴避」（技術不成熟時暫緩開發）不同，風險接受是評估後仍選擇繼續推行。'
+    }
+  ]
+});
+</script>
+</body>
+</html>
