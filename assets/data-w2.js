@@ -1,7 +1,8 @@
 /* 自動從各頁面的 Study.initQuiz() 設定抽出，供錯題複習頁使用。
  * 這份資料本身不會被日常測驗頁引用，只有 review 頁面會讀取。
- * 之後改題目：先改對應的 dayN.html，再重新執行
- * scratchpad/extract-questions.js 重新產生這個檔案（不要手動改這裡）。 */
+ * 之後改題目：先改對應的 dayN.html，再從網站根目錄執行
+ *   node tools/extract-questions.js
+ * 重新產生這個檔案（不要手動改這裡）。 */
 var W2_QUESTIONS = {
   "6": {
     "dayTitle": "No Code、Low Code 是什麼？跟生成式 AI 怎麼結合",
