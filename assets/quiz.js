@@ -440,6 +440,10 @@
     if (retakeBtn) {
       retakeBtn.addEventListener('click', function () {
         lsDel(dayKey(cfg.day));
+        // 標記「這次重新整理不要自動還原」，不然後端還查得到舊紀錄，
+        // 頁面重載後 restoreFromBackend() 會馬上把剛清掉的答案又還原回來，
+        // 使用者會看到「按了重做，畫面卻立刻跳回已完成」。
+        lsSet(dayKey(cfg.day) + '_skiprestore', '1');
         global.location.reload();
       });
     }
@@ -458,6 +462,8 @@
     /* 換裝置、換瀏覽器時本機沒有紀錄——如果之前填過名字，向後端查這一天有沒有作答過，
      * 有的話直接還原成「已作答、看解析」，不用重新回答一次。 */
     function restoreFromBackend() {
+      var skipKey = dayKey(cfg.day) + '_skiprestore';
+      if (lsGet(skipKey)) { lsDel(skipKey); return; }   // 剛按過「重做」，這次不要自動還原
       var url = global.GAS_WEB_APP_URL;
       var name = lsGet(NAME_KEY);
       if (!url || !name) return;
