@@ -157,6 +157,15 @@ a{color:var(--primary)}
   color:var(--accent-deep);display:block;margin-bottom:4px;font-weight:700;
 }
 
+/* ---------- 圖解（決策樹／隨機森林／GAN 等示意圖） ---------- */
+.diagram{
+  background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);
+  padding:18px 20px 16px;margin:18px 0;box-shadow:var(--shadow);
+}
+.diagram h4{margin-top:0}
+.diagram svg{display:block;width:100%;height:auto;margin-top:6px}
+.diagram .cap{color:var(--muted);font-size:13px;margin:10px 0 0}
+
 /* ---------- tables ---------- */
 .tw{overflow-x:auto;margin:16px 0;border:1px solid var(--rule);border-radius:var(--radius);background:var(--surface)}
 table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:460px}

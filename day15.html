@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Day 15 模型評估優化與常見模型速覽 — iPAS 考取衝刺班</title>
 <meta name="description" content="W3 Day 5：模型評估指標、交叉驗證、調參方法，加上決策樹、隨機森林、GAN 等常見模型速覽。學習指引（科目一）p.3-42～3-47。">
-<link rel="stylesheet" href="assets/style.css?v=6">
+<link rel="stylesheet" href="assets/style.css?v=7">
 </head>
 <body>
 
@@ -73,6 +73,98 @@
     <p><strong>GAN</strong>：像「造假鈔的人」（生成器）跟「鑑定假鈔的警察」（鑑別器）互相較勁——造假的人不斷把鈔票做得更像真的，警察不斷練習抓出破綻，兩邊你來我往越練越強，最後生成器做出來的東西幾乎能以假亂真。</p>
   </div>
 
+  <div class="diagram">
+    <h4>圖解：決策樹怎麼「一路問到答案」</h4>
+    <svg viewBox="0 0 620 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="決策樹範例：先問是不是哺乳類，是的話再問會不會飛，最後分出蝙蝠、貓或老鷹">
+      <defs>
+        <marker id="dt-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-deep)"/>
+        </marker>
+      </defs>
+      <path d="M310,52 L140,90" stroke="var(--accent-deep)" stroke-width="2" fill="none" marker-end="url(#dt-arrow)"/>
+      <path d="M310,52 L480,90" stroke="var(--accent-deep)" stroke-width="2" fill="none" marker-end="url(#dt-arrow)"/>
+      <path d="M130,136 L70,176" stroke="var(--accent-deep)" stroke-width="2" fill="none" marker-end="url(#dt-arrow)"/>
+      <path d="M130,136 L206,176" stroke="var(--accent-deep)" stroke-width="2" fill="none" marker-end="url(#dt-arrow)"/>
+      <text x="197" y="68" text-anchor="middle" font-family="var(--mono)" font-size="12" fill="var(--muted)">是</text>
+      <text x="425" y="68" text-anchor="middle" font-family="var(--mono)" font-size="12" fill="var(--muted)">否</text>
+      <text x="83" y="155" text-anchor="middle" font-family="var(--mono)" font-size="12" fill="var(--muted)">是</text>
+      <text x="181" y="155" text-anchor="middle" font-family="var(--mono)" font-size="12" fill="var(--muted)">否</text>
+      <rect x="220" y="6" width="180" height="46" rx="12" fill="var(--surface-2)" stroke="var(--primary)" stroke-width="2"/>
+      <text x="310" y="34" text-anchor="middle" font-family="var(--body)" font-size="14" font-weight="700" fill="var(--primary-deep)">是哺乳類嗎？</text>
+      <rect x="50" y="92" width="160" height="44" rx="12" fill="var(--surface-2)" stroke="var(--primary)" stroke-width="2"/>
+      <text x="130" y="119" text-anchor="middle" font-family="var(--body)" font-size="14" font-weight="700" fill="var(--primary-deep)">會飛嗎？</text>
+      <rect x="390" y="92" width="180" height="44" rx="12" fill="var(--surface)" stroke="var(--rule)" stroke-width="1.5"/>
+      <text x="480" y="119" text-anchor="middle" font-family="var(--body)" font-size="14" fill="var(--ink)">🦅 老鷹（鳥類）</text>
+      <rect x="10" y="178" width="116" height="44" rx="12" fill="var(--surface)" stroke="var(--rule)" stroke-width="1.5"/>
+      <text x="68" y="205" text-anchor="middle" font-family="var(--body)" font-size="14" fill="var(--ink)">🦇 蝙蝠</text>
+      <rect x="148" y="178" width="116" height="44" rx="12" fill="var(--surface)" stroke="var(--rule)" stroke-width="1.5"/>
+      <text x="206" y="205" text-anchor="middle" font-family="var(--body)" font-size="14" fill="var(--ink)">🐱 貓</text>
+    </svg>
+    <p class="cap">每個節點都是一個「是／否」問題，沿著分支走到底就是答案——這正是決策樹「可解釋性高」的原因：每一步判斷都能講清楚為什麼。</p>
+  </div>
+
+  <div class="diagram">
+    <h4>圖解：隨機森林怎麼「投票」</h4>
+    <svg viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="隨機森林示意圖：三棵決策樹各自猜測，兩棵猜貓、一棵猜蝙蝠，最後多數決選出貓">
+      <defs>
+        <marker id="rf-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-deep)"/>
+        </marker>
+      </defs>
+      <path d="M95,60 L95,90" stroke="var(--accent-deep)" stroke-width="2" fill="none" marker-end="url(#rf-arrow)"/>
+      <path d="M310,60 L310,90" stroke="var(--accent-deep)" stroke-width="2" fill="none" marker-end="url(#rf-arrow)"/>
+      <path d="M525,60 L525,90" stroke="var(--accent-deep)" stroke-width="2" fill="none" marker-end="url(#rf-arrow)"/>
+      <path d="M95,132 L268,190" stroke="var(--accent-deep)" stroke-width="2" fill="none" marker-end="url(#rf-arrow)"/>
+      <path d="M310,132 L310,190" stroke="var(--accent-deep)" stroke-width="2" fill="none" marker-end="url(#rf-arrow)"/>
+      <path d="M525,132 L352,190" stroke="var(--accent-deep)" stroke-width="2" fill="none" marker-end="url(#rf-arrow)"/>
+      <rect x="20" y="10" width="150" height="50" rx="12" fill="var(--surface)" stroke="var(--rule)" stroke-width="1.5"/>
+      <text x="95" y="40" text-anchor="middle" font-family="var(--body)" font-size="13.5" fill="var(--ink)">🌳 決策樹 1</text>
+      <rect x="235" y="10" width="150" height="50" rx="12" fill="var(--surface)" stroke="var(--rule)" stroke-width="1.5"/>
+      <text x="310" y="40" text-anchor="middle" font-family="var(--body)" font-size="13.5" fill="var(--ink)">🌳 決策樹 2</text>
+      <rect x="450" y="10" width="150" height="50" rx="12" fill="var(--surface)" stroke="var(--rule)" stroke-width="1.5"/>
+      <text x="525" y="40" text-anchor="middle" font-family="var(--body)" font-size="13.5" fill="var(--ink)">🌳 決策樹 3</text>
+      <rect x="40" y="90" width="110" height="42" rx="10" fill="var(--surface-2)" stroke="var(--rule)" stroke-width="1.5"/>
+      <text x="95" y="117" text-anchor="middle" font-family="var(--body)" font-size="14" fill="var(--ink)">🐱 貓</text>
+      <rect x="255" y="90" width="110" height="42" rx="10" fill="var(--surface-2)" stroke="var(--rule)" stroke-width="1.5"/>
+      <text x="310" y="117" text-anchor="middle" font-family="var(--body)" font-size="14" fill="var(--ink)">🐱 貓</text>
+      <rect x="470" y="90" width="110" height="42" rx="10" fill="var(--surface-2)" stroke="var(--rule)" stroke-width="1.5"/>
+      <text x="525" y="117" text-anchor="middle" font-family="var(--body)" font-size="14" fill="var(--ink)">🦇 蝙蝠</text>
+      <rect x="200" y="190" width="220" height="56" rx="14" fill="var(--surface-2)" stroke="var(--primary)" stroke-width="2"/>
+      <text x="310" y="212" text-anchor="middle" font-family="var(--body)" font-size="14" font-weight="700" fill="var(--primary-deep)">多數決</text>
+      <text x="310" y="232" text-anchor="middle" font-family="var(--body)" font-size="12.5" fill="var(--muted)">🐱 貓（2 票）勝過 🦇 蝙蝠（1 票）</text>
+    </svg>
+    <p class="cap">每棵樹用不同的隨機樣本訓練、各自猜一次，最後用多數決定最終答案——單一棵樹容易被雜訊帶偏，集合多棵樹的判斷比較穩，也比較不容易過擬合。</p>
+  </div>
+
+  <div class="diagram">
+    <h4>圖解：GAN「造假的」和「抓假的」互相較勁</h4>
+    <svg viewBox="0 0 620 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GAN 示意圖：生成器產生假數據送給鑑別器，鑑別器同時看真實數據，判斷真假後把回饋送回生成器，兩邊不斷互相較勁">
+      <defs>
+        <marker id="gan-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-deep)"/>
+        </marker>
+        <marker id="gan-arrow-fb" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="var(--muted)"/>
+        </marker>
+      </defs>
+      <rect x="440" y="18" width="140" height="42" rx="10" fill="var(--surface-2)" stroke="var(--rule)" stroke-width="1.5"/>
+      <text x="510" y="44" text-anchor="middle" font-family="var(--body)" font-size="13" fill="var(--ink)">📷 真實數據</text>
+      <path d="M510,60 L510,100" stroke="var(--accent-deep)" stroke-width="2" fill="none" marker-end="url(#gan-arrow)"/>
+      <rect x="30" y="100" width="170" height="64" rx="14" fill="var(--surface-2)" stroke="var(--primary)" stroke-width="2"/>
+      <text x="115" y="127" text-anchor="middle" font-family="var(--body)" font-size="14" font-weight="700" fill="var(--primary-deep)">生成器</text>
+      <text x="115" y="145" text-anchor="middle" font-family="var(--mono)" font-size="11" fill="var(--muted)">Generator</text>
+      <rect x="420" y="100" width="170" height="64" rx="14" fill="var(--surface-2)" stroke="var(--primary)" stroke-width="2"/>
+      <text x="505" y="127" text-anchor="middle" font-family="var(--body)" font-size="14" font-weight="700" fill="var(--primary-deep)">鑑別器</text>
+      <text x="505" y="145" text-anchor="middle" font-family="var(--mono)" font-size="11" fill="var(--muted)">Discriminator</text>
+      <path d="M200,125 L420,125" stroke="var(--accent-deep)" stroke-width="2" fill="none" marker-end="url(#gan-arrow)"/>
+      <text x="310" y="115" text-anchor="middle" font-family="var(--mono)" font-size="11.5" fill="var(--muted)">假數據</text>
+      <text x="505" y="188" text-anchor="middle" font-family="var(--body)" font-size="12.5" fill="var(--ink)">輸出判斷：真 or 假</text>
+      <path d="M420,158 Q270,228 118,164" stroke="var(--muted)" stroke-width="1.75" stroke-dasharray="4 3" fill="none" marker-end="url(#gan-arrow-fb)"/>
+      <text x="270" y="215" text-anchor="middle" font-family="var(--mono)" font-size="11" fill="var(--muted)">回饋：讓生成器做得更像真的</text>
+    </svg>
+    <p class="cap">生成器（造假的人）不斷把假數據做得更像真的，鑑別器（抓假的警察）不斷練習分辨真假，兩邊你來我往互相較勁，生成器最後幾乎能以假亂真。</p>
+  </div>
+
   <h3>整週回顧 <span class="pref">週總結</span></h3>
   <p class="lede">這週的主軸：機器學習「是什麼」（數據驅動、無需人工規則）→ 三大類型（監督式／非監督式／強化學習，分別對應「有沒有標記」「有沒有環境互動」）→ 實現流程三階段（數據處理 → 模型訓練 → 評估與優化），每個階段都有對應的技術名詞跟為什麼要做的理由。考試很愛出「下列何者不屬於／不是」這種題型，把每組清單背熟是這週的重點。</p>
 </section>
@@ -132,8 +224,8 @@
 
 </div>
 
-<script src="assets/config.js?v=6"></script>
-<script src="assets/quiz.js?v=6"></script>
+<script src="assets/config.js?v=7"></script>
+<script src="assets/quiz.js?v=7"></script>
 <script>
 Study.initQuiz({
   day: 15,
