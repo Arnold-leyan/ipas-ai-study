@@ -96,6 +96,28 @@
     <tr><td>產品設計與製造</td><td>創新產品設計、快速原型（3D 列印＋AI）、效能模擬報告、供應鏈需求預測。趨勢：智慧製造</td></tr>
   </table></div>
 
+  <h3>六、名詞速查（考前掃一遍）<span class="pref">整節重點詞</span></h3>
+  <div class="tw"><table>
+    <tr><th>名詞</th><th>一句話解釋</th></tr>
+    <tr><td><b>深度學習網路</b></td><td>多層的神經網路，一層層把資料的特徵抽出來；生成式AI 的底層架構</td></tr>
+    <tr><td><b>注意力機制／自注意力</b></td><td>讓模型判斷「一句話裡哪些字彼此相關」，能處理長距離前後文，是 Transformer 的核心</td></tr>
+    <tr><td><b>標記化 Tokenization</b></td><td>把文字切成模型看得懂的小單位（詞或子詞），例如「生成式」→「生成」「式」</td></tr>
+    <tr><td><b>向量化 Vectorization</b></td><td>把每個 token 轉成一串數字（向量）——模型只能算數字、不能直接算文字</td></tr>
+    <tr><td><b>溫度 Temperature</b></td><td>控制輸出的亂度：低＝保守、每次差不多；高＝有創意、也更容易亂講</td></tr>
+    <tr><td><b>Top-k Sampling</b></td><td>每一步只從「機率最高的前 k 個字」裡挑，擋掉太離譜的選項</td></tr>
+    <tr><td><b>核採樣 Nucleus（Top-p）</b></td><td>改成從「累積機率加到閾值（如 0.9）的那一小群字」裡挑，群的大小會隨情況變動</td></tr>
+    <tr><td><b>AI 幻覺 hallucination</b></td><td>模型一本正經地講出看似合理、其實錯誤或虛構的內容</td></tr>
+    <tr><td><b>提示工程師 Prompt Engineer</b></td><td>專門設計、優化「怎麼問 AI」的人，讓產出更符合需求；生成式AI 帶起的新職務</td></tr>
+    <tr><td><b>AI 訓練師</b></td><td>負責餵資料、調整與校正模型行為的人（同為新興職務）</td></tr>
+    <tr><td><b>GAN 生成對抗網路</b></td><td>一個「生成器」畫、一個「鑑別器」抓假，互相對抗一起變強；擅長逼真圖像</td></tr>
+    <tr><td><b>VAE 變分自編碼器</b></td><td>先把資料壓成精簡代表（編碼）再還原（解碼）來生成新樣本；穩定、機率式生成</td></tr>
+    <tr><td><b>Transformer</b></td><td>靠自注意力一次看整句的架構，GPT 系列的基礎，也支援文字／圖像多模態</td></tr>
+    <tr><td><b>RLHF 人類回饋強化學習</b></td><td>拿人類對答案好壞的評價當獎勵訊號去微調模型，讓輸出更貼近人要的</td></tr>
+    <tr><td><b>vLLM</b></td><td>一種高效推理框架，讓大模型跑得更快、更省資源，能用在即時或邊緣裝置</td></tr>
+    <tr><td><b>Hugging Face</b></td><td>開源模型與資料集的大平台／社群，可直接取用現成模型（Spaces 還能線上試跑）</td></tr>
+    <tr><td><b>AIaaS AI 即服務</b></td><td>把生成式AI 包成雲端服務、用 API 呼叫，企業免自購高階硬體、免訓練就能用</td></tr>
+  </table></div>
+
   <div class="card">
     <h4>一分鐘回想</h4>
     <p>技術架構：深度學習網路＋訓練數據處理（標記化、向量化）＋推理機制（<b>溫度／Top-k／核採樣</b>）。挑戰有 <b>AI 幻覺</b>。就業變革出現<b>提示工程師</b>。工具突破關鍵字：GAN、VAE、Transformer、<b>RLHF</b>、vLLM、Hugging Face。趨勢裡最常考 <b>AIaaS（AI 即服務）</b>。五大產業：藝術、醫療、教育、娛樂、製造。</p>
