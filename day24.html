@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 24 鑑別式／生成式AI ＋ No Code／Low Code ＋ 應用工具（整理） — iPAS 考取衝刺班</title>
+<meta name="description" content="W5 Day 4：科目一 3.4 鑑別式／生成式AI 概念 ＋ 科目二 3.1 No Code／Low Code ＋ 科目二 3.2 應用領域與工具使用 知識整理。整理自 W4 Day 5、W2。">
+<link rel="stylesheet" href="assets/style.css?v=6">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W5 · Day 4 · 9/17（四）· 知識整理</p>
+        <h1>鑑別式／生成式AI ＋ No Code／Low Code ＋ 應用工具（整理）</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>今天是「生成式AI 這一叢」的整理日：科目一 3.4（鑑別式／生成式AI 概念）＋ 科目二 3.1（No Code／Low Code）＋ 科目二 3.2（應用領域與工具使用）。前兩個是鑑別測驗全班較強的主題，3.2 是最弱的（68%）——多花點時間。細節回去看 <a href="day20.html">Day 20</a>、<a href="day6.html">Day 6</a>～<a href="day10.html">Day 10</a>。</p>
+    <div class="mast-meta">
+      <span class="tag">科目一 p.3-48～3-49 ｜ 科目二 p.3-1～3-30</span>
+      <span class="tag">閱讀約 17 分鐘</span>
+      <span class="tag">測驗 6 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w5-index.html">總覽</a></li>
+    <li><a href="day21.html" data-day="21">Day 1</a></li>
+    <li><a href="day22.html" data-day="22">Day 2</a></li>
+    <li><a href="day23.html" data-day="23">Day 3</a></li>
+    <li><a href="day24.html" data-day="24" aria-current="page">Day 4</a></li>
+    <li><a href="day25.html" data-day="25">Day 5</a></li>
+    <li><a href="w5-test.html" data-day="w5test">整合測驗</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>統一筆記 A：鑑別式AI vs 生成式AI</h2>
+
+  <h3>核心對照 <span class="pref">科目一 p.3-48～3-49</span></h3>
+  <div class="tw"><table>
+    <tr><th></th><th>鑑別式AI（DAI）</th><th>生成式AI（GAI）</th></tr>
+    <tr><td>學習目標</td><td>條件概率 <b>P(y│x)</b>，找分類邊界</td><td>聯合分佈 <b>P(x,y)</b> 或邊際分佈 P(x)</td></tr>
+    <tr><td>任務</td><td>分類、迴歸、預測</td><td>生成具創新性的新樣本</td></tr>
+    <tr><td>代表模型</td><td>邏輯迴歸、SVM、決策樹、隨機森林、神經網路</td><td>GAN、VAE（變分自編碼器）、擴散模型（Diffusion）</td></tr>
+    <tr><td>輸出</td><td>分類標籤或數值預測</td><td>新的數據樣本（文字、圖像、音訊）</td></tr>
+  </table></div>
+  <ul>
+    <li><b>GAN</b>＝生成器＋鑑別器<b>對抗</b>；<b>VAE</b>＝編碼器＋解碼器（映射到隱變量空間再重建）；<b>擴散模型</b>＝逐步<b>去雜訊</b>，適合高維圖像生成。</li>
+    <li><b>整合應用</b>：生成式AI 生成多樣化數據（解決數據稀缺、不平衡）→ 鑑別式AI 再分類分析。例：GAN 生成病變模擬影像，讓鑑別式模型訓練得更準。</li>
+  </ul>
+  <div class="card">
+    <h4>白話</h4>
+    <p>鑑別式AI 像<b>鑑定師</b>（判斷這是真是假、屬於哪類）；生成式AI 像<b>創作者</b>（畫出一幅新的畫）。GAN 就是這兩個角色的結合：生成器一直畫、鑑別器一直抓破綻。</p>
+  </div>
+</section>
+
+<section>
+  <h2>統一筆記 B：No Code / Low Code 概念</h2>
+
+  <h3>核心對照 <span class="pref">科目二 p.3-1～3-2</span></h3>
+  <div class="tw"><table>
+    <tr><th></th><th>No Code</th><th>Low Code</th></tr>
+    <tr><td>要不要寫程式</td><td>完全不用寫，純拖放</td><td>可以寫一點，做客製化與複雜邏輯</td></tr>
+    <tr><td>視覺化介面</td><td>有</td><td>有（分界<b>不是</b>有沒有介面）</td></tr>
+    <tr><td>使用族群</td><td>非技術背景使用者</td><td>具基本技術背景、需高彈性／深度整合（串 CRM、ERP）</td></tr>
+    <tr><td>適合場景</td><td>快速原型、小型應用（活動報名表單）</td><td>中大型企業級、複雜邏輯</td></tr>
+  </table></div>
+
+  <h3>關鍵名詞 <span class="pref">科目二 p.3-8～3-16</span></h3>
+  <div class="tw"><table>
+    <tr><th>名詞</th><th>重點</th></tr>
+    <tr><td><b>AI 民主化</b></td><td><b>目標</b>：把 AI 從少數專家、大型企業擴展到更廣泛的社會層面（非技術者、中小企業）。No Code/Low Code 是實現它的<b>工具</b>。</td></tr>
+    <tr><td><b>市民開發者（Citizen Developer）</b></td><td><b>人</b>：非技術背景人士用 No Code/Low Code 工具自動化日常工作（報告生成、數據輸入）。</td></tr>
+    <tr><td><b>選平台的考量</b></td><td>功能與擴展性看<b>技術整合能力與自訂性</b>；另有成本效益（TCO vs ROI）、安全合規（GDPR、CCPA）、技術支援。</td></tr>
+    <tr><td><b>TCO vs ROI</b></td><td>TCO 算<b>投入</b>（購買＋維護＋培訓）；ROI 算<b>產出</b>（效益回報）。</td></tr>
+    <tr><td><b>結合生成式AI 的挑戰</b></td><td>模型準確性、資料隱私安全、道德倫理風險、技術整合適配；克服四面向：數據品質管理、模型效能評估、<b>人機協作機制</b>（關鍵應用設人工審核）、安全防護。</td></tr>
+    <tr><td><b>不適合的應用</b></td><td>自動生成<b>法律判決</b>（需專業法律知識與嚴格合規審查）。</td></tr>
+  </table></div>
+
+  <h2>統一筆記 C：生成式AI 應用領域與工具使用（科目二 3.2）</h2>
+  <p class="lede">這節在 W4 Day 5 首次教。範圍廣、不深，多為「認識名詞」與「情境判斷」，考題也偏基礎。</p>
+
+  <h3>技術架構與推理機制 <span class="pref">科目二 p.3-17～3-18</span></h3>
+  <div class="tw"><table>
+    <tr><th>面向</th><th>重點</th></tr>
+    <tr><td>深度學習網路</td><td>多層神經網路、<b>注意力機制</b>（自注意力處理長距離依賴）</td></tr>
+    <tr><td>訓練數據處理</td><td>清洗、<b>標記化（Tokenization）</b>、<b>向量化（Vectorization）</b></td></tr>
+    <tr><td>推理機制</td><td><b>溫度參數</b>控制隨機性（高＝創意）；<b>Top-k</b> 取機率前 k 個；<b>核採樣（Nucleus）</b>取累積機率達 0.9 的選項</td></tr>
+  </table></div>
+  <p class="lede">挑戰關鍵字：計算資源、硬體限制、輸出準確性、<b>AI 幻覺（hallucinations）</b>、偏見與安全性。</p>
+
+  <h3>市場、就業與工具演進 <span class="pref">科目二 p.3-18～3-22</span></h3>
+  <ul>
+    <li><b>就業變革</b>：重複性、低技能工作被取代；新增 <b>AI 訓練師、提示工程師（Prompt Engineer）</b>。</li>
+    <li><b>經濟效益三層</b>：直接（降成本提效率）、間接（促進創新、新商業模式）、衍生（帶動 AI 硬體與雲端服務）。</li>
+    <li><b>技術突破</b>：GAN、VAE／流式模型、Transformer 與自注意力、預訓練＋微調＋<b>RLHF（人類回饋強化學習）</b>、高效推理（vLLM）。</li>
+    <li><b>開源社群</b>：<b>Hugging Face</b> 提供開源資源，加速整合。</li>
+  </ul>
+
+  <h3>9 大發展趨勢（常考 ③）＋ 五大產業應用 <span class="pref">科目二 p.3-22～3-26</span></h3>
+  <p>趨勢：①專業化垂直整合 ②多模態整合 ③<b>AI 即服務（AIaaS）</b>——雲端 API（OpenAI API、Hugging Face Spaces） ④個人化可控性 ⑤協作即時回饋 ⑥安全隱私（本地部署、加密、內容過濾） ⑦效能優化 ⑧生態系建構 ⑨道德法律規範（版權、防深偽假新聞）。</p>
+  <p class="lede"><b>五大產業應用</b>：藝術設計／內容創作、醫療與生物科技、教育與培訓、娛樂與媒體、產品設計與製造。</p>
+
+  <div class="card">
+    <h4>一分鐘回想</h4>
+    <p>鑑別式＝<b>P(y│x) 分類</b>、生成式＝<b>P(x,y) 生成</b>；GAN 生成器＋鑑別器、VAE 編碼器＋解碼器、擴散去雜訊。No Code vs Low Code 差在<b>寫不寫程式</b>不是有沒有介面；<b>民主化＝目標、市民開發者＝人、平台＝工具</b>；TCO 投入、ROI 產出。科目二 3.2：推理機制＝<b>溫度／Top-k／核採樣</b>，挑戰有 <b>AI 幻覺</b>，新職務 <b>提示工程師</b>，趨勢最常考 <b>AIaaS</b>，關鍵詞 <b>RLHF、Hugging Face</b>。</p>
+  </div>
+</section>
+
+<section id="quiz">
+  <h2>今日回想測驗</h2>
+  <p class="lede">6 題，全部選完才能送出。送出後會顯示解析，成績自動回傳給召集人。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。填過一次之後其他天會自動帶入。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 6 題</span>
+    <span class="score">整理自 W4 Day 5、W2</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對這個主題再幫你複習一次、多出幾題考你。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製今天的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="day23.html">← Day 3：機器學習概念</a>
+    <a href="day25.html">Day 5：生成式AI 導入評估規劃 →</a>
+  </div>
+</section>
+
+<footer>
+  <p>整理自 iPAS「AI 應用規劃師（初級）學習指引」科目一 3.4 節（鑑別式AI 與生成式AI 概念）與科目二 3.1 節（No Code／Low Code 概念）、3.2 節（生成式AI 應用領域與工具使用，p.3-17～3-30），對應本班 W4 Day 5、W2。此範圍在 114.04 版勘誤表中無相關更正。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=6"></script>
+<script src="assets/quiz.js?v=6"></script>
+<script>
+Study.initQuiz({
+  day: 24,
+  week: 'W5',
+  dayLabel: 'Day 4',
+  dayTitle: '鑑別式／生成式AI ＋ No Code／Low Code ＋ 應用工具（整理）',
+  subject: '科目一「人工智慧基礎概論」與科目二「生成式AI應用與規劃」',
+  ai: {
+    pages: '科目一 p.3-48～3-49（3.4 節）、科目二 p.3-1～3-30（3.1、3.2 節）',
+    topics: '鑑別式AI（P(y│x) 分類）vs 生成式AI（P(x,y) 生成）、代表模型（邏輯迴歸／SVM／決策樹／隨機森林 vs GAN／VAE／擴散模型）、GAN 生成器＋鑑別器、VAE 編碼器＋解碼器、擴散模型去雜訊、No Code vs Low Code（差在寫不寫程式、不是有沒有介面）、AI 民主化（目標）vs 市民開發者（人）vs 平台（工具）、TCO vs ROI；科目二 3.2：生成式AI 技術架構與推理機制（溫度參數／Top-k／核採樣）、AI 幻覺、就業市場變革（提示工程師）、工具技術演進（GAN／VAE／Transformer／RLHF、Hugging Face）、9 大發展趨勢（尤其 AIaaS）、五大產業應用'
+  },
+  questions: [
+    {
+      q: '下列何者為鑑別式AI 的主要目標？',
+      o: ['學習數據的生成過程', '生成類似真實數據的新樣本', '分類或迴歸數據', '創建多樣化的數據分佈'],
+      a: 2,
+      src: '官方原題重考 · 科目一學習指引 p.3-60 第 1 題（W4 Day 5）',
+      e: '鑑別式AI 專注於學習數據的條件概率 P(y│x)，主要用於分類或迴歸任務，而非生成數據。'
+    },
+    {
+      q: '「透過將數據映射到隱變量空間並重建原始數據來學習數據的潛在結構，包含編碼器與解碼器兩部分」，這是下列哪一種生成式AI 模型？',
+      o: ['變分自編碼器（VAE）', '支援向量機（SVM）', '決策樹', 'K 均值聚類'],
+      a: 0,
+      src: '自編練習題 · 指引 p.3-49',
+      e: 'VAE 由編碼器（把數據壓縮到低維隱變量空間）與解碼器（從隱變量空間重建數據）組成。GAN 是生成器＋鑑別器；擴散模型是逐步去雜訊。'
+    },
+    {
+      q: '在生成式AI 的推理機制中，「控制生成內容的隨機性，低值較保守、高值更具創意」指的是下列哪一個參數？',
+      o: ['溫度參數（Temperature）', '頂部採樣（Top-k）', '核採樣（Nucleus Sampling）', '標記化（Tokenization）'],
+      a: 0,
+      src: '自編練習題 · 科目二 p.3-18（W4 Day 5）',
+      e: '溫度參數控制隨機性；Top-k 選機率最高的前 k 個；核採樣選累積機率達閾值（如 0.9）的選項；標記化是把文本拆成詞／子詞的前處理。'
+    },
+    {
+      q: '關於 No Code 與 Low Code 的差異，下列敘述何者最正確？',
+      o: ['兩者的差異在於有沒有視覺化介面', '差異在於要不要寫程式碼、寫多少，兩者都有視覺化介面', 'No Code 只能給專業工程師使用', 'Low Code 完全不能客製化'],
+      a: 1,
+      src: '官方原題重考 · 科目二學習指引 p.3-12 第 1 題（W2 Day 1）',
+      e: '分界不是「有沒有介面」（兩者都有視覺化介面），而是要不要寫程式碼、寫多少。No Code＝完全不用寫、面向非技術者；Low Code＝可以寫一點做客製化與複雜邏輯。'
+    },
+    {
+      q: '「將 AI 技術的使用和應用，從少數專家和大型企業擴展到更廣泛的社會層面」，這是下列哪一個概念的定義？',
+      o: ['AI 民主化', '市民開發者', '數據漂移', '風險轉移'],
+      a: 0,
+      src: '自編練習題 · 科目二 p.3-10（W2 Day 5）',
+      e: 'AI 民主化＝把 AI 從少數專家和大型企業擴展到更廣泛的社會層面，使非技術背景人士和中小企業也能參與並受益。它是「目標」，No Code/Low Code 平台是實現它的「工具」，市民開發者是使用工具的「人」。'
+    },
+    {
+      q: '下列何者是人工智慧未來發展中最迫切需要解決的挑戰？',
+      o: ['計算資源的過剩', '資料隱私與道德規範問題', '人才培育與跨領域合作的不足', '無法應用於小型企業場景'],
+      a: 1,
+      src: '官方原題重考 · 科目二學習指引 p.3-28 第 7 題（W4 Day 5）',
+      e: '資料隱私保護和倫理規範的建立，是 AI 技術進一步發展的關鍵挑戰。這也呼應科目二 3.2 談的道德與法律規範趨勢（版權管理、防範假新聞與深偽）。'
+    }
+  ]
+});
+</script>
+</body>
+</html>

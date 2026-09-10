@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 21 科目一 3.1 人工智慧概念（整理） — iPAS 考取衝刺班</title>
+<meta name="description" content="W5 Day 1：人工智慧概念知識整理——AI 定義與三種功能分類、技術底層五要素、AI 治理四大原則。整理自 W1 Day 1–2，學習指引科目一 3.1。">
+<link rel="stylesheet" href="assets/style.css?v=6">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W5 · Day 1 · 9/14（一）· 知識整理</p>
+        <h1>科目一 3.1　人工智慧概念（整理）</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>知識整理週第一天。這頁是 W1 Day 1–2 的濃縮版——只留定義、關鍵詞、常見考點、易混淆比較。掃過一遍，做 6 題回想測驗確認記得。細節要補的話回去看 <a href="day1.html">Day 1</a>、<a href="day2.html">Day 2</a>。</p>
+    <div class="mast-meta">
+      <span class="tag">學習指引 科目一 p.3-1～3-7、3-19～3-23</span>
+      <span class="tag">閱讀約 12 分鐘</span>
+      <span class="tag">測驗 6 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w5-index.html">總覽</a></li>
+    <li><a href="day21.html" data-day="21" aria-current="page">Day 1</a></li>
+    <li><a href="day22.html" data-day="22">Day 2</a></li>
+    <li><a href="day23.html" data-day="23">Day 3</a></li>
+    <li><a href="day24.html" data-day="24">Day 4</a></li>
+    <li><a href="day25.html" data-day="25">Day 5</a></li>
+    <li><a href="w5-test.html" data-day="w5test">整合測驗</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>統一筆記：人工智慧概念</h2>
+
+  <h3>核心定義 <span class="pref">p.3-1、p.3-4</span></h3>
+  <div class="tw"><table>
+    <tr><th>名詞</th><th>一句話定義</th></tr>
+    <tr><td>人工智慧（AI）</td><td>由許多技術碎片組成的集合（機器學習、演算法、專家系統…），不等於單一技術，也不限於深度學習</td></tr>
+    <tr><td>企業導入 AI 的四個目標</td><td>提高效率、增強決策能力、提供個人化服務、促進創新（「降低人力／裁員」<b>不是</b>指引列的目標）</td></tr>
+  </table></div>
+
+  <h3>AI 的三種功能分類 <span class="pref">p.3-1</span></h3>
+  <div class="tw"><table>
+    <tr><th>類型</th><th>做什麼</th><th>典型場景</th></tr>
+    <tr><td><b>分析型 AI</b></td><td>洞悉現有數據的模式，處理、分析大量數據</td><td>商業智慧報表、客群輪廓分析</td></tr>
+    <tr><td><b>預測型 AI</b></td><td>基於歷史資料預測未來的趨勢和行為</td><td>市場預測、風險評估、違約機率推估</td></tr>
+    <tr><td><b>生成型 AI</b></td><td>依提示詞生成新的文字、語音、圖像、影片</td><td>ChatGPT 對話、文案／圖像生成</td></tr>
+  </table></div>
+
+  <h3>技術底層五要素 <span class="pref">p.3-4</span></h3>
+  <ul>
+    <li><b>資料處理與分析</b>：把原始資料整理成可用形式</li>
+    <li><b>演算法</b>：解題的步驟與規則</li>
+    <li><b>機器學習</b>：從資料中學規律（3.3 節主題）</li>
+    <li><b>深度學習</b>：多層神經網路，模型自行學特徵</li>
+    <li><b>專家系統</b>：<b>基於規則與知識庫</b>模擬專家決策，不靠大量資料訓練——醫療診斷、財務分析</li>
+  </ul>
+
+  <h3>應用領域對照（常考「這個實例屬於哪個領域」）<span class="pref">p.3-2</span></h3>
+  <div class="tw"><table>
+    <tr><th>領域</th><th>指引舉的實例</th></tr>
+    <tr><td>醫療保健</td><td>影像分析輔助診斷（X 光、MRI）、藥物開發、個人化治療</td></tr>
+    <tr><td>金融</td><td>風險評估、投資組合優化、個人化投資建議、詐騙偵測</td></tr>
+    <tr><td>製造業</td><td>自動化生產、<b>品質控制</b>（影像辨識檢測產品缺陷）、<b>預測性維護</b>（預測設備故障）</td></tr>
+    <tr><td>交通</td><td>交通流量預測、自動駕駛、路徑規劃</td></tr>
+  </table></div>
+  <div class="note">
+    <span class="lbl">易判錯提醒</span>
+    「影像辨識檢測<b>產品</b>缺陷」是製造業品質控制；「影像分析診斷<b>疾病</b>」才是醫療。「預測<b>設備</b>故障」是製造業預測性維護；「預測<b>交通</b>流量」是交通。動作看起來一樣，看的是「對象是什麼」。
+  </div>
+
+  <h3>AI 治理：把 AI 用得負責任 <span class="pref">p.3-19～3-23</span></h3>
+  <div class="tw"><table>
+    <tr><th>原則／面向</th><th>重點</th></tr>
+    <tr><td><b>公平性</b></td><td>避免訓練資料偏見造成歧視性輸出，導入去偏演算法與公平性檢測</td></tr>
+    <tr><td><b>透明性</b></td><td>透過發布報告、技術文件或網站，揭露 AI 系統在各決策環節的決策流程（只對內、完全保密都不符合）</td></tr>
+    <tr><td><b>問責性</b></td><td>明確 AI 決策的責任歸屬與追溯機制</td></tr>
+    <tr><td><b>隱私保護</b></td><td>個資最小化、匿名化／假名化，符合法規</td></tr>
+    <tr><td><b>國際合作的重要性</b></td><td>統一發展標準、避免技術濫用、促進技術轉移（三者皆是）</td></tr>
+  </table></div>
+
+  <div class="card">
+    <h4>一分鐘回想</h4>
+    <p>AI ＝ 一堆技術的<b>拼圖</b>（五要素）。依功能分三類：<b>分析</b>看現在、<b>預測</b>看未來、<b>生成</b>做新的。治理 ＝ 公平、透明、問責、隱私，加上國際合作。專家系統的關鍵字是「<b>規則與知識庫</b>」，不是資料訓練。</p>
+  </div>
+</section>
+
+<section id="quiz">
+  <h2>今日回想測驗</h2>
+  <p class="lede">6 題，全部選完才能送出。送出後會顯示解析，成績自動回傳給召集人。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。填過一次之後其他天會自動帶入。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 6 題</span>
+    <span class="score">整理自 W1 · 官方原題／自編混合</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對這個主題再幫你複習一次、多出幾題考你。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製今天的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="w5-index.html">← 回總覽</a>
+    <a href="day22.html">Day 2：資料處理與分析概念 →</a>
+  </div>
+</section>
+
+<footer>
+  <p>整理自 iPAS「AI 應用規劃師（初級）學習指引－科目一」3.1 節（人工智慧概念），對應本班 W1 Day 1–2。本主題在 114.04 版勘誤表中無相關更正。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=6"></script>
+<script src="assets/quiz.js?v=6"></script>
+<script>
+Study.initQuiz({
+  day: 21,
+  week: 'W5',
+  dayLabel: 'Day 1',
+  dayTitle: '科目一 3.1 人工智慧概念（整理）',
+  subject: '科目一「人工智慧基礎概論」',
+  ai: {
+    pages: '科目一 p.3-1～3-7、p.3-19～3-23（3.1 節）',
+    topics: 'AI 的定義（技術的集合、不限於深度學習）、依功能分類的分析型／預測型／生成型 AI、技術底層五要素（資料處理與分析、演算法、機器學習、深度學習、專家系統）、AI 應用領域（醫療／金融／製造／交通）的實例判別、AI 治理的公平性／透明性／問責性／隱私保護、國際合作的重要性'
+  },
+  questions: [
+    {
+      q: '關於 AI 的定義，下列敘述何者較為正確？',
+      o: ['AI 僅限於深度學習技術', 'AI 包括各種技術，例如機器學習、專家系統等', 'AI 系統只能在學術研究中應用', 'AI 無法應用於金融領域'],
+      a: 1,
+      src: '官方原題重考 · 科目一學習指引 p.3-20 第 2 題（W1 Day 1）',
+      e: 'AI 就像一個龐大的拼圖，由許多不同技術碎片組成——不限於深度學習，還有機器學習、演算法、專家系統等；也不只限於學術或無法用於金融，在醫學、交通、金融各領域都有大量應用。'
+    },
+    {
+      q: '某銀行依客戶過去三年的交易紀錄，推估其未來一年的違約可能性。依學習指引的功能分類，這最接近下列哪一種 AI？',
+      o: ['分析型 AI', '預測型 AI', '生成型 AI', '專家系統'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-1',
+      e: '預測型 AI ＝「基於歷史資料和數據，預測未來的趨勢和行為」，常應用於市場預測與風險評估。分析型 AI 著重洞悉現有數據模式；生成型 AI 是依提示詞產生新素材。'
+    },
+    {
+      q: '下列何者是「專家系統（Expert System）」最主要的運作基礎？',
+      o: ['多層人工神經網路', '規則與知識庫', '大量標記訓練資料', '生成對抗學習'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-4',
+      e: '專家系統「基於規則與知識庫，模擬人類專家的決策過程」，廣泛應用於醫療診斷、財務分析。多層神經網路是深度學習；標記資料是監督式學習；對抗學習是 GAN。'
+    },
+    {
+      q: '「透過影像辨識技術檢測產品缺陷，提升檢測精準度」屬於下列哪一個應用領域？',
+      o: ['醫療保健', '金融', '製造業', '交通'],
+      a: 2,
+      src: '自編練習題 · 指引 p.3-2',
+      e: '這是製造業的「品質控制」。醫療保健也有影像分析，但那是用於疾病診斷；判別關鍵是「對象是產品缺陷還是疾病」。'
+    },
+    {
+      q: '為了提升 AI 系統的透明性，下列哪種措施是適當的？',
+      o: ['不需對外揭露任何有關 AI 系統的資訊', '透過發布報告、技術文件或網站揭露 AI 系統的相關資訊', '僅對內部員工進行透明性說明', '將所有 AI 系統資訊保密'],
+      a: 1,
+      src: '官方原題重考 · 科目一學習指引 p.3-20 第 3 題（W1 Day 1）',
+      e: '透過定期或不定期發佈 AI 系統於各決策環節的決策流程，有助於提昇透明性。只對內、完全保密都不符合透明性的要求。'
+    },
+    {
+      q: '在 AI 治理中，下列何者是「國際合作」的重要性？',
+      o: ['統一 AI 發展標準', '避免 AI 技術的濫用', '促進 AI 技術的轉移', '以上皆是'],
+      a: 3,
+      src: '官方原題重考 · 科目一學習指引 p.3-21 第 10 題（W1 Day 1）',
+      e: '三者皆是：統一標準確保一致性與互操作性；避免濫用透過跨國監管與政策協調減少倫理與安全風險；促進技術轉移幫助各國共享資源、縮小數位鴻溝。'
+    }
+  ]
+});
+</script>
+</body>
+</html>

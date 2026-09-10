@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W5 知識整理週：七大主題總複習 — iPAS 考取衝刺班</title>
+<meta name="description" content="iPAS 初級 AI 應用規劃師 考取衝刺班 第五週：STEP 2 知識整理第一週。把 W1–W4 學過的七大評鑑主題整理成統一筆記範本 + 易混淆總表 + 跨主題整合測驗。">
+<link rel="stylesheet" href="assets/style.css?v=6">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">iPAS 初級 AI 應用規劃師 · 考取衝刺班</p>
+        <h1>第五週：知識整理週（七大主題總複習）</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>這是 <b>STEP 2 知識整理</b>的第一週。不教新內容——把 W1–W4 讀過的七大評鑑主題，整理成一份可以反覆回查的「統一筆記範本」：每一主題只留核心定義、關鍵詞、常見考點、易混淆比較表，並標好學習指引出處頁碼。每天 20–30 分鐘：掃一遍當天的整理筆記、做 6 題跨主題回想測驗（Day 5 是 10 題）。五天做完有一份 <b>W5 整合測驗</b>（20 題，把七大主題混在一起考）。</p>
+    <div class="mast-meta">
+      <span class="tag">9/14 – 9/18</span>
+      <span class="tag">STEP 2 · 知識整理第 1 週</span>
+      <span class="tag">涵蓋 W1–W4 七大主題</span>
+      <span class="tag" id="week-progress">本週進度 0 / 5 天</span>
+      <a class="tag" href="index.html">📚 課程首頁</a>
+      <a class="tag" href="w4-index.html">← 第四週</a>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w5-index.html" aria-current="page">總覽</a></li>
+    <li><a href="day21.html" data-day="21">Day 1</a></li>
+    <li><a href="day22.html" data-day="22">Day 2</a></li>
+    <li><a href="day23.html" data-day="23">Day 3</a></li>
+    <li><a href="day24.html" data-day="24">Day 4</a></li>
+    <li><a href="day25.html" data-day="25">Day 5</a></li>
+    <li><a href="w5-test.html" data-day="w5test">整合測驗</a></li>
+    <li><a href="w5-review.html">錯題複習</a></li>
+    <li><a href="#map">知識地圖</a></li>
+    <li><a href="#confuse">易混淆總表</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<div class="namebar" id="lookup-bar">
+  <label for="lookup-name">輸入姓名，查你已經完成哪幾天</label>
+  <p class="hint">跟平常測驗填的姓名一致就好，暱稱也可以（例如 Fanny、Emily、派瑞斯）。之前填過的話這裡會自動帶入。換裝置、換瀏覽器也查得到，因為是直接查後端試算表。</p>
+  <div class="namerow">
+    <input type="text" id="lookup-name" placeholder="例：王小明" autocomplete="name">
+    <button type="button" class="btn" id="lookup-btn">查詢進度</button>
+  </div>
+  <p class="sync idle" id="lookup-status"></p>
+</div>
+
+<section id="days">
+  <h2>本週五天</h2>
+  <p class="lede">Day 1–3 整理科目一的三個主題，Day 4 把科目一 3.4 收尾並整理科目二 3.1、3.2，Day 5 整理科目二 3.3。每天附 6 題回想測驗（Day 5 是 10 題），五天做完再做 20 題整合測驗。作答完會自動回傳成績，召集人週日彙整。</p>
+
+  <div class="daygrid">
+    <a class="daycard" href="day21.html" data-day="21">
+      <div class="row">
+        <span class="dnum">DAY 1 · 9/14（一）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">科目一 3.1　人工智慧概念</span></div>
+      <div class="dsub">AI 定義與三種功能分類、技術底層五要素、AI 治理（公平／透明／問責／隱私）｜ 整理自 W1 Day 1–2　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day22.html" data-day="22">
+      <div class="row">
+        <span class="dnum">DAY 2 · 9/15（二）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">科目一 3.2　資料處理與分析概念</span></div>
+      <div class="dsub">資料三結構、處理四步驟、四種分析、敘述統計量、假設檢定（含 3 處勘誤）｜ 整理自 W1 Day 3、Day 5　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day23.html" data-day="23">
+      <div class="row">
+        <span class="dnum">DAY 3 · 9/16（三）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">科目一 3.3　機器學習概念</span></div>
+      <div class="dsub">監督／非監督／強化三型、實現流程三階段、過擬合防範、評估指標與常見模型｜ 整理自 W3　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day24.html" data-day="24">
+      <div class="row">
+        <span class="dnum">DAY 4 · 9/17（四）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">科目一 3.4 鑑別式／生成式AI ＋ 科目二 3.1、3.2</span></div>
+      <div class="dsub">P(y│x) vs P(x,y)、GAN／VAE／擴散；No Code vs Low Code、AI 民主化；生成式AI 推理機制、工具演進、AIaaS、產業應用｜ 整理自 W4 Day 5、W2　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day25.html" data-day="25">
+      <div class="row">
+        <span class="dnum">DAY 5 · 9/18（五）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">科目二 3.3　生成式AI 導入評估規劃</span></div>
+      <div class="dsub">5 項評估標準（含勘誤③）、導入四階段、ROI／NPV／IRR、6 種風險應對策略、GDPR／CCPA｜ 整理自 W4 Day 1–4　<b>10 題</b></div>
+    </a>
+
+    <a class="daycard" href="w5-test.html" data-day="w5test">
+      <div class="row">
+        <span class="dnum">W5 整合測驗 · 五天讀完後做</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">W5 整合測驗（七大主題混合）</span></div>
+      <div class="dsub">科目一 3.1～3.4 ＋ 科目二 3.1、3.3 ｜ 題目刻意跨主題混排，模擬正式考試不分章節的出題方式　<b>20 題</b></div>
+    </a>
+  </div>
+
+  <div class="note">
+    <span class="lbl">為什麼這週這樣排</span>
+    STEP 1（W1–W4）依學習指引頁碼順序帶完了七大主題，這週用「一天一主題」的方式把它們收攏成一份筆記地圖，
+    重點放在<b>跨主題容易搞混的地方</b>——因為正式考試不會告訴你這題出自哪一節。做完這週，接下來 STEP 2 後續週次
+    可以直接拿這份整理去互審、補強。
+  </div>
+
+  <div class="note">
+    <span class="lbl">科目二 3.2 已補上</span>
+    「<b>生成式AI 應用領域與工具使用</b>」（科目二 3.2，學習指引 p.3-17～3-30）原本在 STEP 1 沒排到完整週次，
+    現已補在 <a href="day20.html">W4 Day 5</a>，本週 Day 4 一併整理。這是 STEP 0 鑑別測驗全班正確率最低的主題（68%），
+    整理時多花點時間，STEP 2 後續互審也優先看這一塊。
+  </div>
+</section>
+
+<section id="map">
+  <h2>七大主題知識地圖</h2>
+  <p class="lede">一頁看完七大主題各自的核心、關鍵詞與出處。細節在每一天的整理筆記裡。</p>
+
+  <div class="tw"><table>
+    <tr><th>主題</th><th>核心一句話</th><th>最該記的關鍵詞</th><th>出處</th></tr>
+    <tr>
+      <td><b>科目一 3.1</b><br>人工智慧概念</td>
+      <td>AI 是一堆技術的集合；依功能分「分析型／預測型／生成型」；治理談的是怎麼把 AI 用得負責任</td>
+      <td>技術底層五要素、分析／預測／生成型、公平、透明、問責、隱私、國際合作</td>
+      <td>Day 1 · 指引 p.3-1～3-7、3-19～3-23</td>
+    </tr>
+    <tr>
+      <td><b>科目一 3.2</b><br>資料處理與分析概念</td>
+      <td>先把資料整乾淨（四步驟），再選對分析方法（四種），最後用統計量與檢定下判斷</td>
+      <td>結構化／半結構化／非結構化、蒐集→清洗→轉換→分析、敘述／診斷／預測／指示、中位數 vs 眾數、Type I（α）</td>
+      <td>Day 2 · 指引 p.3-4～3-12、3-24～3-32</td>
+    </tr>
+    <tr>
+      <td><b>科目一 3.3</b><br>機器學習概念</td>
+      <td>三種學習方式看「有沒有標記／有沒有環境互動」；實現流程是資料處理→訓練→評估優化</td>
+      <td>監督／非監督／強化、數據＋模型＋損失函數、過擬合、正則化、交叉驗證、F1、決策樹可解釋</td>
+      <td>Day 3 · 指引 p.3-33～3-47</td>
+    </tr>
+    <tr>
+      <td><b>科目一 3.4</b><br>鑑別式／生成式AI 概念</td>
+      <td>鑑別式學 P(y│x) 做分類；生成式學 P(x,y) 做生成；兩者常協同（生成資料→鑑別分析）</td>
+      <td>P(y│x) vs P(x,y)、GAN（生成器＋鑑別器）、VAE（編碼器＋解碼器）、擴散模型（去雜訊）、數據增強協同</td>
+      <td>Day 4 · 指引 p.3-48～3-49</td>
+    </tr>
+    <tr>
+      <td><b>科目二 3.1</b><br>No Code／Low Code</td>
+      <td>差在「要不要寫程式、寫多少」；平台是工具，AI 民主化是目標</td>
+      <td>No Code（完全不寫）vs Low Code（寫一點）、AI 民主化、市民開發者、TCO vs ROI、技術整合能力</td>
+      <td>Day 4 · 指引（科目二）p.3-1～3-16</td>
+    </tr>
+    <tr>
+      <td><b>科目二 3.2</b><br>生成式AI 應用領域與工具使用</td>
+      <td>認識技術架構、工具與應用場景；範圍廣但不深，多為名詞與情境判斷</td>
+      <td>推理機制（溫度／Top-k／核採樣）、AI 幻覺、提示工程師、GAN／VAE／Transformer／RLHF、Hugging Face、AIaaS、五大產業應用</td>
+      <td>Day 4 · 指引（科目二）p.3-17～3-30（W4 Day 5 首教）</td>
+    </tr>
+    <tr>
+      <td><b>科目二 3.3</b><br>生成式AI 導入評估規劃</td>
+      <td>先用 5 項標準評估該不該做，再依四階段落地，全程搭配 ROI 計算與風險管理</td>
+      <td>5 項評估標準（③已勘誤）、準備／設計／驗證POC／實施營運、ROI／NPV／IRR、6 種風險應對、GDPR／CCPA、數據漂移</td>
+      <td>Day 5 · 指引（科目二）p.3-31～3-51</td>
+    </tr>
+  </table></div>
+</section>
+
+<section id="confuse">
+  <h2>跨主題易混淆總表</h2>
+  <p class="lede">這是整週最重要的一張表。正式考試最愛在這些「聽起來很像、其實不同」的地方設誘答項。考前掃這一張就好。</p>
+
+  <div class="tw"><table>
+    <tr><th>容易搞混的</th><th>怎麼一眼分辨</th><th>出處</th></tr>
+    <tr><td>分析型 vs 預測型 vs 生成型 AI</td><td>分析型＝<b>看懂現有數據</b>；預測型＝<b>推估未來</b>（市場預測、風險評估）；生成型＝<b>依提示產生新素材</b></td><td>Day 1</td></tr>
+    <tr><td>結構化 vs 半結構化 vs 非結構化</td><td>結構化＝<b>行列式資料庫</b>（MySQL）；半結構化＝<b>有標籤但格式彈性</b>（XML、JSON、CSV）；非結構化＝<b>圖片、音訊、郵件內文</b></td><td>Day 2</td></tr>
+    <tr><td>離散化 vs 正規化／標準化 vs 數據縮減</td><td>離散化＝連續值切成<b>類別</b>（青年／中年／老年）；正規化／標準化＝把數值<b>縮放到特定範圍</b>；縮減＝<b>降維</b>（PCA）</td><td>Day 2</td></tr>
+    <tr><td>敘述性 vs 診斷性 vs 預測性 vs 指示性分析</td><td>發生什麼→<b>為什麼</b>（鑽取／關聯／因果）→<b>會怎樣</b>→<b>該怎麼做</b></td><td>Day 2</td></tr>
+    <tr><td>平均數 vs 中位數 vs 眾數 用哪個</td><td>有<b>極端值</b>→中位數；某類<b>頻率特別高</b>→眾數；<b>常態分布</b>→平均數</td><td>Day 2</td></tr>
+    <tr><td>正偏態 vs 負偏態</td><td>「偏態方向＝尾巴方向＝平均數被拉走的方向」。<b>平均數 &gt; 中位數＝正偏態</b>；平均數 &lt; 中位數＝負偏態</td><td>Day 2</td></tr>
+    <tr><td>Type I 錯誤 vs Type II 錯誤</td><td>拒絕「其實為真」的 H₀＝<b>Type I（α，＝顯著水準）</b>；接受「其實為假」的 H₀＝Type II（β）。<span class="hl">紙本 p.3-27 檢定表印錯，已依勘誤表更正為 Type I</span></td><td>Day 2</td></tr>
+    <tr><td>監督式 vs 非監督式 vs 強化學習</td><td>有<b>標記</b>可對照＝監督式；沒標記、找<b>內在結構</b>＝非監督式；<b>代理靠獎勵試錯</b>＝強化學習</td><td>Day 3</td></tr>
+    <tr><td>過擬合 vs 欠擬合</td><td>過擬合＝<b>學太細</b>（連雜訊都背）、訓練好測試爛；欠擬合＝<b>學太淺</b>、兩邊都爛</td><td>Day 3</td></tr>
+    <tr><td>三個「K」：K-Means vs KNN vs K-Fold</td><td>K-Means 的 K＝<b>分成幾群</b>（非監督聚類）；KNN 的 K＝<b>參考幾個鄰居</b>（分類）；K-Fold 的 K＝<b>切幾折做交叉驗證</b>（評估）</td><td>Day 3</td></tr>
+    <tr><td>Min-Max vs Z-score 標準化</td><td>Min-Max＝映射到 <b>[0,1]</b>；Z-score＝轉成<b>均值 0、標準差 1</b></td><td>Day 3</td></tr>
+    <tr><td>鑑別式AI vs 生成式AI</td><td>鑑別式學 <b>P(y│x)</b> 找分類邊界；生成式學 <b>P(x,y)</b> 或 P(x) 生成新樣本</td><td>Day 4</td></tr>
+    <tr><td>GAN vs VAE vs 擴散模型</td><td>GAN＝<b>生成器＋鑑別器對抗</b>；VAE＝<b>編碼器＋解碼器</b>重建；擴散模型＝<b>逐步去雜訊</b></td><td>Day 4</td></tr>
+    <tr><td>No Code vs Low Code</td><td>差在<b>要不要寫程式、寫多少</b>（兩者都有視覺化介面）。No Code＝完全不寫、非技術者；Low Code＝寫一點、有基本技術者、可深度整合</td><td>Day 4</td></tr>
+    <tr><td>AI 民主化 vs 市民開發者</td><td>AI 民主化＝<b>目標</b>（讓更多人用得到、用得起 AI）；市民開發者＝<b>人</b>（用 No Code 工具自動化日常工作的非技術者）</td><td>Day 4</td></tr>
+    <tr><td>溫度參數 vs Top-k vs 核採樣</td><td>溫度＝<b>控制隨機性</b>（高＝有創意）；Top-k＝取<b>機率最高前 k 個</b>；核採樣＝取<b>累積機率達 0.9</b> 的選項</td><td>Day 4</td></tr>
+    <tr><td>AIaaS vs 一般 API 串接</td><td>AIaaS＝把<b>整套 AI 能力當雲端服務</b>租用（OpenAI API、Hugging Face Spaces），免自建高階硬體</td><td>Day 4</td></tr>
+    <tr><td>TCO vs ROI</td><td>TCO 算<b>投入</b>（購買＋維護＋培訓成本）；ROI 算<b>產出</b>（效益回報）</td><td>Day 4 · Day 5</td></tr>
+    <tr><td>5 項評估標準第②項 vs 第③項</td><td>②<b>資源與基礎設施評估</b>＝人才、數據、硬體「夠不夠」；③<b>企業導入階段性實施策略</b>＝試點→擴展→長期目標→持續優化。<span class="hl">③的標題紙本印成跟②一樣，已依勘誤表更正</span></td><td>Day 5</td></tr>
+    <tr><td>準備階段 vs 設計階段</td><td>準備階段回答「<b>要不要做、做什麼</b>」；設計階段回答「<b>怎麼做出規格</b>」（KPI、數據狀態、使用情境、成本）</td><td>Day 5</td></tr>
+    <tr><td>POC vs 正式營運</td><td>POC＝<b>小規模驗證</b>可行性、算 ROI；正式營運＝<b>大規模上線</b>並持續監控、必要時重新訓練</td><td>Day 5</td></tr>
+    <tr><td>風險接受 vs 迴避 vs 轉移 vs 緩解</td><td>接受＝<b>忍受＋備案</b>；迴避＝<b>先不做</b>；轉移＝<b>外包／保險給第三方</b>；緩解＝<b>自己做好數據管理與審查</b></td><td>Day 5</td></tr>
+    <tr><td>ROI／NPV／IRR vs BLEU／ROUGE／Perplexity vs GDPR／CCPA</td><td>第一組＝<b>財務</b>指標；第二組＝<b>生成品質</b>指標；第三組＝<b>隱私法規</b></td><td>Day 5</td></tr>
+  </table></div>
+</section>
+
+<footer>
+  <p><b>這週做完，STEP 2 知識整理就有底稿了：</b></p>
+  <div class="checkin">
+    ① <b>W5 整合測驗</b>——七大主題混合 20 題，<a href="w5-test.html">五天讀完後做</a>。<br>
+    ② 這份整理筆記可以直接印出來當隨身小抄，也是 STEP 2 後續互審、補強的基礎。<br>
+    ③ 科目二 3.2 是全班最弱主題，互審時優先看 Day 4 這一塊。
+  </div>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引」科目一 3.1～3.4 節、科目二 3.1～3.3 節，範圍對應本班 W1–W4 教材。已比對 114.04 版學習指引勘誤表：科目一 p.3-25（平均差、抽樣變異）、p.3-26（統計推論）、p.3-27（檢定表 Type I）、p.3-31～3-32（第 3、7 題），科目二 p.3-32（第③項評估標準標題）等更正全部採用更正後版本，並在對應日的整理筆記標示。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=6"></script>
+<script src="assets/quiz.js?v=6"></script>
+<script>Study.initWeekLookup();</script>
+</body>
+</html>

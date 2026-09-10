@@ -58,3 +58,7 @@ buildWeek(
   ['day16.html', 'day17.html', 'day18.html', 'day19.html', 'day20.html', 'w4-test.html'],
   'W4_QUESTIONS', 'data-w4.js'
 );
+buildWeek(
+  ['day21.html', 'day22.html', 'day23.html', 'day24.html', 'day25.html', 'w5-test.html'],
+  'W5_QUESTIONS', 'data-w5.js'
+);

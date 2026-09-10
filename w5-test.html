@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W5 整合測驗 — iPAS 考取衝刺班</title>
+<meta name="description" content="W5 整合測驗：七大評鑑主題混合 20 題，科目一 3.1～3.4 ＋ 科目二 3.1、3.3，模擬正式考試不分章節的出題方式。">
+<link rel="stylesheet" href="assets/style.css?v=6">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W5 · 整合測驗 · 9/18（五）</p>
+        <h1>W5 整合測驗</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>把這週整理的七大主題<b>混在一起</b>考，共 20 題。題目刻意不照章節順序排，也不告訴你這題出自哪一節——正式考試就是這樣。做完會馬上看到每題解析。這也是 STEP 2 知識整理第一週的收尾測驗。</p>
+    <div class="mast-meta">
+      <span class="tag">科目一 3.1～3.4 ＋ 科目二 3.1～3.3</span>
+      <span class="tag">約 20 分鐘</span>
+      <span class="tag">20 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w5-index.html">總覽</a></li>
+    <li><a href="day21.html" data-day="21">Day 1</a></li>
+    <li><a href="day22.html" data-day="22">Day 2</a></li>
+    <li><a href="day23.html" data-day="23">Day 3</a></li>
+    <li><a href="day24.html" data-day="24">Day 4</a></li>
+    <li><a href="day25.html" data-day="25">Day 5</a></li>
+    <li><a href="w5-test.html" aria-current="page">整合測驗</a></li>
+    <li><a href="w5-review.html">錯題複習</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>做之前先看這個</h2>
+  <p class="lede">下面是七大主題<b>跨章節最容易混</b>的幾組。花三分鐘掃過去，再開始作答。</p>
+
+  <div class="tw"><table>
+    <tr><th>容易搞混的</th><th>分辨方式</th><th>主題</th></tr>
+    <tr><td>分析型 vs 預測型 vs 生成型 AI</td><td>看現在 / 推未來 / 做新的</td><td>科一 3.1</td></tr>
+    <tr><td>離散化 vs 標準化 vs 縮減</td><td>切類別 / 縮放範圍 / 降維</td><td>科一 3.2</td></tr>
+    <tr><td>Type I（α）vs Type II（β）</td><td>拒絕真的 H₀＝<span class="hl">Type I（α）</span></td><td>科一 3.2</td></tr>
+    <tr><td>監督 vs 非監督 vs 強化學習</td><td>有標記 / 找結構 / 代理＋獎勵</td><td>科一 3.3</td></tr>
+    <tr><td>三個 K：K-Means / KNN / K-Fold</td><td>分群 / 鄰居 / 交叉驗證</td><td>科一 3.2、3.3</td></tr>
+    <tr><td>鑑別式 P(y│x) vs 生成式 P(x,y)</td><td>分類 / 生成</td><td>科一 3.4</td></tr>
+    <tr><td>No Code vs Low Code</td><td>寫不寫程式，不是有沒有介面</td><td>科二 3.1</td></tr>
+    <tr><td>溫度 vs Top-k vs 核採樣</td><td>控制隨機性 / 取前 k 個 / 取累積機率達 0.9</td><td>科二 3.2</td></tr>
+    <tr><td>5 項評估標準②vs③</td><td>能力夠不夠 / 分階段策略（<span class="hl">③已勘誤</span>）</td><td>科二 3.3</td></tr>
+    <tr><td>風險 接受／迴避／轉移／緩解</td><td>忍＋備案 / 先不做 / 外包 / 自己做</td><td>科二 3.3</td></tr>
+    <tr><td>NPV·IRR vs BLEU·ROUGE vs GDPR·CCPA</td><td>財務 / 生成品質 / 隱私法規</td><td>科二 3.3</td></tr>
+  </table></div>
+</section>
+
+<section id="quiz">
+  <h2>整合測驗</h2>
+  <p class="lede">20 題，七大主題混合。全部選完、填了姓名才能送出。<b>答錯不用在意分數</b>——送出後每題都有解析，把錯的那幾題看過就是這次的收穫。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 20 題</span>
+    <span class="score">七大主題混合</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對這七大主題再幫你整體複習一次。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製這一週的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="day25.html">← Day 5：生成式AI 導入評估規劃</a>
+    <a href="w5-index.html">回總覽 →</a>
+  </div>
+</section>
+
+<footer>
+  <p><b>做完就把 W5 收乾淨了，STEP 2 知識整理第一週完成！</b></p>
+  <div class="checkin">
+    ① 分數不用在意，<b>回頭把答錯那幾題的解析看一遍</b>就好——<a href="w5-review.html">這裡</a>直接列出這週所有答錯的題目。<br>
+    ② 這份七大主題整理筆記，是 STEP 2 後續互審、補強的底稿。科目二 3.2（全班最弱）整理在 Day 4，互審優先看。
+  </div>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引」科目一 3.1～3.4 節、科目二 3.1～3.3 節。已比對 114.04 版學習指引勘誤表，本測驗涉及的更正（Type I 錯誤、第③項評估標準標題等）全部採用更正後版本。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=6"></script>
+<script src="assets/quiz.js?v=6"></script>
+<script>
+Study.initQuiz({
+  day: 'w5test',
+  week: 'W5',
+  dayLabel: 'W5 整合測驗',
+  dayTitle: 'W5 整合測驗（七大主題混合）',
+  pageFile: 'w5-test.html',
+  scopeWord: '這一週',
+  subject: '科目一「人工智慧基礎概論」與科目二「生成式AI應用與規劃」',
+  ai: {
+    pages: '科目一 p.3-1～3-49（3.1～3.4 節）、科目二 p.3-1～3-51（3.1～3.3 節）',
+    topics: 'AI 定義與三種功能分類、技術底層五要素、AI 治理；資料三結構、處理四步驟、四種分析、敘述統計量、假設檢定（Type I／II）；監督／非監督／強化學習、實現流程三階段、過擬合防範、F1、常見模型；鑑別式AI vs 生成式AI（P(y│x) vs P(x,y)）、GAN／VAE／擴散；No Code vs Low Code、AI 民主化、市民開發者、TCO vs ROI；生成式AI 技術架構與推理機制（溫度／Top-k／核採樣）、AI 幻覺、提示工程師、工具演進（RLHF、Hugging Face）、AIaaS、五大產業應用；生成式AI 導入 5 項評估標準、四階段、ROI／NPV／IRR、6 種風險應對策略、GDPR／CCPA'
+  },
+  questions: [
+    {
+      q: '依功能分類，「基於歷史資料預測未來的趨勢和行為，常應用於市場預測、風險評估」屬於下列哪一類 AI？',
+      o: ['分析型 AI', '預測型 AI', '生成型 AI', '專家系統'],
+      a: 1,
+      src: '整合重考 · 科目一 3.1（W1 Day 1）',
+      e: '分析型 AI 洞悉現有數據模式；預測型 AI 基於歷史資料預測未來趨勢與行為；生成型 AI 依提示詞生成新素材。專家系統是技術底層五要素之一，不在這個功能分類裡。'
+    },
+    {
+      q: 'AI 技術底層五要素中，「基於規則與知識庫，模擬人類專家的決策過程，廣泛應用於醫療診斷、財務分析」指的是哪一項？',
+      o: ['機器學習', '深度學習', '專家系統', '演算法'],
+      a: 2,
+      src: '整合重考 · 科目一 3.1（W1 Day 2）',
+      e: '專家系統的關鍵字是「規則與知識庫」，不靠大量資料訓練，而是把專家的判斷寫成規則。'
+    },
+    {
+      q: '為了提升 AI 系統的透明性，下列哪種措施是適當的？',
+      o: ['不需對外揭露任何有關 AI 系統的資訊', '透過發布報告、技術文件或網站揭露 AI 系統的相關資訊', '僅對內部員工進行透明性說明', '將所有 AI 系統資訊保密'],
+      a: 1,
+      src: '官方原題重考 · 科目一學習指引 p.3-20 第 3 題',
+      e: '透過定期或不定期發佈 AI 系統於各決策環節的決策流程，有助於提昇透明性。只對內、完全保密都不符合。'
+    },
+    {
+      q: '下列何者屬於「半結構化數據」？',
+      o: ['MySQL 關聯式資料庫的資料表', 'JSON 設定檔', '客戶寄來的電子郵件內文', '一段錄音檔'],
+      a: 1,
+      src: '整合重考 · 科目一 3.2（W1 Day 2）',
+      e: '半結構化＝有標籤但格式靈活，XML、JSON、CSV 都是。關聯式資料庫是結構化；郵件內文、錄音檔是非結構化。'
+    },
+    {
+      q: '主成分分析（PCA）在資料處理流程中，最直接對應下列哪一項？',
+      o: ['數據蒐集 —— 外部付費數據購買', '數據清洗 —— 重複值刪除', '數據轉換 —— 數據縮減', '數據分析 —— 因果分析'],
+      a: 2,
+      src: '重點重考 · 科目一學習指引 p.3-7（W1 Day 2，全週答錯最多）',
+      e: '指引把 PCA 放在「數據轉換」的「數據縮減（Data Reduction）」底下：透過降維技術減少數據的維度或體積。它在探索性分析裡也出現過，容易誤以為屬於分析階段。'
+    },
+    {
+      q: '一組房屋價格數據中含有少數豪宅的極端高價，要描述其集中趨勢，最適合用哪個統計量？',
+      o: ['平均數', '中位數', '眾數', '全距'],
+      a: 1,
+      src: '官方原題重考 · 科目一學習指引 p.3-29 第 5 題',
+      e: '平均數易受極端值影響；中位數不受極端值影響。記法：有極端值→中位數；某項頻率特別高→眾數；常態分布→平均數。'
+    },
+    {
+      q: '在統計檢定中，「H₀ 實際上為真，我們卻拒絕了 H₀」稱為什麼錯誤？其發生機率用哪個符號表示？',
+      o: ['Type I 錯誤，α', 'Type I 錯誤，β', 'Type II 錯誤，α', 'Type II 錯誤，β'],
+      a: 0,
+      src: '整合重考 · 科目一 p.3-27（紙本印錯，已依 114.04 勘誤表更正）',
+      e: '拒絕一個實際為真的 H₀ ＝ Type I 錯誤，機率是 α（顯著水準）。接受一個實際為假的 H₀ ＝ Type II 錯誤，機率是 β。紙本 p.3-27 檢定表此處印成 Type II，是勘誤更正過的地方。'
+    },
+    {
+      q: '機器學習的三個核心要素是什麼？',
+      o: ['數據、模型、損失函數', '訓練集、測試集、驗證集', '特徵工程、優化演算法、正則化', '超參數調整、模型選擇、數據處理'],
+      a: 0,
+      src: '官方原題重考 · 科目一學習指引 p.3-44 第 1 題',
+      e: '三個核心要素是數據（Data）、模型（Model）和損失函數（Loss Function）。'
+    },
+    {
+      q: '下列哪一項屬於監督式學習的特點？',
+      o: ['數據集中包含標記訊息', '僅需探索數據內部的結構', '使用代理與環境互動進行學習', '不需要驗證集來調整參數'],
+      a: 0,
+      src: '官方原題重考 · 科目一學習指引 p.3-44 第 2 題',
+      e: '監督式學習依賴有標記的數據集。（B）是非監督式學習，（C）是強化學習。'
+    },
+    {
+      q: '機器學習模型過擬合的主要原因是什麼？',
+      o: ['模型的複雜度不足', '訓練數據樣本過多', '模型過度學習數據中的雜訊', '使用過於簡單的損失函數'],
+      a: 2,
+      src: '官方原題重考 · 科目一學習指引 p.3-44 第 3 題',
+      e: '過擬合是模型學習了訓練數據中的雜訊或特定模式，導致泛化能力不足。防範方法：正則化、Dropout、Early Stopping、數據增強。'
+    },
+    {
+      q: '一個模型在 100 筆詐騙偵測數據中，只有 2 筆是真正的詐騙。為公平反映模型抓出詐騙的能力，比較適合用哪一種指標？',
+      o: ['準確率（Accuracy）', 'F1 分數（F1 Score）', '學習率（Learning Rate）', '批次大小（Batch Size）'],
+      a: 1,
+      src: '整合重考 · 科目一 3.3（W3 Day 5）',
+      e: 'F1 分數綜合精確率與召回率，適合資料不平衡。只看準確率的話，模型全部猜「不是詐騙」也有 98% 準確率，卻沒抓到任何詐騙。'
+    },
+    {
+      q: '下列何者為鑑別式AI 的主要目標？',
+      o: ['學習數據的生成過程', '生成類似真實數據的新樣本', '分類或迴歸數據', '創建多樣化的數據分佈'],
+      a: 2,
+      src: '官方原題重考 · 科目一學習指引 p.3-60 第 1 題',
+      e: '鑑別式AI 專注於學習條件概率 P(y│x)，用於分類或迴歸，而非生成數據。'
+    },
+    {
+      q: '生成對抗網路（GAN）的兩個核心組件是什麼？',
+      o: ['編碼器與解碼器', '分類器與生成器', '生成器與鑑別器', '訓練器與推斷器'],
+      a: 2,
+      src: '官方原題重考 · 科目一學習指引 p.3-60 第 4 題',
+      e: 'GAN 由生成器（生成數據）和鑑別器（判斷數據真假）組成，透過對抗學習共同進步。編碼器＋解碼器是 VAE。'
+    },
+    {
+      q: '關於 No Code 與 Low Code 的差異，下列敘述何者最正確？',
+      o: ['兩者的差異在於有沒有視覺化介面', '差異在於要不要寫程式碼、寫多少，兩者都有視覺化介面', 'No Code 只能給專業工程師使用', 'Low Code 完全不能客製化'],
+      a: 1,
+      src: '官方原題重考 · 科目二學習指引 p.3-12 第 1 題',
+      e: '分界不是「有沒有介面」（兩者都有），而是要不要寫程式碼、寫多少。No Code＝完全不寫；Low Code＝寫一點做客製化。'
+    },
+    {
+      q: '在生成式AI 的推理機制中，「控制生成內容的隨機性，低值較保守、高值更具創意」指的是下列哪一個參數？（另外兩個容易混：Top-k 取機率前 k 個、核採樣取累積機率達 0.9 的選項）',
+      o: ['溫度參數（Temperature）', '頂部採樣（Top-k）', '核採樣（Nucleus Sampling）', '標記化（Tokenization）'],
+      a: 0,
+      src: '整合重考 · 科目二 3.2（W4 Day 5，p.3-18）',
+      e: '溫度參數控制隨機性；Top-k 選機率最高的前 k 個；核採樣選累積機率達閾值（如 0.9）的選項；標記化是把文本拆成詞／子詞的前處理。這三個是科目二 3.2 推理機制最常考的名詞。'
+    },
+    {
+      q: '依學習指引更正後的內容，生成式AI 導入 5 項評估標準中的第③項標題正確名稱是什麼？',
+      o: ['資源與基礎設施評估', '企業導入階段性實施策略', '員工技能與文化導入', '需求與現狀評估'],
+      a: 1,
+      src: '整合重考 · 科目二 3.3（對應 114.04 勘誤表）',
+      e: '勘誤表已將第③項標題由誤植的「資源與基礎設施評估」更正為「企業導入階段性實施策略」——講的是試點→擴展→長期目標→持續優化的分階段推進。'
+    },
+    {
+      q: '用來衡量生成式AI 模型生成內容品質與語言流暢性的量化標準，是下列哪一組指標？',
+      o: ['ROI、NPV、IRR', 'BLEU、ROUGE、Perplexity', 'GDPR、CCPA', 'TCO、KPI'],
+      a: 1,
+      src: '整合重考 · 科目二 3.3（W4 Day 3）',
+      e: '生成品質指標＝BLEU、ROUGE、Perplexity；財務指標＝ROI、NPV、IRR；隱私法規＝GDPR、CCPA。三組不要混。'
+    },
+    {
+      q: '若企業將資料安全管理外包給第三方服務供應商，屬於哪種風險應對策略？',
+      o: ['風險緩解', '風險轉移', '風險接受', '風險迴避'],
+      a: 1,
+      src: '官方原題重考 · 科目二學習指引 p.3-54 第 9 題',
+      e: '透過外包或購買保險，把潛在風險轉移至第三方處理，這是「風險轉移」。風險緩解是自己做好數據管理與審查。'
+    },
+    {
+      q: '企業定期檢查輸入數據的分佈變化，避免因業務場景或用戶行為改變導致模型預測準確性降低，這個現象稱為下列何者？',
+      o: ['過擬合', '數據漂移（Data Drift）', '模式崩潰', 'A/B 測試'],
+      a: 1,
+      src: '整合重考 · 科目二 3.3（W4 Day 3）',
+      e: '數據漂移指輸入數據的分佈隨業務場景或用戶行為改變而變化，屬於實施營運階段要持續監控的項目。'
+    },
+    {
+      q: '把七大主題串起來看，下列敘述何者最貼切？',
+      o: ['七大主題彼此獨立，沒有關聯', '科目一從「AI 是什麼、資料怎麼處理、機器怎麼學、鑑別式與生成式怎麼分」打基礎；科目二談「用 No Code/Low Code 降低門檻」「生成式AI 有哪些應用與工具」「企業導入該怎麼評估規劃與控管風險」，基礎撐起應用', '科目一與科目二講的是完全相同的內容', '只要背熟名詞就能通過，觀念之間不需要連結'],
+      a: 1,
+      src: '整合 · 七大主題總覽',
+      e: '科目一（3.1 概念→3.2 資料→3.3 機器學習→3.4 鑑別式/生成式）是技術基礎；科目二（3.1 No Code/Low Code→3.2 應用領域與工具→3.3 導入評估規劃）是把 AI 落地到企業的應用與治理。基礎與應用互相支撐，考試常把兩科觀念放在同一題情境裡。'
+    }
+  ]
+});
+</script>
+</body>
+</html>

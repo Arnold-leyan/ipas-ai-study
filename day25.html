@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 25 科目二 3.3 生成式AI 導入評估規劃（整理） — iPAS 考取衝刺班</title>
+<meta name="description" content="W5 Day 5：生成式AI 導入評估規劃知識整理——5 項評估標準（含勘誤③）、導入四階段、ROI／NPV／IRR、6 種風險應對策略、GDPR／CCPA。整理自 W4 Day 1–4。">
+<link rel="stylesheet" href="assets/style.css?v=6">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W5 · Day 5 · 9/18（五）· 知識整理</p>
+        <h1>科目二 3.3　生成式AI 導入評估規劃（整理）</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>知識整理週最後一天，把 W4 Day 1–4 收攏成一頁。這個主題步驟多、名詞多，重點放在四階段的分工與 6 種風險應對策略的分辨。今天 10 題。細節回去看 <a href="day16.html">Day 16</a>～<a href="day19.html">Day 19</a>。</p>
+    <div class="mast-meta">
+      <span class="tag">學習指引 科目二 p.3-31～3-51</span>
+      <span class="tag">閱讀約 16 分鐘</span>
+      <span class="tag">測驗 10 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w5-index.html">總覽</a></li>
+    <li><a href="day21.html" data-day="21">Day 1</a></li>
+    <li><a href="day22.html" data-day="22">Day 2</a></li>
+    <li><a href="day23.html" data-day="23">Day 3</a></li>
+    <li><a href="day24.html" data-day="24">Day 4</a></li>
+    <li><a href="day25.html" data-day="25" aria-current="page">Day 5</a></li>
+    <li><a href="w5-test.html" data-day="w5test">整合測驗</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>統一筆記：生成式AI 導入評估規劃</h2>
+
+  <h3>5 項評估標準 <span class="pref">p.3-31～3-32</span></h3>
+  <div class="tw"><table>
+    <tr><th>標準</th><th>回答的問題</th></tr>
+    <tr><td>① 需求與現狀評估</td><td>痛點識別、應用場景分析、技術對接性——「<b>要解決什麼問題</b>」</td></tr>
+    <tr><td>② 資源與基礎設施評估</td><td>技術人才、數據品質與基礎、硬體與系統架構、可擴展性——「<b>有沒有能力解決</b>」</td></tr>
+    <tr><td>③ <b class="hl">企業導入階段性實施策略</b></td><td>試點應用 → 階段性擴展 → 長期目標設定 → 持續優化與回饋</td></tr>
+    <tr><td>④ 員工技能與文化導入</td><td>技術培訓、實務操作、數位轉型文化</td></tr>
+    <tr><td>⑤ 風險評估與管理</td><td>資料安全與隱私、倫理與法規、技術風險、資源調度風險</td></tr>
+  </table></div>
+  <div class="note">
+    <span class="lbl">勘誤③（114.04 版）</span>
+    紙本 p.3-32 把第③項標題印成跟第②項一樣的「資源與基礎設施評估」，已更正為 <b>「企業導入階段性實施策略」</b>。內容講的是「試點→擴展→長期目標→持續優化」這一整套分階段推進，跟第②項講「人才、數據、硬體夠不夠」是不同的事。
+  </div>
+
+  <h3>導入規劃四階段 <span class="pref">p.3-34～3-45</span></h3>
+  <div class="tw"><table>
+    <tr><th>階段</th><th>做什麼</th><th>關鍵詞</th></tr>
+    <tr><td>① 準備（挑選 AI 應用方案）</td><td>掌握企業課題、檢視 AI 方案與企業資源、確定優先順序</td><td>繪製業務流程圖、提取改善項目（重複性／規則性／標準化的工作）、方案成本結構</td></tr>
+    <tr><td>② 設計（確認 AI 生成規格）</td><td>確認導入最終目標、數據狀態、使用情境、估算成本</td><td>設立可量化 <b>KPI</b>、建立持續更新的數據流程、部署策略</td></tr>
+    <tr><td>③ 驗證 POC（驗證 AI 效果）</td><td>模型開發到部署、小規模實驗測試效能</td><td>損失函數（自迴歸用<b>交叉熵</b>）、優化器（AdamW／LAMB）、交叉驗證、生成品質指標 <b>BLEU／ROUGE／Perplexity</b>、算 <b>ROI</b> 與回收週期</td></tr>
+    <tr><td>④ 實施營運</td><td>人員熟悉流程、持續監控、必要時微調或重新訓練</td><td><b>數據漂移（Data Drift）</b>：定期檢查輸入數據分佈變化</td></tr>
+  </table></div>
+  <p class="lede"><b>ROI 計算</b>可搭配財務指標 <b>NPV（淨現值）</b>與 <b>IRR（內部報酬率）</b>評估長期收益潛力。別跟生成品質指標（BLEU／ROUGE／Perplexity）、隱私法規（GDPR／CCPA）搞混。</p>
+
+  <h3>6 種風險應對策略 <span class="pref">p.3-45～3-51</span></h3>
+  <div class="tw"><table>
+    <tr><th>策略</th><th>怎麼分辨</th></tr>
+    <tr><td>風險溯源</td><td>審核<b>數據來源</b>、確保生成過程可追溯</td></tr>
+    <tr><td>風險文化</td><td>定期<b>培訓教育</b>、建立風險報告機制與獎勵政策</td></tr>
+    <tr><td>風險接受</td><td>影響有限或無法完全避免 → <b>忍受＋制定應急計畫</b>，繼續做</td></tr>
+    <tr><td>風險緩解</td><td><b>自己</b>做好數據管理、內容審查來降低風險</td></tr>
+    <tr><td>風險迴避</td><td>技術不成熟／風險過高 → <b>先不做</b>、暫緩</td></tr>
+    <tr><td>風險轉移</td><td><b>外包給第三方</b>、購買保險</td></tr>
+  </table></div>
+  <p class="lede"><b>隱私法規</b>：處理個資訓練模型須注意 <b>GDPR</b>（一般資料保護規則）與 <b>CCPA</b>（加州消費者隱私法案），採資料匿名化或假名化。</p>
+
+  <div class="card">
+    <h4>一分鐘回想</h4>
+    <p>5 項標準：需求→資源→<b>階段性策略（③已勘誤）</b>→員工文化→風險。四階段：準備（要不要做、做什麼）→設計（怎麼做出規格、KPI）→驗證 POC（小規模測、算 ROI）→實施營運（監控、防<b>數據漂移</b>）。風險應對 6 種：溯源、文化、接受（忍＋備案）、緩解（自己做）、迴避（先不做）、轉移（外包）。財務＝NPV/IRR，品質＝BLEU/ROUGE，隱私＝GDPR/CCPA。</p>
+  </div>
+</section>
+
+<section id="quiz">
+  <h2>今日回想測驗</h2>
+  <p class="lede">10 題，全部選完才能送出。送出後會顯示解析，成績自動回傳給召集人。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。填過一次之後其他天會自動帶入。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 10 題</span>
+    <span class="score">整理自 W4 · 官方原題／自編混合</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對這個主題再幫你複習一次、多出幾題考你。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製今天的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="day24.html">← Day 4：鑑別式／生成式AI ＋ No Code</a>
+    <a href="w5-test.html">W5 整合測驗 →</a>
+  </div>
+</section>
+
+<footer>
+  <p>整理自 iPAS「AI 應用規劃師（初級）學習指引－科目二」3.3 節（生成式AI 導入評估規劃），對應本班 W4 Day 1–4。第③項評估標準標題依 114.04 版勘誤表由「資源與基礎設施評估」更正為「企業導入階段性實施策略」。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=6"></script>
+<script src="assets/quiz.js?v=6"></script>
+<script>
+Study.initQuiz({
+  day: 25,
+  week: 'W5',
+  dayLabel: 'Day 5',
+  dayTitle: '科目二 3.3 生成式AI 導入評估規劃（整理）',
+  subject: '科目二「生成式AI應用與規劃」',
+  ai: {
+    pages: '科目二 p.3-31～3-51（3.3 節）',
+    topics: '生成式AI 導入 5 項評估標準（③已勘誤為「企業導入階段性實施策略」）、導入規劃四階段（準備／設計／驗證POC／實施營運）與各階段步驟、KPI、BLEU／ROUGE／Perplexity 生成品質指標、ROI／NPV／IRR 財務指標、數據漂移、6 種風險應對策略（溯源／文化／接受／緩解／迴避／轉移）的分辨、GDPR／CCPA 隱私法規'
+  },
+  questions: [
+    {
+      q: '依學習指引更正後的內容，5 項評估標準中的第③項標題正確名稱是什麼？',
+      o: ['資源與基礎設施評估', '企業導入階段性實施策略', '員工技能與文化導入', '需求與現狀評估'],
+      a: 1,
+      src: '自編練習題 · 對應 114.04 勘誤表',
+      e: '勘誤表已將第③項標題由誤植的「資源與基礎設施評估」（與第②項重複）更正為「企業導入階段性實施策略」，內容講的是試點應用、階段性擴展、長期目標設定與持續優化的分階段推進。'
+    },
+    {
+      q: '企業若要有效支援生成式AI 的運行，內部 IT 環境最需要具備下列何種條件？',
+      o: ['提供更多的辦公設備，以提升員工生產力', '精簡企業內部流程，以加速決策效率', '擁有高效能運算資源與彈性儲存空間，以支援AI 模型訓練與推理', '增加部門之間的交流機會'],
+      a: 2,
+      src: '官方原題重考 · 科目二學習指引 p.3-52 第 3 題（W4 Day 1）',
+      e: '生成式AI 需要強大的運算資源和靈活的存儲環境來支持運行，屬於「資源與基礎設施評估」中「硬體與系統架構」的範疇。'
+    },
+    {
+      q: '企業導入生成式AI 的第一步應是什麼？',
+      o: ['確保硬體設備升級', '設定可量化、可追蹤的經營目標', '安排員工進行AI 相關培訓', '購買生成式AI 相關軟體'],
+      a: 1,
+      src: '官方原題重考 · 科目二學習指引 p.3-52 第 1 題（W4 Day 2）',
+      e: '設定明確目標是規劃 AI 導入的基礎，其他步驟（培訓、採購、硬體升級）都以此為依據，對應設計階段「確認導入最終目標」。'
+    },
+    {
+      q: '某企業想導入生成式AI，先繪製各部門業務流程圖，找出重複性高、規則明確的作業，準備優先導入 AI。這屬於哪一個階段的哪個步驟？',
+      o: ['設計階段：確認使用情境', '準備階段：掌握企業課題', '驗證POC 階段：模型開發', '實施營運階段：業務流程整合'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-35～3-36',
+      e: '「準備階段：掌握企業課題」下的「提取改善項目」正是「繪製各部門的業務流程圖……識別具有重複性、規則性和標準化的工作」。'
+    },
+    {
+      q: '用來衡量生成式AI 模型生成內容品質與語言流暢性的量化標準，學習指引提到下列哪一組指標？',
+      o: ['ROI、NPV、IRR', 'BLEU、ROUGE、Perplexity', 'GDPR、CCPA', 'TCO、KPI'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-40',
+      e: '評估生成式AI 模型效能常採用 BLEU、ROUGE、Perplexity 等量化標準；ROI、NPV、IRR 則是財務評估指標。'
+    },
+    {
+      q: '企業定期檢查輸入數據的分佈變化，避免因業務場景或用戶行為改變導致模型預測準確性降低，這個現象稱為下列何者？',
+      o: ['過擬合', '數據漂移（Data Drift）', '模式崩潰', 'A/B 測試'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-42',
+      e: '數據漂移指輸入數據的分佈隨業務場景或用戶行為改變而變化，可能導致模型預測準確性降低，需定期檢查並更新訓練數據集。'
+    },
+    {
+      q: '計算 AI 導入方案的財務可行性時，學習指引提到可用哪些財務指標評估長期收益潛力？',
+      o: ['淨現值（NPV）與內部報酬率（IRR）', 'BLEU 與 ROUGE', 'Accuracy 與 F1 分數', 'GDPR 與 CCPA'],
+      a: 0,
+      src: '自編練習題 · 指引 p.3-44',
+      e: '計算 ROI 時可計算財務指標如淨現值（NPV）與內部報酬率（IRR），評估方案的財務可行性與長期收益潛力。'
+    },
+    {
+      q: '若企業將資料安全管理外包給第三方服務供應商，屬於哪種風險應對策略？',
+      o: ['風險緩解', '風險轉移', '風險接受', '風險迴避'],
+      a: 1,
+      src: '官方原題重考 · 科目二學習指引 p.3-54 第 9 題（W4 Day 4）',
+      e: '透過外包或購買保險等方式，企業將潛在風險轉移至第三方處理，這是「風險轉移」的定義。'
+    },
+    {
+      q: '某企業評估後認為某項生成式AI 應用的風險影響有限、也無法完全避免，於是評估風險容忍度並制定應急計畫，繼續推行。這屬於哪一種風險應對策略？',
+      o: ['風險迴避', '風險轉移', '風險接受', '風險溯源'],
+      a: 2,
+      src: '自編練習題 · 指引 p.3-50',
+      e: '風險接受適用於「風險影響有限或無法完全避免」的情況，核心在於準確評估風險容忍度並制定應急計畫，是基於現實條件的理性選擇。'
+    },
+    {
+      q: '處理個人資料以訓練生成式AI 模型時，學習指引特別提到需注意哪兩項隱私法規？',
+      o: ['GDPR 與 CCPA', 'TCO 與 ROI', 'BLEU 與 ROUGE', 'NPV 與 IRR'],
+      a: 0,
+      src: '自編練習題 · 指引 p.3-48',
+      e: '生成式AI 風險管理的重要面向之一是隱私法規，特別是《一般資料保護規則》（GDPR）與《加州消費者隱私法案》（CCPA），處理個資時應採資料匿名化或假名化。'
+    }
+  ]
+});
+</script>
+</body>
+</html>

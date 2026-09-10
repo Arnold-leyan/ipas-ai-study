@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 22 科目一 3.2 資料處理與分析概念（整理） — iPAS 考取衝刺班</title>
+<meta name="description" content="W5 Day 2：資料處理與分析概念知識整理——資料三結構、處理四步驟、四種分析、敘述統計量與假設檢定，含 114.04 勘誤表 3 處更正。整理自 W1 Day 3、Day 5。">
+<link rel="stylesheet" href="assets/style.css?v=6">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W5 · Day 2 · 9/15（二）· 知識整理</p>
+        <h1>科目一 3.2　資料處理與分析概念（整理）</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>W1 Day 3、Day 5 的濃縮版。這個主題細節多、勘誤也多——這頁把三處會讓人背錯答案的勘誤直接標出來。細節回去看 <a href="day3.html">Day 3</a>、<a href="day5.html">Day 5</a>。</p>
+    <div class="mast-meta">
+      <span class="tag">學習指引 科目一 p.3-4～3-12、3-24～3-32</span>
+      <span class="tag">閱讀約 15 分鐘</span>
+      <span class="tag">測驗 6 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w5-index.html">總覽</a></li>
+    <li><a href="day21.html" data-day="21">Day 1</a></li>
+    <li><a href="day22.html" data-day="22" aria-current="page">Day 2</a></li>
+    <li><a href="day23.html" data-day="23">Day 3</a></li>
+    <li><a href="day24.html" data-day="24">Day 4</a></li>
+    <li><a href="day25.html" data-day="25">Day 5</a></li>
+    <li><a href="w5-test.html" data-day="w5test">整合測驗</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>統一筆記：資料處理與分析概念</h2>
+
+  <h3>資料的三種結構 <span class="pref">p.3-4～3-5</span></h3>
+  <div class="tw"><table>
+    <tr><th>結構</th><th>特徵</th><th>例子</th></tr>
+    <tr><td><b>結構化</b></td><td>行列形式、嚴格架構</td><td>關聯式資料庫（MySQL、PostgreSQL）</td></tr>
+    <tr><td><b>半結構化</b></td><td>有標籤但格式靈活，不需固定架構</td><td>XML、JSON、CSV</td></tr>
+    <tr><td><b>非結構化</b></td><td>無固定結構</td><td>圖片、影像、音訊、文章、電子郵件內文</td></tr>
+  </table></div>
+
+  <h3>資料處理四步驟 <span class="pref">p.3-5～3-7</span></h3>
+  <ol>
+    <li><b>數據蒐集</b>：內部系統、外部購買、公開資料、感測器…</li>
+    <li><b>數據清洗</b>：處理<b>遺缺值、重複值、錯誤值、離群值</b>四項（離群值<b>不一定是錯的</b>，須依業務判斷）</li>
+    <li><b>數據轉換</b>：正規化／標準化（縮放到特定範圍）、<b>離散化</b>（連續值切成類別）、<b>數據縮減</b>（降維，如 PCA）、格式／類型轉換</li>
+    <li><b>數據分析</b>：見下表四種</li>
+  </ol>
+  <div class="note">
+    <span class="lbl">常考陷阱</span>
+    「特徵工程與模型調參」<b>不屬於</b>數據清洗，是後續模型訓練階段的事。PCA 在流程裡歸「數據轉換 → 數據縮減」（雖然它在探索性分析也會出現）。
+  </div>
+
+  <h3>四種資料分析 <span class="pref">p.3-8～3-12</span></h3>
+  <div class="tw"><table>
+    <tr><th>類型</th><th>回答的問題</th><th>方法／例子</th></tr>
+    <tr><td>敘述性</td><td>發生了什麼？</td><td>報表、直方圖、四分位數</td></tr>
+    <tr><td>診斷性</td><td>為什麼發生？</td><td><b>鑽取／向下分析</b>（逐層深入鎖定問題）、<b>關聯分析</b>（啤酒與尿布、Apriori）、<b>因果分析</b>（A/B 測試）</td></tr>
+    <tr><td>預測性</td><td>接下來會怎樣？</td><td>迴歸、時間序列</td></tr>
+    <tr><td>指示性</td><td>該怎麼做？</td><td>最佳化、模擬</td></tr>
+  </table></div>
+  <p class="lede"><b>常見演算法補充</b>：邏輯迴歸「名字有迴歸、其實是分類」，用 Sigmoid 輸出機率、閾值 0.5，只做二元分類。BFS＝一層層擴散；DFS＝一條路走到底再回溯。K-Means 的 K＝分成幾群。</p>
+
+  <h3>敘述統計量 <span class="pref">p.3-24～3-25</span></h3>
+  <div class="tw"><table>
+    <tr><th>類別</th><th>統計量</th><th>用哪個的時機</th></tr>
+    <tr><td>中央趨勢</td><td>平均數、中位數、眾數</td><td>有<b>極端值</b>→中位數；某類<b>頻率特別高</b>→眾數；<b>常態分布</b>→平均數</td></tr>
+    <tr><td>分散度</td><td>全距、四分位距（IQR＝Q3−Q1）、平均差、變異數、標準差</td><td>標準差越大＝越分散＝品質越不穩定；IQR <b>不</b>受極端值影響</td></tr>
+    <tr><td>偏態</td><td>正偏態 / 負偏態</td><td>平均數 <b>&gt;</b> 中位數＝正偏態（尾巴向右）；平均數 <b>&lt;</b> 中位數＝負偏態（尾巴向左）</td></tr>
+  </table></div>
+  <div class="note">
+    <span class="lbl">勘誤①②（114.04 版）</span>
+    <b>平均差</b>更正為「所有觀察值與平均數之間<b>絕對差值的平均</b>」（不是「每一個觀察值與平均數之間的差距」）。<br>
+    <b>抽樣變異（Sampling Variation）</b>更正為「從母體中抽取樣本所計算出的統計量，因樣本隨機性而與母體參數有所差異，這種因抽樣而產生的統計量變動現象」。
+  </div>
+
+  <h3>假設檢定 <span class="pref">p.3-26～3-28</span></h3>
+  <div class="tw"><table>
+    <tr><th></th><th>H₀ 為真</th><th>H₀ 為假</th></tr>
+    <tr><td>接受 H₀</td><td>正確</td><td>Type II 錯誤（β）</td></tr>
+    <tr><td>拒絕 H₀</td><td><b class="hl">Type I 錯誤（α）</b></td><td>正確</td></tr>
+  </table></div>
+  <div class="note">
+    <span class="lbl">勘誤③（114.04 版）——這格紙本印錯</span>
+    紙本 p.3-27 檢定表把「<b>拒絕 H₀ 且 H₀ 為真</b>」印成 Type II，已更正為 <b>Type I 錯誤（α）</b>。α 就是顯著水準（常取 0.1、0.05、0.01）。<br>
+    另：<b>統計推論</b>更正為「根據樣本資料，判斷是否接受或拒絕統計假設的過程」。<br>
+    p 值題（p.3-32 第 7 題已改寫）：p＝0.03 &lt; α＝0.05 → 在 <b>95% 信心水準</b>下拒絕 H₀；α＝0.05 表示「<b>最多</b> 5% 機率犯型一錯誤」，不是「實際犯錯機率就是 5%」。
+  </div>
+  <p class="lede"><b>EDA vs CDA</b>：探索性（EDA）在研究初期、對資料還不熟時做，發現模式／關係／異常，本身是「生成假設」；驗證性（CDA）驗證先前提出的假設，用分類、分群、相關性分析、預測模型深入挖掘。</p>
+
+  <div class="card">
+    <h4>一分鐘回想</h4>
+    <p>結構化＝資料庫、半結構化＝JSON/XML/CSV、非結構化＝圖片郵件。四步驟：蒐集→<b>清洗</b>（缺、重、錯、離群）→<b>轉換</b>（正規化／離散化／縮減）→分析。四種分析＝發生什麼→為什麼→會怎樣→怎麼做。有極端值用中位數。<b>拒絕真的 H₀ ＝ Type I（α）</b>。</p>
+  </div>
+</section>
+
+<section id="quiz">
+  <h2>今日回想測驗</h2>
+  <p class="lede">6 題，全部選完才能送出。送出後會顯示解析，成績自動回傳給召集人。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。填過一次之後其他天會自動帶入。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 6 題</span>
+    <span class="score">整理自 W1 · 含勘誤重點</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對這個主題再幫你複習一次、多出幾題考你。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製今天的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="day21.html">← Day 1：人工智慧概念</a>
+    <a href="day23.html">Day 3：機器學習概念 →</a>
+  </div>
+</section>
+
+<footer>
+  <p>整理自 iPAS「AI 應用規劃師（初級）學習指引－科目一」3.2 節（資料處理與分析概念），對應本班 W1 Day 3、Day 5。已依 114.04 版勘誤表更正：p.3-25 平均差與抽樣變異、p.3-26 統計推論、p.3-27 檢定表 Type I（α）、p.3-31 第 3 題答案（B→A）、p.3-32 第 7 題題目與選項。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=6"></script>
+<script src="assets/quiz.js?v=6"></script>
+<script>
+Study.initQuiz({
+  day: 22,
+  week: 'W5',
+  dayLabel: 'Day 2',
+  dayTitle: '科目一 3.2 資料處理與分析概念（整理）',
+  subject: '科目一「人工智慧基礎概論」',
+  ai: {
+    pages: '科目一 p.3-4～3-12、p.3-24～3-32（3.2 節）',
+    topics: '結構化／半結構化／非結構化數據、資料處理四步驟（蒐集、清洗、轉換、分析）、數據清洗四項（遺缺值／重複值／錯誤值／離群值）、離散化 vs 正規化 vs 數據縮減、四種資料分析（敘述／診斷／預測／指示）、鑽取分析與關聯分析與因果分析、敘述統計量（中位數 vs 眾數 vs 平均數的適用時機、標準差、四分位距、正負偏態）、假設檢定（Type I（α）vs Type II（β）、顯著水準、p 值意義、EDA vs CDA）。請特別注意 114.04 勘誤表對平均差、抽樣變異、統計推論、檢定表 Type I 的更正。'
+  },
+  questions: [
+    {
+      q: '下列何者屬於「非結構化數據」？',
+      o: ['MySQL 關聯式資料庫中的資料表', 'JSON 設定檔', 'XML 文件', '客戶寄來的電子郵件內文'],
+      a: 3,
+      src: '自編練習題 · 指引 p.3-4～3-5',
+      e: '結構化＝行列式、關聯式資料庫；半結構化＝有標籤但格式靈活，XML、JSON、CSV；非結構化＝無固定結構，指引直接舉的例子就是「電子郵件、文章」。'
+    },
+    {
+      q: '將「月薪」這個連續數值改為「低、中、高」三個級距，屬於數據轉換的哪一種？',
+      o: ['數據格式轉換', '數據類型轉換', '數據正規化／標準化', '數據離散化'],
+      a: 3,
+      src: '自編練習題 · 指引 p.3-7',
+      e: '離散化＝把連續型數據轉成離散的區間或類別。格式轉換是 CSV→JSON；類型轉換是字串→數值；正規化／標準化是把數值縮放到 [0,1] 這種特定範圍。'
+    },
+    {
+      q: '某零售商發現本季銷售下滑，於是依地區、產品類別、時間段逐層拆解，想找出問題發生在哪。這屬於診斷性分析中的哪一種方法？',
+      o: ['鑽取／向下分析（Drill-down）', '關聯分析（Association）', '因果分析（Causal）', '異常檢測（Anomaly Detection）'],
+      a: 0,
+      src: '自編練習題 · 指引 p.3-10',
+      e: '鑽取／向下分析＝「從宏觀數據逐層深入到細節層級，逐步鎖定問題範圍」，指引舉的例子就是銷售下降時依地區、產品類別或時間段分析。關聯分析找共現（啤酒與尿布），因果分析用 A/B 測試驗證因果。'
+    },
+    {
+      q: '一組房屋價格數據中含有少數豪宅的極端高價，要描述它的集中趨勢，最適合用哪個統計量？',
+      o: ['平均數', '中位數', '眾數', '全距'],
+      a: 1,
+      src: '官方原題重考 · 科目一學習指引 p.3-29 第 5 題（W1 Day 5）',
+      e: '平均數易受極端值影響，有豪宅的房價資料用平均數會失真；中位數不受極端值影響。記法：有極端值→中位數；有某項頻率特別高→眾數；常態分布→平均數。全距不是集中趨勢的統計量。'
+    },
+    {
+      q: '一組數據的平均數小於中位數，這組數據的分布可能是下列哪一種？',
+      o: ['對稱分布', '正偏態分布', '負偏態分布', '無法判斷'],
+      a: 2,
+      src: '官方原題重考 · 科目一學習指引 p.3-30 第 6 題（W1 Day 5）',
+      e: '負偏態＝尾巴向左延伸，平均數被左邊的小值拉低，所以平均數小於中位數。正偏態則相反。記法：「偏態方向＝尾巴方向＝平均數被拉走的方向」。'
+    },
+    {
+      q: '在統計檢定中，「H₀ 實際上為真，我們卻拒絕了 H₀」稱為什麼錯誤？其發生機率用哪個符號表示？',
+      o: ['Type I 錯誤，α', 'Type I 錯誤，β', 'Type II 錯誤，α', 'Type II 錯誤，β'],
+      a: 0,
+      src: '自編練習題 · 指引 p.3-27（紙本此處印錯，已依 114.04 勘誤表更正）',
+      e: '拒絕一個實際為真的 H₀ ＝ Type I 錯誤，機率是 α，也就是顯著水準（常取 0.1、0.05、0.01）。接受一個實際為假的 H₀ ＝ Type II 錯誤，機率是 β。紙本 p.3-27 檢定表把「拒絕 H₀ 且 H₀ 為真」印成 Type II，是勘誤表更正過的地方，用紙本唸的人特別容易背錯。'
+    }
+  ]
+});
+</script>
+</body>
+</html>
