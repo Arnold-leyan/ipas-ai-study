@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W6 知識整理週：科目二總複習 — iPAS 考取衝刺班</title>
+<meta name="description" content="iPAS 初級 AI 應用規劃師 考取衝刺班 第六週：STEP 2 知識整理第二週。把 W2、W4 學過的科目二三個小節整理成統一筆記範本 + 易混淆總表 + 整合測驗。">
+<link rel="stylesheet" href="assets/style.css?v=7">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">iPAS 初級 AI 應用規劃師 · 考取衝刺班</p>
+        <h1>第六週：知識整理週（科目二總複習）</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>這是 <b>STEP 2 知識整理</b>的第二週，也是整個 STEP 2 的收尾。上週整理科目一，這週只整理<b>科目二「生成式AI 應用與規劃」</b>。一樣不教新內容——把 W2、W4 讀過的三個小節，整理成可以反覆回查的「統一筆記範本」：核心定義、關鍵詞、常見考點、易混淆比較表，並標好學習指引出處頁碼。3.2 與 3.3 兩節內容最多，各拆成兩天。每天 20–30 分鐘：掃一遍當天的整理筆記、做 6 題回想測驗（Day 5 是 10 題）。五天做完有一份 <b>W6 整合測驗</b>（20 題，三個小節混在一起考）。</p>
+    <div class="mast-meta">
+      <span class="tag">9/21 – 9/25</span>
+      <span class="tag">STEP 2 · 知識整理第 2 週</span>
+      <span class="tag">科目二 3.1～3.3</span>
+      <span class="tag" id="week-progress">本週進度 0 / 5 天</span>
+      <a class="tag" href="index.html">📚 課程首頁</a>
+      <a class="tag" href="w5-index.html">← 第五週</a>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w6-index.html" aria-current="page">總覽</a></li>
+    <li><a href="day26.html" data-day="26">Day 1</a></li>
+    <li><a href="day27.html" data-day="27">Day 2</a></li>
+    <li><a href="day28.html" data-day="28">Day 3</a></li>
+    <li><a href="day29.html" data-day="29">Day 4</a></li>
+    <li><a href="day30.html" data-day="30">Day 5</a></li>
+    <li><a href="w6-test.html" data-day="w6test">整合測驗</a></li>
+    <li><a href="w6-review.html">錯題複習</a></li>
+    <li><a href="#map">知識地圖</a></li>
+    <li><a href="#confuse">易混淆總表</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<div class="namebar" id="lookup-bar">
+  <label for="lookup-name">輸入姓名，查你已經完成哪幾天</label>
+  <p class="hint">跟平常測驗填的姓名一致就好，暱稱也可以（例如 Fanny、Emily、派瑞斯）。之前填過的話這裡會自動帶入。換裝置、換瀏覽器也查得到，因為是直接查後端試算表。</p>
+  <div class="namerow">
+    <input type="text" id="lookup-name" placeholder="例：王小明" autocomplete="name">
+    <button type="button" class="btn" id="lookup-btn">查詢進度</button>
+  </div>
+  <p class="sync idle" id="lookup-status"></p>
+</div>
+
+<section id="days">
+  <h2>本週五天</h2>
+  <p class="lede">科目二只有三個小節，但頁數分布很不平均：3.1 節在 W2 上了整整一週（最強主題，收攏成一天）；3.2 節是鑑別測驗<b>全班正確率最低（68%）</b>的主題；3.3 節頁數最多（p.3-31～3-51）。所以 3.2、3.3 各拆成兩天，剛好排滿五天。每天附 6 題回想測驗（Day 5 是 10 題），五天做完再做 20 題整合測驗。</p>
+
+  <div class="daygrid">
+    <a class="daycard" href="day26.html" data-day="26">
+      <div class="row">
+        <span class="dnum">DAY 1 · 9/21（一）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">科目二 3.1　No Code／Low Code 與 AI 民主化</span></div>
+      <div class="dsub">No Code vs Low Code、結合 6 方式、選平台 6 因素、TCO／ROI、4 挑戰 vs 4 面向、AI 民主化 5 影響｜ 整理自 W2 整週　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day27.html" data-day="27">
+      <div class="row">
+        <span class="dnum">DAY 2 · 9/22（二）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">科目二 3.2①　生成式AI 技術架構與應用領域</span></div>
+      <div class="dsub">技術架構三面向、溫度／Top-k／核採樣、AI 幻覺、經濟效益與風險三層、六大行業與五大產業應用｜ 整理自 W4 Day 5、W2 Day 2　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day28.html" data-day="28">
+      <div class="row">
+        <span class="dnum">DAY 3 · 9/23（三）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">科目二 3.2②　工具的演進、趨勢與使用</span></div>
+      <div class="dsub">演進五突破（GAN／VAE／Transformer／RLHF／vLLM）、9 項趨勢與 AIaaS、使用注意事項、名詞速查表｜ 整理自 W4 Day 5　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day29.html" data-day="29">
+      <div class="row">
+        <span class="dnum">DAY 4 · 9/24（四）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">科目二 3.3①　導入評估標準與四階段規劃</span></div>
+      <div class="dsub">5 項評估標準（含 p.3-32 勘誤）、三階段目標、導入四階段、五種驗證方法、BLEU／ROUGE／Perplexity、數據漂移｜ 整理自 W4 Day 1–3　<b>6 題</b></div>
+    </a>
+
+    <a class="daycard" href="day30.html" data-day="30">
+      <div class="row">
+        <span class="dnum">DAY 5 · 9/25（五）</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">科目二 3.3②　風險評估管理與 ROI</span></div>
+      <div class="dsub">四種攻擊與防範、GDPR／CCPA、風險矩陣、6 種風險應對策略、ROI／回收期間／NPV／IRR、敏感性分析｜ 整理自 W4 Day 3–4　<b>10 題</b></div>
+    </a>
+
+    <a class="daycard" href="w6-test.html" data-day="w6test">
+      <div class="row">
+        <span class="dnum">W6 整合測驗 · 五天讀完後做</span>
+        <span class="badge">未作答</span>
+      </div>
+      <div class="row"><span class="dttl">W6 整合測驗（科目二三節混合）</span></div>
+      <div class="dsub">科目二 3.1～3.3 ｜ 題目刻意跨小節混排，模擬正式考試不分章節的出題方式　<b>20 題</b></div>
+    </a>
+  </div>
+
+  <div class="note">
+    <span class="lbl">這週做完，STEP 2 就結束了</span>
+    W5 整理科目一、W6 整理科目二，兩份合起來就是完整的隨身小抄。接下來進入 <b>STEP 3 考古題</b>（10/3、10/10、10/17），
+    開始大量練題，最後是 <b>STEP 4 最後衝刺</b>（10/28–11/6）。
+  </div>
+</section>
+
+<section id="map">
+  <h2>科目二知識地圖</h2>
+  <p class="lede">一頁看完科目二三個小節各自的核心、關鍵詞與出處。細節在每一天的整理筆記裡。</p>
+
+  <div class="tw"><table>
+    <tr><th>主題</th><th>核心一句話</th><th>最該記的關鍵詞</th><th>出處</th></tr>
+    <tr>
+      <td><b>科目二 3.1</b><br>No Code／Low Code<br>與 AI 民主化</td>
+      <td>讓不會寫程式的人也能做出應用；平台是工具，AI 民主化是目標</td>
+      <td>No Code（完全不寫）／Low Code（寫一點、更靈活）、結合 6 方式、選平台 6 因素、TCO／ROI、4 挑戰 vs 4 面向、市民開發者、AI 民主化 5 影響</td>
+      <td>Day 1 · 指引 p.3-1～3-15</td>
+    </tr>
+    <tr>
+      <td><b>科目二 3.2①</b><br>技術架構與應用領域</td>
+      <td>生成式AI 靠深度學習「生成新內容」，各行各業都在用</td>
+      <td>深度學習網路、注意力機制、標記化／向量化、溫度／Top-k／核採樣、AI 幻覺、AI 訓練師與提示工程師、效益三層（直接／間接／衍生）、風險三層（技術／商業／社會）、六大行業、五大產業</td>
+      <td>Day 2 · 指引 p.3-17～3-20、3-24～3-26</td>
+    </tr>
+    <tr>
+      <td><b>科目二 3.2②</b><br>工具演進、趨勢與使用</td>
+      <td>工具一路從 GAN 演進到雲端 API，用的時候要顧版權與隱私</td>
+      <td>GAN／VAE／Transformer／預訓練微調＋RLHF／vLLM、Hugging Face、9 項趨勢（<b>AIaaS</b>）、Fine-tuning、Prompt Engineering、標注引用來源、資料隱私與道德</td>
+      <td>Day 3 · 指引 p.3-20～3-28</td>
+    </tr>
+    <tr>
+      <td><b>科目二 3.3①</b><br>導入評估與四階段</td>
+      <td>先評估五件事，再照準備→設計→驗證→營運四階段走</td>
+      <td>痛點識別、<span class="hl">階段性實施策略（勘誤）</span>、三階段目標、準備／設計／驗證POC／實施營運、KPI、五種驗證方法、BLEU／ROUGE／Perplexity、POC、數據漂移</td>
+      <td>Day 4 · 指引 p.3-31～3-45</td>
+    </tr>
+    <tr>
+      <td><b>科目二 3.3②</b><br>風險管理與 ROI</td>
+      <td>把風險排序後選一種策略處理；把錢算清楚再決定做不做</td>
+      <td>訓練數據洩漏／反向工程／提示詞攻擊／對抗性攻擊、身份驗證＋加密＋差分隱私、去偏見技術、GDPR／CCPA、風險矩陣、6 種風險應對策略、ROI／回收期間／NPV／IRR、敏感性分析</td>
+      <td>Day 5 · 指引 p.3-44～3-51</td>
+    </tr>
+  </table></div>
+</section>
+
+<section id="confuse">
+  <h2>跨小節易混淆總表</h2>
+  <p class="lede">這是整週最重要的一張表。正式考試最愛在這些「聽起來很像、其實不同」的地方設誘答項。考前掃這一張就好。</p>
+
+  <div class="tw"><table>
+    <tr><th>容易搞混的</th><th>怎麼一眼分辨</th><th>出處</th></tr>
+    <tr><td>No Code vs Low Code</td><td>差在<b>要不要寫程式碼、寫多少</b>，不是有沒有介面（兩者都有）。「更適合<b>靈活且可擴展</b>」＝ Low Code</td><td>Day 1</td></tr>
+    <tr><td>AI 民主化 vs No Code／Low Code 平台</td><td>民主化是<b>目標</b>（更多人受益於 AI）；平台是達成目標的<b>工具</b></td><td>Day 1</td></tr>
+    <tr><td>降低技術門檻 vs 擴大可訪問性</td><td>前者解決「<b>會不會用</b>」（直觀界面）；後者解決「<b>用不用得起</b>」（成本降低）</td><td>Day 1</td></tr>
+    <tr><td>TCO vs ROI</td><td>TCO 算<b>投入</b>（購買＋維護＋培訓）；ROI 算<b>產出</b>（效益回報）</td><td>Day 1、Day 5</td></tr>
+    <tr><td>4 項挑戰 vs 克服挑戰的 4 大面向</td><td><b>不是一對一配對</b>，看情境描述的<b>做法</b>判斷屬於哪個面向</td><td>Day 1</td></tr>
+    <tr><td>AI 驅動的 UI/UX 設計 vs 模板設計優化</td><td>前者<b>從文字描述直接生成</b>設計方案；後者 AI <b>提供建議</b>、較籠統</td><td>Day 1</td></tr>
+    <tr><td>Top-k Sampling vs 核採樣（Top-p）</td><td>Top-k 候選數<b>固定</b>；核採樣取累積機率到閾值的一群，候選數<b>會變動</b>。溫度則是調整整體<b>亂度</b></td><td>Day 2</td></tr>
+    <tr><td>經濟效益三層 vs 挑戰風險三層</td><td>效益＝<b>直接／間接／衍生</b>；風險＝<b>技術／商業／社會</b>。兩組都是「三層」，選項常互換</td><td>Day 2</td></tr>
+    <tr><td>病歷自動生成 vs 自動化合規監管</td><td>前者<b>醫療保健</b>；後者<b>金融業</b>，別跨領域挪用</td><td>Day 2</td></tr>
+    <tr><td>虛擬智慧客服 vs 顧客體驗優化</td><td>前者（客服）是<b>對話與回應</b>；後者（零售）是<b>購物推薦</b></td><td>Day 2</td></tr>
+    <tr><td>3.1 節六大行業 vs 3.2 節五大產業</td><td>六大偏<b>企業流程</b>（醫療製造金融零售教育客服）；五大偏<b>內容生成</b>（藝術醫療教育娛樂製造）</td><td>Day 2</td></tr>
+    <tr><td>AI 幻覺 vs 數據漂移</td><td>幻覺＝<b>當下就講錯</b>（看似合理其實虛構）；漂移＝<b>隨時間變差</b>（新資料分布跟訓練時不同）</td><td>Day 2、Day 4</td></tr>
+    <tr><td>Fine-tuning vs Prompt Engineering vs RLHF</td><td>微調＝<b>拿資料再訓練</b>；提示工程＝<b>改怎麼問</b>；RLHF＝<b>拿人類評價當獎勵</b>去調</td><td>Day 3</td></tr>
+    <tr><td>使用體驗優化方向</td><td>是<b>放寬</b>（直觀操作、自然語言指令、智慧參數建議），<b>不是</b>「限制使用者自訂生成內容」</td><td>Day 3</td></tr>
+    <tr><td>準備階段 vs 設計階段</td><td>準備＝「<b>要不要做、做什麼</b>」（掌握課題、挑方案、排順序）；設計＝「<b>怎麼做出規格</b>」（KPI、數據、情境、成本）</td><td>Day 4</td></tr>
+    <tr><td>第②項 vs 第③項評估標準</td><td>②＝<b>人才／數據／硬體夠不夠</b>；③＝<b>試點→擴展→長期目標→持續優化</b>。<span class="hl">紙本 p.3-32 第③項標題印錯，已依勘誤表更正為「企業導入階段性實施策略」</span></td><td>Day 4</td></tr>
+    <tr><td>BLEU vs ROUGE vs Perplexity</td><td>BLEU＝<b>你講的對不對</b>（精確率）；ROUGE＝<b>該講的有沒有講</b>（召回率），兩者<b>越高越好</b>；Perplexity <b>越低越好</b></td><td>Day 4</td></tr>
+    <tr><td>風險轉移 vs 接受 vs 迴避</td><td><b>轉出去</b>（外包、保險）／<b>忍受＋備案</b>（影響有限）／<b>先不做</b>（技術不成熟、可能重大損害）</td><td>Day 5</td></tr>
+    <tr><td>四種攻擊手法</td><td>訓練數據洩漏＝模型<b>自己說溜嘴</b>；反向工程＝<b>反推內部</b>；提示詞攻擊＝<b>一直換句話問</b>；對抗性攻擊＝<b>設計過的輸入操控輸出</b></td><td>Day 5</td></tr>
+    <tr><td>NPV vs IRR vs 回收期間</td><td>NPV <b>&gt; 0</b> 可行；IRR <b>&gt; 門檻報酬率</b>可行；回收期間<b>越短越好</b>但<b>不看回收之後</b>的收益</td><td>Day 5</td></tr>
+  </table></div>
+</section>
+
+<footer>
+  <p><b>這週做完，兩個科目的整理底稿就都齊了：</b></p>
+  <div class="checkin">
+    ① <b>W6 整合測驗</b>——科目二三小節混合 20 題，<a href="w6-test.html">五天讀完後做</a>。<br>
+    ② 這份整理筆記可以直接印出來當隨身小抄，跟 <a href="w5-index.html">W5 科目一</a>那份合起來就是完整的兩科小抄。<br>
+    ③ 錯的題目不用一天一天翻，<a href="w6-review.html">錯題複習頁</a>會一次列出來。<br>
+    ④ 下一站是 <b>STEP 3 考古題</b>（10/3、10/10、10/17）。
+  </div>
+  <p>內容整理自 iPAS「AI 應用規劃師（初級）學習指引」科目二 3.1～3.3 節，範圍對應本班 W2、W4 教材。已比對 114.04 版學習指引勘誤表：科目二唯一一處更正（p.3-32 第③項評估標準標題更正為「企業導入階段性實施策略」）已採用更正後版本，並在 Day 4 的整理筆記標示。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=7"></script>
+<script src="assets/quiz.js?v=7"></script>
+<script>Study.initWeekLookup();</script>
+</body>
+</html>

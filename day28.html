@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 28 科目二 3.2② 工具的演進、趨勢與使用（整理） — iPAS 考取衝刺班</title>
+<meta name="description" content="W6 Day 3：科目二 3.2 節後半知識整理——工具技術演進五項突破、三個發展方向、9 項工具趨勢（AIaaS）、使用生成式AI 的注意事項與名詞速查。整理自 W4 Day 5。">
+<link rel="stylesheet" href="assets/style.css?v=7">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W6 · Day 3 · 9/23（三）· 知識整理</p>
+        <h1>科目二 3.2②　工具的演進、趨勢與使用（整理）</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>接著昨天，今天處理 3.2 節的後半：<b>工具怎麼演進、要往哪走、實際使用時要注意什麼</b>。這一天的名詞最多，最後附一張速查表，考前掃這張就好。細節回去看 <a href="day20.html">Day 20</a>。</p>
+    <div class="mast-meta">
+      <span class="tag">學習指引 科目二 p.3-20～3-24</span>
+      <span class="tag">閱讀約 13 分鐘</span>
+      <span class="tag">測驗 6 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w6-index.html">總覽</a></li>
+    <li><a href="day26.html" data-day="26">Day 1</a></li>
+    <li><a href="day27.html" data-day="27">Day 2</a></li>
+    <li><a href="day28.html" data-day="28" aria-current="page">Day 3</a></li>
+    <li><a href="day29.html" data-day="29">Day 4</a></li>
+    <li><a href="day30.html" data-day="30">Day 5</a></li>
+    <li><a href="w6-test.html" data-day="w6test">整合測驗</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>統一筆記：工具的演進、趨勢與使用</h2>
+
+  <h3>技術演進的五項突破 <span class="pref">p.3-20～3-22</span></h3>
+  <div class="tw"><table>
+    <tr><th>技術突破</th><th>貢獻</th></tr>
+    <tr><td><b>GAN</b></td><td>引領高品質、真實感<b>圖像</b>生成</td></tr>
+    <tr><td><b>VAE 與流式模型</b>（Flow-based）</td><td>提供<b>穩定性</b>與機率生成方法</td></tr>
+    <tr><td><b>Transformer 與自注意力</b></td><td>GPT 系列改變語言生成；支援多模態（DALL-E、Stable Diffusion）</td></tr>
+    <tr><td><b>預訓練與微調</b></td><td>少樣本學習、提示工程；加上<b>RLHF 人類回饋強化學習</b>讓結果更貼近需求</td></tr>
+    <tr><td><b>高效推理與模型壓縮</b></td><td>如 <b>vLLM</b> 架構，讓生成式AI 能用在即時場景、邊緣與移動設備</td></tr>
+  </table></div>
+  <p class="lede"><b>三個發展方向</b>：A. 模型規模與能力提升（LLM、多模態 Midjourney／DALL-E）· B. <b>輕量化與個人化</b>（模型壓縮量化、可客製化工具）· C. 深層架構改進（GAN 與擴散模型融合）。<br><b>開放原始碼與社群</b>：<b>Hugging Face</b> 提供開源模型與資料集，加速整合與創新。</p>
+
+  <h3>工具的 9 項發展趨勢 <span class="pref">p.3-22～3-24</span></h3>
+  <div class="tw"><table>
+    <tr><th>趨勢</th><th>關鍵字</th></tr>
+    <tr><td>① 專業化與垂直整合</td><td>針對法律、醫療、金融、教育<b>深度優化</b></td></tr>
+    <tr><td>② 多模態整合與協同生成</td><td>文字↔圖像（DALL-E）、語音↔文字（Whisper）、影音生成</td></tr>
+    <tr><td>③ <b>AI 即服務（AIaaS）</b></td><td>雲端運算與 <b>API</b>（OpenAI API、Hugging Face Spaces）降低使用門檻</td></tr>
+    <tr><td>④ 個人化生成與可控性</td><td><b>Fine-tuning、Prompt Engineering</b>、參數調整與風格選擇</td></tr>
+    <tr><td>⑤ 協作與即時回饋機制</td><td>即時回饋迭代優化、團隊協作功能</td></tr>
+    <tr><td>⑥ 安全性與隱私保護</td><td><b>本地部署</b>選項、資料加密、版權管理與內容過濾</td></tr>
+    <tr><td>⑦ 效能優化與資源效率</td><td>模型壓縮、量化、批量處理</td></tr>
+    <tr><td>⑧ 生態系統建構與擴展</td><td>API、外掛與第三方整合，跨平台模組化</td></tr>
+    <tr><td>⑨ 道德與法律規範</td><td>內容版權管理、防範假新聞與<b>深偽</b>、法規遵循</td></tr>
+  </table></div>
+  <div class="note">
+    <span class="lbl">整節第一考點：AIaaS</span>
+    9 項趨勢裡最常考的是 <b>③ AI 即服務（AIaaS）</b>——把生成式AI 包成雲端服務、用 API 呼叫，企業<b>免自購高階硬體、免自行訓練</b>就能用。看到題目描述「不用買 GPU、直接呼叫 API 就能用 AI」，答案就是 AIaaS。
+  </div>
+  <div class="note">
+    <span class="lbl">整節第二考點：優化方向是「放寬」不是「限制」</span>
+    使用體驗的優化方向是<b>更直觀的操作、支援自然語言指令、智慧化參數調整建議</b>——全都在<b>提升可控性與易用性</b>。
+    「<b>限制使用者自訂生成內容</b>」剛好相反，是常見的錯誤選項。
+  </div>
+
+  <h3>實際使用生成式AI 的注意事項 <span class="pref">p.3-26～3-28</span></h3>
+  <ul>
+    <li><b>圖像生成</b>要同時顧到：解析度是否符合應用需求、<b>版權與合法性</b>（尤其商業用途）、推論時間能否滿足即時場景——三者都要考慮。</li>
+    <li><b>引用生成內容</b>要<b>適當標注引用來源</b>，避免抄襲、尊重智慧財產權，也讓內容可追溯。</li>
+    <li><b>教育場域</b>應<b>訂立清晰的使用規範並說明</b>適用場景、倫理考量與限制，把 AI 當輔助而非替代自主學習；「完全禁止」與「無限制使用」都是錯的。</li>
+    <li><b>提升員工 AI 能力</b>：安排<b>跨部門交流與測試專案</b>（實務操作）比讓員工自行選擇性自學有效。</li>
+    <li><b>企業導入後最直接的影響</b>＝<b>提升生產力與效率</b>。</li>
+    <li><b>最迫切的挑戰</b>＝<b>資料隱私與道德規範問題</b>。</li>
+  </ul>
+
+  <h3>名詞速查（考前掃這一張）</h3>
+  <div class="tw"><table>
+    <tr><th>名詞</th><th>一句話解釋</th></tr>
+    <tr><td><b>注意力機制／自注意力</b></td><td>讓模型判斷「一句話裡哪些字彼此相關」，能處理長距離前後文，是 Transformer 的核心</td></tr>
+    <tr><td><b>標記化 Tokenization</b></td><td>把文字切成模型看得懂的小單位（詞或子詞）</td></tr>
+    <tr><td><b>向量化 Vectorization</b></td><td>把每個 token 轉成一串數字——模型只能算數字，不能直接算文字</td></tr>
+    <tr><td><b>溫度 Temperature</b></td><td>控制輸出亂度：低＝保守穩定，高＝有創意也更容易亂講</td></tr>
+    <tr><td><b>Top-k Sampling</b></td><td>每一步只從「機率最高的前 k 個」裡挑，候選數<b>固定</b></td></tr>
+    <tr><td><b>核採樣 Nucleus（Top-p）</b></td><td>從「累積機率加到閾值（如 0.9）的那一群」裡挑，候選數<b>會變動</b></td></tr>
+    <tr><td><b>AI 幻覺 hallucination</b></td><td>模型一本正經地講出看似合理、其實錯誤或虛構的內容</td></tr>
+    <tr><td><b>GAN 生成對抗網路</b></td><td><b>生成器</b>畫、<b>鑑別器</b>抓假，互相對抗一起變強；擅長逼真圖像</td></tr>
+    <tr><td><b>VAE 變分自編碼器</b></td><td><b>編碼器</b>壓成精簡代表、<b>解碼器</b>還原來生成新樣本；穩定、機率式生成</td></tr>
+    <tr><td><b>Transformer</b></td><td>靠自注意力一次看整句的架構，GPT 系列的基礎，也支援多模態</td></tr>
+    <tr><td><b>RLHF 人類回饋強化學習</b></td><td>拿人類對答案好壞的評價當獎勵訊號去微調模型，讓輸出更貼近人要的</td></tr>
+    <tr><td><b>Fine-tuning 微調</b></td><td>在預訓練模型上用特定領域資料再訓練，做出個人化／專業化版本</td></tr>
+    <tr><td><b>vLLM</b></td><td>高效推理框架，讓大模型跑得更快更省資源，能用在即時或邊緣裝置</td></tr>
+    <tr><td><b>Hugging Face</b></td><td>開源模型與資料集的大平台／社群（Spaces 還能線上試跑）</td></tr>
+    <tr><td><b>AIaaS AI 即服務</b></td><td>把生成式AI 包成雲端服務、用 API 呼叫，免自購硬體、免自行訓練</td></tr>
+    <tr><td><b>Whisper</b></td><td>語音↔文字的模型，多模態整合趨勢下最常被舉的例子</td></tr>
+  </table></div>
+
+  <div class="card">
+    <h4>一分鐘回想</h4>
+    <p>五項突破：<b>GAN（圖像）→VAE／流式（穩定）→Transformer（語言＋多模態）→預訓練微調＋RLHF→高效推理 vLLM</b>。三方向＝規模提升／輕量個人化／架構改進。社群＝<b>Hugging Face</b>。9 項趨勢最常考 <b>AIaaS</b>。使用體驗優化是<b>放寬不是限制</b>。生成內容要<b>標注來源</b>；圖像生成要顧<b>解析度＋版權＋推論時間</b>；最迫切挑戰＝<b>資料隱私與道德</b>。</p>
+  </div>
+</section>
+
+<section id="quiz">
+  <h2>今日回想測驗</h2>
+  <p class="lede">6 題，全部選完才能送出。送出後會顯示解析，成績自動回傳給召集人。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。填過一次之後其他天會自動帶入。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 6 題</span>
+    <span class="score">整理自 W4 · 官方原題／自編混合</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對這個主題再幫你複習一次、多出幾題考你。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製今天的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="day27.html">← Day 2：技術架構與應用領域</a>
+    <a href="day29.html">Day 4：導入評估標準與四階段規劃 →</a>
+  </div>
+</section>
+
+<footer>
+  <p>整理自 iPAS「AI 應用規劃師（初級）學習指引－科目二」3.2 節後半（p.3-20～3-24）與該節練習題（p.3-27～3-28），對應本班 W4 Day 5。此範圍在 114.04 版勘誤表中無相關更正。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=7"></script>
+<script src="assets/quiz.js?v=7"></script>
+<script>
+Study.initQuiz({
+  day: 28,
+  week: 'W6',
+  dayLabel: 'Day 3',
+  dayTitle: '科目二 3.2② 工具的演進、趨勢與使用（整理）',
+  subject: '科目二「生成式AI應用與規劃」',
+  ai: {
+    pages: '科目二 p.3-20～3-28（3.2 節後半）',
+    topics: '工具技術演進五項突破（GAN、VAE 與流式模型、Transformer 與自注意力、預訓練與微調＋RLHF、高效推理與模型壓縮 vLLM）、三個發展方向、Hugging Face 開源社群、9 項工具發展趨勢（尤其 AI 即服務 AIaaS）、Fine-tuning 與 Prompt Engineering、使用體驗優化方向、生成內容標注引用來源、圖像生成的解析度／版權／推論時間、教育場域使用規範、提升員工 AI 能力的做法、資料隱私與道德規範挑戰'
+  },
+  questions: [
+    {
+      q: '下列哪一項不是生成式 AI 工具在使用體驗方面的優化方向？',
+      o: ['提供更直觀的操作設計', '支援自然語言指令', '提供智慧化的參數調整建議', '限制使用者自訂生成內容'],
+      a: 3,
+      src: '官方原題 · 科目二學習指引 p.3-28 第 9 題',
+      e: '使用體驗的優化方向是更直觀的操作、支援自然語言指令、智慧化參數建議——都在提升易用性與可控性。「限制使用者自訂生成內容」與「個人化生成與可控性」的趨勢背道而馳。'
+    },
+    {
+      q: '使用生成式 AI 生成的內容時，應採取什麼措施以確保內容品質？',
+      o: ['使用內容直接進行學術報告', '適當標注引用來源', '減少人工參與的審查過程', '排除所有生成的資料'],
+      a: 1,
+      src: '官方原題 · 科目二學習指引 p.3-28 第 8 題',
+      e: '適當標注引用來源可避免抄襲、尊重智慧財產權，並提供內容的可靠性與可追溯性。直接拿去做學術報告可能構成學術不端；減少審查會降低準確性；完全排除生成資料則過於極端。'
+    },
+    {
+      q: '下列何者是使用生成式 AI 進行圖像生成時需要考慮的問題？',
+      o: ['生成圖像的解析度', '版權和合法性', '模型的推論時間', '以上皆是'],
+      a: 3,
+      src: '官方原題 · 科目二學習指引 p.3-27 第 1 題',
+      e: '三者都要考慮：解析度需符合應用需求（專業設計、印刷）；版權與合法性避免侵權或觸法（尤其商業應用）；推論時間確保生成效率能滿足即時場景。'
+    },
+    {
+      q: '下列何者是人工智慧未來發展中最迫切需要解決的挑戰？',
+      o: ['計算資源的過剩', '資料隱私與道德規範問題', '人才培育與跨領域合作的不足', '無法應用於小型企業場景'],
+      a: 1,
+      src: '官方原題 · 科目二學習指引 p.3-28 第 7 題',
+      e: '資料隱私保護與倫理規範的建立，是 AI 技術進一步發展最迫切的關鍵挑戰。計算資源是「不足」而非過剩；小型企業場景正是 AIaaS 與 No Code 平台在解決的問題。'
+    },
+    {
+      q: '一家中小企業沒有 GPU 伺服器、也沒有能力自行訓練模型，於是直接呼叫雲端業者提供的 API 來使用生成式AI。這屬於 3.2 節哪一項工具發展趨勢？',
+      o: ['專業化與垂直整合', '多模態整合與協同生成', 'AI 即服務（AIaaS）', '效能優化與資源效率'],
+      a: 2,
+      src: '自編練習題 · 指引 p.3-23',
+      e: 'AI 即服務（AIaaS）就是透過雲端運算與 API（如 OpenAI API、Hugging Face Spaces）提供生成式AI 能力，讓企業免自購高階硬體、免自行訓練即可使用，大幅降低使用門檻。'
+    },
+    {
+      q: '關於「RLHF（人類回饋強化學習）」，下列敘述何者正確？',
+      o: ['讓模型完全不需要預訓練，直接從人類指令學習', '用人類對輸出好壞的評價當作獎勵訊號來微調模型，使結果更貼近需求', '把模型參數壓縮量化，讓推理速度變快', '將文字切成詞或子詞，轉換成模型可處理的單位'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-21',
+      e: 'RLHF 屬於「預訓練與微調」這項技術突破：在預訓練模型之上，拿人類對答案好壞的評價當獎勵訊號去微調，讓輸出更符合人的期待。選項 3 描述的是模型壓縮／量化（高效推理），選項 4 描述的是標記化（Tokenization）。'
+    }
+  ]
+});
+</script>
+</body>
+</html>

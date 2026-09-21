@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 27 科目二 3.2① 生成式AI 技術架構與應用領域（整理） — iPAS 考取衝刺班</title>
+<meta name="description" content="W6 Day 2：科目二 3.2 節前半知識整理——生成式AI 技術架構三面向、推理機制（溫度／Top-k／核採樣）、市場價值與社會影響、六大行業應用與五大產業應用。整理自 W2 Day 2、W4 Day 5。">
+<link rel="stylesheet" href="assets/style.css?v=7">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">W6 · Day 2 · 9/22（二）· 知識整理</p>
+        <h1>科目二 3.2①　生成式AI 技術架構與應用領域（整理）</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>3.2 節是<b>鑑別測驗全班正確率最低（68%）</b>的主題，這週拆成兩天整理。今天先處理「<b>生成式AI 是什麼、用在哪</b>」：技術架構、市場與社會影響、各產業應用；明天（Day 3）處理「<b>工具怎麼演進、怎麼用</b>」。細節回去看 <a href="day20.html">Day 20</a> 與 <a href="day7.html">Day 7</a>。</p>
+    <div class="mast-meta">
+      <span class="tag">學習指引 科目二 p.3-17～3-20、3-24～3-26</span>
+      <span class="tag">閱讀約 13 分鐘</span>
+      <span class="tag">測驗 6 題</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="每日導覽">
+  <ul>
+    <li><a href="w6-index.html">總覽</a></li>
+    <li><a href="day26.html" data-day="26">Day 1</a></li>
+    <li><a href="day27.html" data-day="27" aria-current="page">Day 2</a></li>
+    <li><a href="day28.html" data-day="28">Day 3</a></li>
+    <li><a href="day29.html" data-day="29">Day 4</a></li>
+    <li><a href="day30.html" data-day="30">Day 5</a></li>
+    <li><a href="w6-test.html" data-day="w6test">整合測驗</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <h2>統一筆記：生成式AI 技術架構與應用領域</h2>
+
+  <h3>核心定義 <span class="pref">p.3-17</span></h3>
+  <p>生成式AI 專注於透過<b>深度學習與大數據集訓練來生成新內容</b>，而不只是分析或辨識現有資料，通常基於 <b>GAN、VAE、Transformer</b> 架構。</p>
+
+  <h3>技術架構三面向 <span class="pref">p.3-17～3-18</span></h3>
+  <div class="tw"><table>
+    <tr><th>面向</th><th>重點</th></tr>
+    <tr><td><b>深度學習網路</b></td><td>多層神經網路做特徵提取；<b>注意力機制</b>（尤其自注意力）處理長距離依賴</td></tr>
+    <tr><td><b>訓練數據處理</b></td><td>數據清洗 →<b>標記化 Tokenization</b>（切成詞／子詞）→<b>向量化 Vectorization</b>（轉成數值）</td></tr>
+    <tr><td><b>推理機制</b></td><td><b>溫度 Temperature</b>控制隨機性（低＝保守、高＝有創意）；<b>Top-k Sampling</b>取機率最高前 k 個；<b>核採樣 Nucleus／Top-p</b>取累積機率達閾值（如 0.9）的那一群</td></tr>
+  </table></div>
+  <div class="note">
+    <span class="lbl">整節第一考點：三個取樣參數別混</span>
+    <b>溫度</b>調的是「<b>亂度大小</b>」；<b>Top-k</b> 限制的是「<b>固定幾個候選</b>」；<b>核採樣（Top-p）</b>限制的是「<b>累積機率到多少為止</b>」——候選數量會隨情況變動，這是它跟 Top-k 最大的差別。
+  </div>
+  <p class="lede"><b>關鍵特點</b>：上下文理解、遷移學習、多模態、提示詞可控生成。<b>主要挑戰</b>：計算資源需求大、硬體限制、輸出準確性、<b>AI 幻覺（hallucination）</b>、偏見與安全性。</p>
+
+  <h3>市場價值與社會影響 <span class="pref">p.3-18～3-20</span></h3>
+  <div class="tw"><table>
+    <tr><th>面向</th><th>內容</th></tr>
+    <tr><td>市場規模</td><td>預計 2030 年達數百億美元（娛樂、醫療、教育、廣告、遊戲設計）</td></tr>
+    <tr><td><b>就業市場變革（雙面性）</b></td><td>部分重複性、低技能工作被取代；同時出現新興職務<b>AI 訓練師、提示工程師（Prompt Engineer）</b></td></tr>
+    <tr><td>經濟效益<b>三層</b></td><td><b>直接</b>（降營運成本、提升效率）→<b>間接</b>（促進創新、開創新商業模式）→<b>衍生</b>（帶動 AI 硬體與雲端服務等相關產業）</td></tr>
+    <tr><td>挑戰與風險<b>三層</b></td><td><b>技術</b>（資料安全、模型可靠性、系統穩定性）／<b>商業</b>（投資回報不確定、競爭加劇、法規要求）／<b>社會</b>（就業結構變動、數位落差、倫理道德）</td></tr>
+  </table></div>
+  <div class="note">
+    <span class="lbl">易混淆</span>
+    經濟效益的三層是<b>直接／間接／衍生</b>；挑戰風險的三層是<b>技術／商業／社會</b>。兩組都是「三層」，考題喜歡互換選項。記法：效益看「錢從哪來」，風險看「問題出在哪個層面」。
+  </div>
+
+  <h3>六大行業應用（3.1 節帶進來的實例）<span class="pref">p.3-3～3-4</span></h3>
+  <div class="tw"><table>
+    <tr><th>領域</th><th>最該記的實例</th></tr>
+    <tr><td>醫療保健</td><td>藥物發現與設計、個人化治療方案、<b>病歷自動生成</b>與輔助診斷</td></tr>
+    <tr><td>製造業</td><td>產品設計與原型製作、生產流程優化</td></tr>
+    <tr><td>金融業</td><td>風險評估與管理、投資組合優化、<b>自動化合規監管</b></td></tr>
+    <tr><td>零售業</td><td>個人化行銷、庫存與供應鏈管理、顧客體驗優化</td></tr>
+    <tr><td>教育領域</td><td><b>自動化教材生成</b>、個人化學習路徑、智慧評量與回饋</td></tr>
+    <tr><td>客戶服務</td><td><b>虛擬智慧客服（24/7）</b>、自動化回應生成、客訴分析與優化</td></tr>
+  </table></div>
+  <div class="note">
+    <span class="lbl">整節第二考點：領域歸屬題</span>
+    <b>病歷自動生成＝醫療保健</b>（常被誤放進金融業）；<b>自動化合規監管＝金融業</b>（跟教育的「自動化教材生成」名字很像）。
+    看到「客戶」先別急著選客戶服務——零售的<b>顧客體驗優化</b>講的是<b>購物推薦</b>，客服的<b>虛擬智慧客服</b>講的是<b>對話與回應</b>。
+  </div>
+
+  <h3>五大產業應用（3.2 節本身列的）<span class="pref">p.3-24～3-26</span></h3>
+  <div class="tw"><table>
+    <tr><th>產業</th><th>應用實例</th><th>趨勢</th></tr>
+    <tr><td>藝術與設計／內容創作</td><td>數位藝術與插畫、時尚設計、動畫影視、音樂創作</td><td>AI 做細節與技術性工作，創作者專注構思</td></tr>
+    <tr><td>醫療與生物科技</td><td>藥物開發（生成分子結構）、醫學影像分析（生成<b>合成影像數據</b>）、個人化醫療、醫學教育（VR/AR 模擬病例）</td><td>——</td></tr>
+    <tr><td>教育與培訓</td><td>個人化學習內容、智慧教學助理、互動式教材（3D、VR）、語言學習模擬對話</td><td>——</td></tr>
+    <tr><td>娛樂與媒體</td><td>遊戲開發（生成地圖、角色、劇情）、劇本創作、虛擬偶像與主播、音樂與影片生成</td><td>結合 AR/VR</td></tr>
+    <tr><td>產品設計與製造</td><td>創新產品設計、快速原型（3D 列印＋AI）、效能模擬報告、供應鏈需求預測</td><td>智慧製造</td></tr>
+  </table></div>
+  <div class="note">
+    <span class="lbl">兩組產業清單怎麼記</span>
+    <b>3.1 節的六大行業</b>＝醫療、製造、金融、零售、教育、客服（偏「<b>企業流程</b>」）；
+    <b>3.2 節的五大產業</b>＝藝術設計、醫療生技、教育培訓、娛樂媒體、產品設計製造（偏「<b>內容生成</b>」）。
+    重疊的是醫療與教育，差別在 3.2 節強調的是<b>生成什麼東西</b>（分子結構、合成影像、互動式教材）。
+  </div>
+
+  <div class="card">
+    <h4>一分鐘回想</h4>
+    <p>架構＝<b>深度學習網路＋訓練數據處理（標記化→向量化）＋推理機制</b>。推理三參數：溫度調亂度、Top-k 固定候選數、<b>核採樣看累積機率</b>。挑戰有 <b>AI 幻覺</b>。就業新職務＝<b>AI 訓練師、提示工程師</b>。經濟效益三層＝直接／間接／衍生；風險三層＝技術／商業／社會。領域題記住<b>病歷＝醫療、合規監管＝金融</b>。3.2 節五大產業：藝術、醫療、教育、娛樂、製造。</p>
+  </div>
+</section>
+
+<section id="quiz">
+  <h2>今日回想測驗</h2>
+  <p class="lede">6 題，全部選完才能送出。送出後會顯示解析，成績自動回傳給召集人。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。填過一次之後其他天會自動帶入。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 6 題</span>
+    <span class="score">整理自 W2、W4 · 官方原題／自編混合</span>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並看解析</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份測驗</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">一鍵複製寫好的提問，貼到 ChatGPT、Claude、Gemini 都可以，讓它針對這個主題再幫你複習一次、多出幾題考你。<b>做完上面的測驗再複製，會自動把你答錯的題目一起帶進去。</b></p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製今天的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="day26.html">← Day 1：No Code／Low Code 與 AI 民主化</a>
+    <a href="day28.html">Day 3：工具的演進、趨勢與使用 →</a>
+  </div>
+</section>
+
+<footer>
+  <p>整理自 iPAS「AI 應用規劃師（初級）學習指引－科目二」3.2 節前半（p.3-17～3-20、3-24～3-26）並帶入 3.1 節六大行業應用（p.3-3～3-4），對應本班 W4 Day 5 與 W2 Day 2。此範圍在 114.04 版勘誤表中無相關更正。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=7"></script>
+<script src="assets/quiz.js?v=7"></script>
+<script>
+Study.initQuiz({
+  day: 27,
+  week: 'W6',
+  dayLabel: 'Day 2',
+  dayTitle: '科目二 3.2① 生成式AI 技術架構與應用領域（整理）',
+  subject: '科目二「生成式AI應用與規劃」',
+  ai: {
+    pages: '科目二 p.3-17～3-20、3-24～3-26（3.2 節前半）＋ p.3-3～3-4（3.1 節六大行業應用）',
+    topics: '生成式AI 技術架構三面向（深度學習網路、訓練數據處理、推理機制）、標記化與向量化、溫度 Temperature／Top-k Sampling／核採樣 Nucleus 的差別、AI 幻覺、市場規模與就業市場變革（AI 訓練師、提示工程師）、經濟效益三層（直接／間接／衍生）、挑戰與風險三層（技術／商業／社會）、六大行業應用（醫療、製造、金融、零售、教育、客服）、五大產業應用（藝術設計、醫療生技、教育培訓、娛樂媒體、產品設計製造）'
+  },
+  questions: [
+    {
+      q: '下列哪一項技術是生成式 AI 的基礎？',
+      o: ['決策樹模型', '生成對抗網路', '聚類演算法', '隨機森林技術'],
+      a: 1,
+      src: '官方原題 · 科目二學習指引 p.3-28 第 6 題',
+      e: '生成對抗網路（GAN）是生成式AI 的核心技術之一，用於生成逼真的圖像和數據。決策樹、聚類演算法、隨機森林都屬於分析／分類用途，不擅長生成新內容。'
+    },
+    {
+      q: '生成式 AI 在金融業的應用不包括以下哪一項？',
+      o: ['風險評估與管理', '投資組合優化', '自動化生成病歷', '提供個人化投資建議'],
+      a: 2,
+      src: '官方原題 · 科目二學習指引 p.3-27 第 7 題',
+      e: '金融業的應用是風險評估與管理、投資組合優化、自動化合規監管與個人化投資建議；「自動化生成病歷」屬於醫療保健領域。這是領域歸屬題最常見的陷阱組合。'
+    },
+    {
+      q: '下列哪一種技術方案適用於改善客戶體驗？',
+      o: ['預測性維護工具', '自然語言處理（NLP）和生成式回應模組', '智慧排程系統', '消費行為洞察模型'],
+      a: 1,
+      src: '官方原題 · 科目二學習指引 p.3-27 第 3 題',
+      e: 'NLP 與生成式回應模組可以提升客服平台的效率與溝通品質，直接改善客戶體驗。預測性維護與智慧排程偏製造營運，消費行為洞察偏行銷分析。'
+    },
+    {
+      q: '某團隊希望生成式AI 的回答更穩定、每次差異小一點，最直接該調整的是下列何者？',
+      o: ['調高溫度（Temperature）', '調低溫度（Temperature）', '提高核採樣的累積機率閾值', '關閉標記化（Tokenization）'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-18',
+      e: '溫度控制輸出的隨機性：低溫＝保守穩定、每次差不多；高溫＝有創意但也更容易亂講。提高核採樣閾值會納入更多候選字、反而更發散；標記化是把文字切成模型看得懂的單位，屬於訓練數據處理，不是用來調穩定度的開關。'
+    },
+    {
+      q: '生成式AI 興起後，下列何者屬於學習指引提到的「新興職務」？',
+      o: ['資料庫管理員', '提示工程師（Prompt Engineer）', '網路架構師', '系統維運工程師'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-19',
+      e: '指引在「就業市場變革」談到雙面性：部分重複性、低技能工作可能被取代，同時出現新興職務，明確點名的是 AI 訓練師與提示工程師。其餘三者都是生成式AI 出現之前就存在的職務。'
+    },
+    {
+      q: '一家生技公司用生成式AI 產生「合成醫學影像數據」，用來補足罕見病例樣本不足的問題。這屬於 3.2 節五大產業應用中的哪一項？',
+      o: ['藝術與設計／內容創作', '醫療與生物科技', '教育與培訓', '產品設計與製造'],
+      a: 1,
+      src: '自編練習題 · 指引 p.3-25',
+      e: '「醫學影像分析：生成合成影像數據」是指引在「醫療與生物科技」產業下明列的應用，目的是補足訓練樣本。同一產業下還有藥物開發（生成分子結構）、個人化醫療、醫學教育的 VR/AR 模擬病例。'
+    }
+  ]
+});
+</script>
+</body>
+</html>
