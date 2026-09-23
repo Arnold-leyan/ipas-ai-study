@@ -340,3 +340,5 @@ footer b{color:var(--ink)}
 .examgroup{margin:26px 0 8px}
 .examgroup h3{margin:0 0 4px}
 .examgroup .lede{margin:0 0 6px}
+.exam .qtools{display:flex;gap:8px;flex-wrap:wrap}
+.exam #draft-status:empty{display:none}

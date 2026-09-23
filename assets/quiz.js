@@ -60,6 +60,14 @@
     });
   }
 
+  /* 考古題在這台裝置上暫存的作答進度，回傳已答幾題（沒有就 0） */
+  function localDraftCount(d) {
+    try {
+      var info = JSON.parse(lsGet(dayKey(d) + '_draft') || 'null');
+      return info && info.answers ? Object.keys(info.answers).length : 0;
+    } catch (e) { return 0; }
+  }
+
   /* ---------- 首頁的每日卡片狀態 ---------- */
   function paintDayCards() {
     var cards = document.querySelectorAll('.daycard[data-day]');
@@ -69,11 +77,12 @@
       var res = getDayResult(d);
       var badge = card.querySelector('.badge');
       if (badge) {
+        var draftN = res ? 0 : localDraftCount(d);
         if (res) {
           badge.textContent = '已完成';
           badge.classList.add('ok');
         } else {
-          badge.textContent = '未作答';
+          badge.textContent = draftN ? '作答中 · 已答 ' + draftN + ' 題' : '未作答';
           badge.classList.remove('ok');
         }
       }
@@ -292,53 +301,87 @@
   }
 
   /* ---------- 考古題計時器 ----------
-   * cfg.minutes 有值時才啟用（考古題頁 = 正式考試的 75 分鐘）。按下才開始倒數，
-   * 開始時間存在 localStorage，重新整理頁面不會歸零。時間到只提醒、不強制交卷。 */
-  function initTimer(cfg) {
-    var noop = { stop: function () {} };
+   * cfg.minutes 有值時才啟用（考古題頁 = 正式考試的 75 分鐘）。
+   * 記的是「已經用掉幾秒」而不是開始時間，所以可以暫停：按一下暫停、再按一下繼續；
+   * 關掉頁面期間不算時間，下次打開是暫停狀態，按「繼續計時」接著算。
+   * 已用秒數存在 localStorage，也會跟著作答進度一起暫存到後端，換裝置也接得上。
+   * 時間到只提醒、不強制交卷。 */
+  function initTimer(cfg, onChange) {
+    var noop = { stop: function () {}, elapsed: function () { return 0; }, setElapsed: function () {}, pause: function () {} };
     var btn = document.getElementById('timer-btn');
     var floatTime = document.getElementById('float-time');
     if (!cfg.minutes || !btn) return noop;
 
     var key = dayKey(cfg.day) + '_timer';
     var limit = cfg.minutes * 60;
-    var tick = null;
+    var elapsed = 0, running = false, tick = null, last = 0, stopped = false;
+
+    var saved = Number(lsGet(key));
+    if (saved > 0 && saved < 24 * 3600) elapsed = saved;   // 舊版存的是開始時間（很大的數字），直接忽略
 
     function fmt(sec) {
+      sec = Math.max(0, Math.floor(sec));
       var m = Math.floor(sec / 60), s = sec % 60;
       return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
     }
     function paint() {
-      var start = Number(lsGet(key));
-      if (!start) return;
-      var left = limit - Math.floor((Date.now() - start) / 1000);
-      var text = left > 0 ? '剩 ' + fmt(left) : '時間到（可繼續作答）';
-      btn.textContent = '⏱ ' + text;
+      if (stopped) return;
+      var left = limit - elapsed;
+      var clock = left > 0 ? '剩 ' + fmt(left) : '時間到（可繼續作答）';
+      if (running) btn.textContent = '⏸ ' + clock + '（按一下暫停）';
+      else if (elapsed > 0) btn.textContent = '▶ 繼續計時（' + clock + '）';
+      else btn.textContent = '⏱ 開始計時 ' + fmt(limit);
       btn.classList.toggle('late', left <= 0);
       if (floatTime) {
-        floatTime.textContent = left > 0 ? fmt(left) : '時間到';
-        floatTime.hidden = false;
+        floatTime.hidden = elapsed <= 0;
+        floatTime.textContent = (running ? '' : '⏸ ') + (left > 0 ? fmt(left) : '時間到');
       }
     }
-    function run() {
-      btn.disabled = true;
+    function step() {
+      var now = Date.now();
+      // 背景分頁的計時器會被瀏覽器放慢，按實際經過時間補；但手機鎖屏、電腦睡眠這種
+      // 一口氣跳很久的，視為中斷，最多只補 90 秒。
+      elapsed += Math.min((now - last) / 1000, 90);
+      last = now;
+      lsSet(key, String(Math.round(elapsed)));
       paint();
-      tick = global.setInterval(paint, 1000);
+    }
+    function play() {
+      if (running || stopped) return;
+      running = true;
+      last = Date.now();
+      tick = global.setInterval(step, 1000);
+      paint();
+    }
+    function pause() {
+      if (!running) return;
+      step();
+      running = false;
+      global.clearInterval(tick);
+      paint();
+      if (onChange) onChange();
     }
     btn.addEventListener('click', function () {
-      if (!lsGet(key)) lsSet(key, String(Date.now()));
-      run();
+      if (running) pause();
+      else { play(); if (onChange) onChange(); }
     });
-    if (lsGet(key)) run();
+    paint();
 
     return {
+      elapsed: function () { if (running) step(); return Math.round(elapsed); },
+      setElapsed: function (sec) {
+        elapsed = Math.max(0, Number(sec) || 0);
+        lsSet(key, String(Math.round(elapsed)));
+        paint();
+      },
+      pause: pause,
       stop: function () {
-        if (tick) global.clearInterval(tick);
-        var start = Number(lsGet(key));
-        if (start) {
-          var used = Math.round((Date.now() - start) / 60000);
-          btn.textContent = '⏱ 這次用了約 ' + used + ' 分鐘';
-        }
+        if (running) step();
+        running = false;
+        global.clearInterval(tick);
+        stopped = true;
+        if (elapsed > 0) btn.textContent = '⏱ 這次用了約 ' + Math.max(1, Math.round(elapsed / 60)) + ' 分鐘';
+        btn.disabled = true;
         lsDel(key);
         if (floatTime) floatTime.hidden = true;
       }
@@ -366,7 +409,8 @@
     var picked = new Array(total).fill(null);
     var graded = false;
     var floatCount = document.getElementById('float-count');   // 考古題頁右下角的浮動進度，其他頁沒有
-    var timer = initTimer(cfg);
+    var draft = null;   // 考古題的中斷接續（initDraft 在下面建立），其他頁是 null
+    var timer = initTimer(cfg, function () { if (draft) draft.changed(); });
 
     function nameValue() {
       return nameInput ? nameInput.value.trim() : '';
@@ -378,6 +422,10 @@
       nameInput.addEventListener('input', function () {
         lsSet(NAME_KEY, nameValue());
         refresh();
+      });
+      // 換了裝置的人是打開頁面「之後」才填姓名，這時候再去後端查一次有沒有做過／做到一半
+      nameInput.addEventListener('change', function () {
+        if (!graded && !answeredCount() && nameValue()) restoreFromBackend();
       });
     }
 
@@ -425,9 +473,9 @@
         btn.addEventListener('click', function () {
           if (graded) return;
           picked[i] = j;
-          Array.prototype.forEach.call(opts.children, function (o) { o.classList.remove('picked'); });
-          btn.classList.add('picked');
+          paintPick(i);
           refresh();
+          if (draft) draft.changed();
         });
         opts.appendChild(btn);
       });
@@ -437,6 +485,12 @@
       list.appendChild(box);
       boxes.push({ box: box, opts: opts, exp: exp, item: item });
     });
+
+    function paintPick(i) {
+      Array.prototype.forEach.call(boxes[i].opts.children, function (o, oi) {
+        o.classList.toggle('picked', oi === picked[i]);
+      });
+    }
 
     function answeredCount() {
       return picked.filter(function (p) { return p !== null; }).length;
@@ -538,6 +592,7 @@
         }
         var data = grade();
         timer.stop();
+        if (draft) draft.finish();
         reveal(data.answers, true);
         showResult(data);
         submitResult(data, syncEl);
@@ -554,6 +609,7 @@
         // 使用者會看到「按了重做，畫面卻立刻跳回已完成」。
         lsSet(dayKey(cfg.day) + '_skiprestore', '1');
         lsDel(dayKey(cfg.day) + '_timer');
+        lsDel(dayKey(cfg.day) + '_draft');
         global.location.reload();
       });
     }
@@ -582,7 +638,10 @@
         .then(function (res) {
           if (!res || res.status !== 'ok' || !res.days) return;
           var hit = res.days[String(cfg.day)];
-          if (!hit || !hit.detail) return;
+          if (!hit || !hit.detail) {
+            if (draft && res.drafts) draft.fromBackend(res.drafts[String(cfg.day)]);
+            return;
+          }
 
           var answers = new Array(total).fill(null);
           for (var i = 0; i < total; i++) {
@@ -615,6 +674,143 @@
         })
         .catch(function () { /* 還原失敗就當作沒查到，維持空白測驗，不影響正常作答 */ });
     }
+
+    /* ---------- 考古題中斷接續 ----------
+     * 作答進度（選了哪些選項＋計時器用掉的秒數）：
+     *   - 每點一個選項就存進這台裝置的 localStorage（關掉分頁再開，原地接續）
+     *   - 有填姓名時，停手 15 秒、按「暫存進度」、或切走分頁／關閉頁面時，
+     *     送到後端「考古題作答進度」工作表（一人一份一列，覆蓋更新），換裝置也能接續
+     * 打開頁面時先套用本機進度，再跟後端比「最後更新時間」，後端比較新就改用後端的。 */
+    function initDraft() {
+      var key = dayKey(cfg.day) + '_draft';
+      var btn = document.getElementById('save-btn');
+      var statusEl = document.getElementById('draft-status');
+      var dirty = false;        // 有還沒送到後端的變更
+      var touched = false;      // 這次打開頁面後自己動過（就不拿後端的舊進度蓋掉）
+      var timerId = null;
+      var sending = false;
+      var local = null;
+
+      function say(text, cls) {
+        if (!statusEl) return;
+        statusEl.textContent = text;
+        statusEl.className = 'sync ' + (cls || 'idle');
+      }
+      function hhmm(ts) {
+        var d = new Date(ts);
+        return (d.getMonth() + 1) + '/' + d.getDate() + ' ' +
+          (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
+      }
+      function answersObj() {
+        var o = {};
+        picked.forEach(function (p, i) { if (p !== null) o['Q' + (i + 1)] = KEYS[p]; });
+        return o;
+      }
+      function saveLocal() {
+        lsSet(key, JSON.stringify({ answers: answersObj(), elapsed: timer.elapsed(), updated: Date.now() }));
+      }
+      function apply(info, from) {
+        if (!info || !info.answers) return false;
+        var n = 0;
+        picked = new Array(total).fill(null);
+        Object.keys(info.answers).forEach(function (q) {
+          var i = parseInt(q.slice(1), 10) - 1, j = KEYS.indexOf(info.answers[q]);
+          if (i >= 0 && i < total && j > -1) { picked[i] = j; n++; }
+        });
+        for (var i = 0; i < total; i++) paintPick(i);
+        timer.setElapsed(info.elapsed);
+        refresh();
+        if (!n && !info.elapsed) return false;
+        say('✓ 已接續' + from + '的作答進度（' + (info.updated ? hhmm(info.updated) + ' 存的，' : '') +
+          '已答 ' + n + ' / ' + total + ' 題' + (info.elapsed ? '，已用 ' + Math.round(info.elapsed / 60) + ' 分鐘' : '') +
+          '）。計時器是暫停的，準備好再按「繼續計時」。', 'ok');
+        return true;
+      }
+
+      function send(keepalive) {
+        var url = global.GAS_WEB_APP_URL;
+        var name = nameValue();
+        if (!url || !name || graded || sending) return;
+        if (!answeredCount() && !timer.elapsed()) return;
+        sending = true;
+        dirty = false;
+        var payload = {
+          type: 'draft', status: '作答中', name: name,
+          week: cfg.week || '', dayLabel: cfg.dayLabel || '', dayTitle: cfg.dayTitle,
+          answered: answeredCount(), total: total, elapsed: timer.elapsed(), answers: answersObj()
+        };
+        if (!keepalive) say('正在暫存進度…', 'idle');
+        fetch(url, { method: 'POST', body: JSON.stringify(payload), keepalive: !!keepalive })
+          .then(function (r) { return r.json(); })
+          .then(function (r) {
+            if (!r || r.status !== 'ok') throw new Error('backend');
+            if (graded) return;
+            say('✓ 進度已暫存到雲端（' + hhmm(Date.now()) + '，已答 ' + payload.answered + ' / ' + total +
+              ' 題）。換手機或電腦，打開這一頁、填同一個姓名就能接著做。', 'ok');
+          })
+          .catch(function () {
+            dirty = true;
+            if (!graded) say('⚠ 雲端暫存失敗（這台裝置上的進度還在）。可以稍後再按「暫存進度」。', 'warn');
+          })
+          .then(function () { sending = false; });
+      }
+
+      if (btn) {
+        btn.addEventListener('click', function () {
+          if (graded) return;
+          timer.pause();
+          saveLocal();
+          if (!global.GAS_WEB_APP_URL) { say('✓ 已存在這台裝置（本站沒有啟用雲端記錄，換裝置無法接續）。', 'ok'); return; }
+          if (!nameValue()) {
+            say('✓ 已存在這台裝置。要換裝置接續的話，請先在上面填姓名再按一次。', 'warn');
+            if (nameInput) { nameInput.classList.add('needed'); nameInput.focus(); }
+            return;
+          }
+          send(false);
+        });
+      }
+      // 切到別的 App、關分頁、手機鎖屏時，把還沒送的進度送出去
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden' && dirty) send(true);
+      });
+
+      // 打開頁面：先接本機的進度（已經交卷的就不用）
+      try { local = JSON.parse(lsGet(key) || 'null'); } catch (e) { local = null; }
+      if (local && !getDayResult(cfg.day)) apply(local, '這台裝置上');
+
+      return {
+        changed: function () {
+          if (graded) return;
+          touched = true;
+          dirty = true;
+          saveLocal();
+          global.clearTimeout(timerId);
+          timerId = global.setTimeout(function () { if (dirty) send(false); }, 15000);
+        },
+        fromBackend: function (remote) {
+          if (!remote || touched || graded) return;
+          if (local && local.updated && remote.updated && local.updated >= remote.updated - 5000) return;
+          if (apply(remote, '雲端上')) saveLocal();
+        },
+        finish: function () {
+          global.clearTimeout(timerId);
+          dirty = false;
+          lsDel(key);
+          say('', 'idle');
+          var url = global.GAS_WEB_APP_URL;
+          var name = nameValue();
+          if (!url || !name) return;
+          // 狀態改成「已交卷」，換裝置時就不會再跳出「接續作答」
+          fetch(url, { method: 'POST', body: JSON.stringify({
+            type: 'draft', status: '已交卷', name: name,
+            week: cfg.week || '', dayLabel: cfg.dayLabel || '', dayTitle: cfg.dayTitle,
+            answered: answeredCount(), total: total, elapsed: 0, answers: answersObj()
+          }) }).catch(function () {});
+        }
+      };
+    }
+
+    if (cfg.exam) draft = initDraft();
 
     /* 已作答過：直接顯示結果與解析 */
     var prev = getDayResult(cfg.day);
@@ -672,7 +868,7 @@
       Array.prototype.forEach.call(navLinks, function (a) { a.classList.remove('done'); });
     }
 
-    function applyResult(days) {
+    function applyResult(days, drafts) {
       var cards = document.querySelectorAll('.daycard[data-day]');
       var doneCount = 0, totalDays = 0;
       Array.prototype.forEach.call(cards, function (card) {
@@ -687,6 +883,9 @@
             badge.classList.add('ok');
           }
           if (isNumberDay) doneCount++;
+        } else if (drafts && drafts[d]) {
+          var db = card.querySelector('.badge');
+          if (db) db.textContent = '作答中 · 已答 ' + drafts[d].answered + ' / ' + drafts[d].total + ' 題';
         }
       });
       var prog = document.getElementById('week-progress');
@@ -707,11 +906,11 @@
         .then(function (res) { return res.json(); })
         .then(function (res) {
           if (!res || res.status !== 'ok') throw new Error('bad response');
-          if (!Object.keys(res.days || {}).length) {
+          if (!Object.keys(res.days || {}).length && !Object.keys(res.drafts || {}).length) {
             say('查無「' + res.name + '」的作答紀錄——姓名打法不同的話可以換暱稱試試，或者還沒開始作答。', 'warn');
             return;
           }
-          applyResult(res.days);
+          applyResult(res.days || {}, res.drafts);
           say('✓ 已依「' + res.name + '」的作答紀錄更新完成狀態', 'ok');
         })
         .catch(function () {

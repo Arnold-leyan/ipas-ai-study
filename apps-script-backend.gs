@@ -14,6 +14,9 @@
  *   sheet   要寫到哪個工作表
  *   header  第一列的欄位名稱
  *   row     把送過來的 payload 轉成一列資料
+ * 另外可選第四件事：
+ *   sameRecord(舊列, 新列)  回傳 true 代表「是同一筆」，就覆蓋那一列而不是新增一列
+ *                          （例如考古題作答進度：一人一份考古題只留一列）
  *
  * 前端送出時 payload 帶 type，後端就會自動找到對應的項目。
  * 新增一種類型不需要改 doPost，只要在 SPECS 加一個項目、重新部署新版本。
@@ -43,6 +46,34 @@ var SPECS = {
         d.wrongList || '（全對）',
         JSON.stringify(d.detail || {})
       ];
+    }
+  },
+
+  /* 考古題作答進度（中斷接續用）—— 前端 assets/quiz.js 在考古題頁自動暫存。
+   * 一個人一份考古題只佔一列，之後的暫存都覆蓋同一列；交卷時狀態改成「已交卷」。
+   * 換裝置打開同一份考古題時，前端用 doGet 查回「作答中」的那一列接著做。 */
+  draft: {
+    sheet: '考古題作答進度',
+    header: [
+      '最後更新', '姓名', '週次', '天數', '主題', '狀態',
+      '已答題數', '總題數', '已用時間(分)', '作答明細(JSON)'
+    ],
+    row: function (d) {
+      return [
+        new Date(),
+        d.name || '未具名',
+        d.week || '',
+        d.dayLabel || '',
+        d.dayTitle || '',
+        d.status || '作答中',
+        d.answered,
+        d.total,
+        Math.round((Number(d.elapsed) || 0) / 60),
+        JSON.stringify({ elapsed: Number(d.elapsed) || 0, answers: d.answers || {} })
+      ];
+    },
+    sameRecord: function (a, b) {
+      return normName_(a[1]) === normName_(b[1]) && String(a[2]) === String(b[2]) && String(a[3]) === String(b[3]);
     }
   }
 
@@ -119,6 +150,16 @@ function jsonOut_(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
+/* 回傳和 row 是「同一筆」的那一列的列號（1-based），找不到回傳 -1。 */
+function findRecord_(sheet, spec, row) {
+  if (sheet.getLastRow() < 2) return -1;
+  var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, spec.header.length).getValues();
+  for (var i = 0; i < rows.length; i++) {
+    if (spec.sameRecord(rows[i], row)) return i + 2;
+  }
+  return -1;
+}
+
 function doPost(e) {
   var lock = LockService.getScriptLock();
   try {
@@ -136,7 +177,11 @@ function doPost(e) {
       return jsonOut_({ status: 'error', message: 'unknown type: ' + data.type });
     }
 
-    getOrCreateSheet_(spec.sheet, spec.header).appendRow(spec.row(data));
+    var sheet = getOrCreateSheet_(spec.sheet, spec.header);
+    var row = spec.row(data);
+    var at = spec.sameRecord ? findRecord_(sheet, spec, row) : -1;
+    if (at > 0) sheet.getRange(at, 1, 1, row.length).setValues([row]);
+    else sheet.appendRow(row);
 
     return jsonOut_({ status: 'ok' });
   } catch (err) {
@@ -168,7 +213,9 @@ function doGet(e) {
  * 依姓名（含暱稱，會透過 NAME_MAP 轉換成本名）查這個人每一天的完成狀態。
  * 同一天重複作答時，取試算表裡「最後一次」送出的那筆。
  *
- * 回傳格式：{ status:'ok', name:'本名', days:{ '6':{percent,dayTitle,week,correct,total,wrongList,detail}, 'w2test':{...} } }
+ * 回傳格式：{ status:'ok', name:'本名', days:{ '6':{percent,dayTitle,week,correct,total,wrongList,detail}, 'w2test':{...} },
+ *            drafts:{ 'exam114-4-1':{updated,answered,total,elapsed,answers} } }
+ * drafts 是考古題「作答中」的暫存進度（「考古題作答進度」工作表），給換裝置接續作答用。
  * key 是數字字串時對應每日頁的 data-day；'w1test'/'w2test' 對應各週總測驗（'w5test'/'w6test' 是整合測驗）；
  * 'exam114-4-1' 這類對應 STEP 3 考古題頁（週次欄 STEP3、天數欄「114年第四次 科目一」）。
  * detail 是每題選了哪個選項（{"Q1":"B",...}），前端用它把換裝置後空白的測驗頁
@@ -187,24 +234,7 @@ function queryStatus_(rawName) {
       if (normName_(r[1]) !== name) return;
 
       var week = String(r[2] || '');
-      var label = String(r[3] || '');
-      var dayMatch = label.match(/^Day\s+(\d+)$/);
-      var key = null;
-      if (dayMatch) {
-        var n = parseInt(dayMatch[1], 10);
-        var range = WEEK_RANGES[week];
-        // n 落在這一週原本的全站編號範圍內，代表是還沒套用 dayLabel 之前寫入的舊資料，
-        // 直接當全站編號用；否則就是「這週第幾天」，換算成全站編號。
-        if (range && (n < range[0] || n > range[1])) n = range[0] + n - 1;
-        key = String(n);
-      } else if (/總測驗|整合測驗/.test(label) && week) {
-        key = week.toLowerCase() + 'test';
-      } else if (week === 'STEP3') {
-        // 考古題頁：天數欄是「114年第四次 科目一」→ 對應 exam-114-4-1.html 的 day 'exam114-4-1'
-        var CN = { '一': 1, '二': 2, '三': 3, '四': 4 };
-        var ex = label.match(/^(\d+)年第(.)次 科目(.)$/);
-        if (ex && CN[ex[2]] && CN[ex[3]]) key = 'exam' + ex[1] + '-' + CN[ex[2]] + '-' + CN[ex[3]];
-      }
+      var key = labelToKey_(week, String(r[3] || ''));
       if (!key) return;
 
       var detail = null;
@@ -223,7 +253,50 @@ function queryStatus_(rawName) {
     });
   }
 
-  return jsonOut_({ status: 'ok', name: name, days: days });
+  // 考古題「作答中」的進度（已交卷的不回傳），前端用來中斷接續
+  var drafts = {};
+  var dspec = SPECS.draft;
+  var dsheet = ss.getSheetByName(dspec.sheet);
+  if (dsheet && dsheet.getLastRow() >= 2) {
+    dsheet.getRange(2, 1, dsheet.getLastRow() - 1, dspec.header.length).getValues().forEach(function (r) {
+      if (normName_(r[1]) !== name || r[5] !== '作答中') return;
+      var key = labelToKey_(String(r[2] || ''), String(r[3] || ''));
+      if (!key) return;
+      var info = null;
+      try { info = JSON.parse(r[9]); } catch (err) { info = null; }
+      if (!info) return;
+      drafts[key] = {
+        updated: r[0] instanceof Date ? r[0].getTime() : 0,
+        answered: Number(r[6]),
+        total: Number(r[7]),
+        elapsed: Number(info.elapsed) || 0,
+        answers: info.answers || {}
+      };
+    });
+  }
+
+  return jsonOut_({ status: 'ok', name: name, days: days, drafts: drafts });
+}
+
+/* 試算表的「週次＋天數」兩欄 → 網站上的 day 鍵（每日頁 data-day、總測驗 'w1test'、考古題 'exam114-4-1'）。 */
+function labelToKey_(week, label) {
+  var dayMatch = label.match(/^Day\s+(\d+)$/);
+  if (dayMatch) {
+    var n = parseInt(dayMatch[1], 10);
+    var range = WEEK_RANGES[week];
+    // n 落在這一週原本的全站編號範圍內，代表是還沒套用 dayLabel 之前寫入的舊資料，
+    // 直接當全站編號用；否則就是「這週第幾天」，換算成全站編號。
+    if (range && (n < range[0] || n > range[1])) n = range[0] + n - 1;
+    return String(n);
+  }
+  if (/總測驗|整合測驗/.test(label) && week) return week.toLowerCase() + 'test';
+  if (week === 'STEP3') {
+    // 考古題頁：天數欄是「114年第四次 科目一」→ 對應 exam-114-4-1.html 的 day 'exam114-4-1'
+    var CN = { '一': 1, '二': 2, '三': 3, '四': 4 };
+    var ex = label.match(/^(\d+)年第(.)次 科目(.)$/);
+    if (ex && CN[ex[2]] && CN[ex[3]]) return 'exam' + ex[1] + '-' + CN[ex[2]] + '-' + CN[ex[3]];
+  }
+  return null;
 }
 
 /* ── 試算表選單：每日達成率 ───────────────────── */
