@@ -337,6 +337,20 @@ footer b{color:var(--ink)}
   font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;
 }
 .float-pill b{color:var(--primary)}
+.pill-note:empty{display:none}
+.pill-note.ok{color:var(--good)}
+.pill-note.warn{color:var(--warn)}
+.pill-btn{
+  font-family:var(--body);font-size:13.5px;font-weight:700;cursor:pointer;
+  background:var(--primary);color:var(--btn-fg);border:0;border-radius:999px;padding:7px 14px;
+}
+.pill-btn:hover{background:var(--primary-deep)}
+.pill-btn.ghost{background:transparent;color:var(--primary);border:1px solid var(--primary)}
+.pill-btn.ghost:hover{background:var(--surface-2)}
+.float-pill{flex-wrap:wrap;justify-content:flex-end;max-width:calc(100vw - 32px)}
+@keyframes qflash{0%{box-shadow:0 0 0 3px var(--accent)}100%{box-shadow:var(--shadow)}}
+.q.flash{animation:qflash 1.8s ease-out}
+.pill-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .examgroup{margin:26px 0 8px}
 .examgroup h3{margin:0 0 4px}
 .examgroup .lede{margin:0 0 6px}

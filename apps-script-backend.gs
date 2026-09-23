@@ -69,7 +69,7 @@ var SPECS = {
         d.answered,
         d.total,
         Math.round((Number(d.elapsed) || 0) / 60),
-        JSON.stringify({ elapsed: Number(d.elapsed) || 0, answers: d.answers || {} })
+        JSON.stringify({ elapsed: Number(d.elapsed) || 0, at: d.at, answers: d.answers || {} })
       ];
     },
     sameRecord: function (a, b) {
@@ -214,7 +214,7 @@ function doGet(e) {
  * 同一天重複作答時，取試算表裡「最後一次」送出的那筆。
  *
  * 回傳格式：{ status:'ok', name:'本名', days:{ '6':{percent,dayTitle,week,correct,total,wrongList,detail}, 'w2test':{...} },
- *            drafts:{ 'exam114-4-1':{updated,answered,total,elapsed,answers} } }
+ *            drafts:{ 'exam114-4-1':{updated,answered,total,elapsed,at,answers} } }
  * drafts 是考古題「作答中」的暫存進度（「考古題作答進度」工作表），給換裝置接續作答用。
  * key 是數字字串時對應每日頁的 data-day；'w1test'/'w2test' 對應各週總測驗（'w5test'/'w6test' 是整合測驗）；
  * 'exam114-4-1' 這類對應 STEP 3 考古題頁（週次欄 STEP3、天數欄「114年第四次 科目一」）。
@@ -270,6 +270,7 @@ function queryStatus_(rawName) {
         answered: Number(r[6]),
         total: Number(r[7]),
         elapsed: Number(info.elapsed) || 0,
+        at: typeof info.at === 'number' ? info.at : null,   // 最後作答的題目（0-based），前端「回到上次暫停處」用
         answers: info.answers || {}
       };
     });

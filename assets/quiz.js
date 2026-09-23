@@ -475,7 +475,7 @@
           picked[i] = j;
           paintPick(i);
           refresh();
-          if (draft) draft.changed();
+          if (draft) draft.changed(i);
         });
         opts.appendChild(btn);
       });
@@ -533,6 +533,8 @@
       });
       if (submitBtn) submitBtn.hidden = true;
       if (retakeBtn) retakeBtn.hidden = false;
+      var pill = document.getElementById('float-pill');
+      if (pill) pill.hidden = true;
       if (scoreEl) scoreEl.textContent = '已作答';
     }
 
@@ -690,11 +692,43 @@
       var timerId = null;
       var sending = false;
       var local = null;
+      var lastAt = null;        // 最後作答的題目（0-based），「回到上次暫停處」用
+      var resumeBtn = document.getElementById('resume-btn');
 
-      function say(text, cls) {
-        if (!statusEl) return;
-        statusEl.textContent = text;
-        statusEl.className = 'sync ' + (cls || 'idle');
+      /* 上次暫停處＝最後作答那一題的下一題；舊資料沒記 at 的話，用第一題還沒答的 */
+      function resumeTarget() {
+        if (lastAt !== null && lastAt + 1 < total) return lastAt + 1;
+        var first = picked.indexOf(null);
+        return first > -1 ? first : (lastAt !== null ? lastAt : -1);
+      }
+      function paintResume() {
+        if (!resumeBtn) return;
+        var t = resumeTarget();
+        resumeBtn.hidden = graded || t < 0;
+        resumeBtn.textContent = '📍 回到第 ' + (t + 1) + ' 題';
+      }
+      if (resumeBtn) {
+        resumeBtn.addEventListener('click', function () {
+          var t = resumeTarget();
+          if (t < 0) return;
+          var box = boxes[t].box;
+          box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          box.classList.remove('flash');
+          void box.offsetWidth;   // 重新觸發動畫
+          box.classList.add('flash');
+        });
+      }
+
+      var noteEl = document.getElementById('float-note');   // 右下角浮動框裡的短訊息
+      function say(text, cls, short) {
+        if (statusEl) {
+          statusEl.textContent = text;
+          statusEl.className = 'sync ' + (cls || 'idle');
+        }
+        if (noteEl) {
+          noteEl.textContent = short || '';
+          noteEl.className = 'pill-note ' + (cls || 'idle');
+        }
       }
       function hhmm(ts) {
         var d = new Date(ts);
@@ -707,7 +741,7 @@
         return o;
       }
       function saveLocal() {
-        lsSet(key, JSON.stringify({ answers: answersObj(), elapsed: timer.elapsed(), updated: Date.now() }));
+        lsSet(key, JSON.stringify({ answers: answersObj(), at: lastAt, elapsed: timer.elapsed(), updated: Date.now() }));
       }
       function apply(info, from) {
         if (!info || !info.answers) return false;
@@ -721,9 +755,12 @@
         timer.setElapsed(info.elapsed);
         refresh();
         if (!n && !info.elapsed) return false;
+        lastAt = typeof info.at === 'number' && info.at >= 0 && info.at < total ? info.at : null;
+        paintResume();
         say('✓ 已接續' + from + '的作答進度（' + (info.updated ? hhmm(info.updated) + ' 存的，' : '') +
           '已答 ' + n + ' / ' + total + ' 題' + (info.elapsed ? '，已用 ' + Math.round(info.elapsed / 60) + ' 分鐘' : '') +
-          '）。計時器是暫停的，準備好再按「繼續計時」。', 'ok');
+          '）。按右下角「📍 回到第 ' + (resumeTarget() + 1) + ' 題」直接跳到上次停下來的地方。' +
+          (cfg.minutes ? '計時器是暫停的，準備好再按「繼續計時」。' : ''), 'ok', '✓ 已接續進度');
         return true;
       }
 
@@ -737,20 +774,21 @@
         var payload = {
           type: 'draft', status: '作答中', name: name,
           week: cfg.week || '', dayLabel: cfg.dayLabel || '', dayTitle: cfg.dayTitle,
-          answered: answeredCount(), total: total, elapsed: timer.elapsed(), answers: answersObj()
+          answered: answeredCount(), total: total, elapsed: timer.elapsed(), answers: answersObj(), at: lastAt
         };
-        if (!keepalive) say('正在暫存進度…', 'idle');
+        if (!keepalive) say('正在暫存進度…', 'idle', '暫存中…');
         fetch(url, { method: 'POST', body: JSON.stringify(payload), keepalive: !!keepalive })
           .then(function (r) { return r.json(); })
           .then(function (r) {
             if (!r || r.status !== 'ok') throw new Error('backend');
             if (graded) return;
-            say('✓ 進度已暫存到雲端（' + hhmm(Date.now()) + '，已答 ' + payload.answered + ' / ' + total +
-              ' 題）。換手機或電腦，打開這一頁、填同一個姓名就能接著做。', 'ok');
+            var t = hhmm(Date.now());
+            say('✓ 進度已暫存到雲端（' + t + '，已答 ' + payload.answered + ' / ' + total +
+              ' 題）。換手機或電腦，打開這一頁、填同一個姓名就能接著做。', 'ok', '✓ 已暫存 ' + t.split(' ')[1]);
           })
           .catch(function () {
             dirty = true;
-            if (!graded) say('⚠ 雲端暫存失敗（這台裝置上的進度還在）。可以稍後再按「暫存進度」。', 'warn');
+            if (!graded) say('⚠ 雲端暫存失敗（這台裝置上的進度還在）。可以稍後再按「暫存」。', 'warn', '⚠ 暫存失敗');
           })
           .then(function () { sending = false; });
       }
@@ -760,9 +798,10 @@
           if (graded) return;
           timer.pause();
           saveLocal();
-          if (!global.GAS_WEB_APP_URL) { say('✓ 已存在這台裝置（本站沒有啟用雲端記錄，換裝置無法接續）。', 'ok'); return; }
+          if (!global.GAS_WEB_APP_URL) { say('✓ 已存在這台裝置（本站沒有啟用雲端記錄，換裝置無法接續）。', 'ok', '✓ 已存在本機'); return; }
           if (!nameValue()) {
-            say('✓ 已存在這台裝置。要換裝置接續的話，請先在上面填姓名再按一次。', 'warn');
+            say('✓ 已存在這台裝置。要換裝置接續的話，請先在上面填姓名再按一次。', 'warn', '請先填姓名');
+            if (nameInput) nameInput.scrollIntoView({ block: 'center' });
             if (nameInput) { nameInput.classList.add('needed'); nameInput.focus(); }
             return;
           }
@@ -779,8 +818,12 @@
       if (local && !getDayResult(cfg.day)) apply(local, '這台裝置上');
 
       return {
-        changed: function () {
+        changed: function (i) {
           if (graded) return;
+          if (typeof i === 'number') {
+            lastAt = i;
+            if (resumeBtn && !resumeBtn.hidden) paintResume();   // 接續後邊做邊更新「上次停在哪」
+          }
           touched = true;
           dirty = true;
           saveLocal();
