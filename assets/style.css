@@ -321,3 +321,22 @@ footer b{color:var(--ink)}
   html{scroll-behavior:auto}
   *{transition:none!important;animation:none!important}
 }
+
+/* ---------- 考古題頁（body.exam）----------
+   官方題目常有「1. 2. 3.」「（甲）（乙）」條列，data-exam.js 用換行保留，這裡讓換行顯示出來。
+   只套在考古題頁，不影響各週每日頁。 */
+.exam .q .stem > span:last-child{white-space:pre-line}
+.exam .timer-btn{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.exam .timer-btn:disabled{opacity:1;cursor:default}
+.exam .timer-btn.late{color:var(--warn);border-color:var(--warn)}
+.float-pill{
+  position:fixed;right:16px;bottom:16px;z-index:30;
+  display:flex;gap:10px;align-items:center;
+  background:var(--surface);border:1px solid var(--rule);border-radius:999px;
+  padding:8px 14px;box-shadow:var(--shadow);
+  font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;
+}
+.float-pill b{color:var(--primary)}
+.examgroup{margin:26px 0 8px}
+.examgroup h3{margin:0 0 4px}
+.examgroup .lede{margin:0 0 6px}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>考古題 115 年第二次 科目一 — iPAS 考取衝刺班</title>
+<meta name="description" content="iPAS 初級 AI 應用規劃師 115 年第二次（115/05/16）科目一「人工智慧基礎概論」官方公告試題，50 題完整線上作答，送出後對照官方答案。">
+<link rel="stylesheet" href="assets/style.css?v=8">
+</head>
+<body class="exam">
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">STEP 3 考古題 · 第 3 回 · 10/17（六）</p>
+        <h1>115 年第二次 科目一　人工智慧基礎概論</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>iPAS 官方公告試題<b>整份原題、一題不漏</b>搬上來：50 題單選，正式考試給 75 分鐘。建議找一段不被打擾的時間一次做完，按「開始計時」模擬考場節奏。送出後會標出官方公告答案。</p>
+    <div class="mast-meta">
+      <span class="tag">考試日期 115/05/16</span>
+      <span class="tag">50 題 · 每題 2 分</span>
+      <span class="tag">75 分鐘</span>
+      <span class="tag">單科 70 分及格</span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="考古題導覽">
+  <ul>
+    <li><a href="exam-index.html">總覽</a></li>
+    <li><a href="exam-114-4-1.html" data-day="exam114-4-1">第1回 科一</a></li>
+    <li><a href="exam-114-4-2.html" data-day="exam114-4-2">第1回 科二</a></li>
+    <li><a href="exam-115-1-1.html" data-day="exam115-1-1">第2回 科一</a></li>
+    <li><a href="exam-115-1-2.html" data-day="exam115-1-2">第2回 科二</a></li>
+    <li><a href="exam-115-2-1.html" data-day="exam115-2-1" aria-current="page">第3回 科一</a></li>
+    <li><a href="exam-115-2-2.html" data-day="exam115-2-2">第3回 科二</a></li>
+    <li><a href="exam-review.html">錯題複習</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section id="quiz">
+  <h2>開始作答</h2>
+  <p class="lede">題目、選項、答案都照官方公告原文，沒有改寫。<b>官方只公告答案、沒有附解析</b>——送出後答錯的題目，用最下面的「帶去你的 AI 繼續問」一次問清楚。</p>
+
+  <div class="namebar">
+    <label for="name-input">你的姓名 <span class="req">必填</span></label>
+    <p class="hint">請填本名，方便召集人對進度表。</p>
+    <div class="namerow">
+      <input type="text" id="name-input" placeholder="例：王小明" autocomplete="name">
+    </div>
+  </div>
+
+  <div class="qhead">
+    <span class="score" id="quiz-progress">已選 0 / 50 題</span>
+    <button type="button" class="btn ghost timer-btn" id="timer-btn">⏱ 開始計時 75:00</button>
+  </div>
+
+  <div id="quiz-list"></div>
+
+  <div class="submitbar">
+    <div id="result-box" hidden>
+      <div class="result-score" id="result-score">—</div>
+      <p class="result-sub" id="result-sub"></p>
+    </div>
+    <button type="button" class="btn" id="submit-btn" disabled>送出並對答案</button>
+    <button type="button" class="btn ghost" id="retake-btn" hidden>重做這份考古題</button>
+    <button type="button" class="btn ghost" id="retry-btn" hidden>重新回傳成績</button>
+    <p class="sync idle" id="sync-status"></p>
+  </div>
+
+  <div class="ai-box">
+    <h4>帶去你的 AI 繼續問</h4>
+    <p class="lede">官方沒有解析，這裡幫你把提問寫好：<b>送出後再按，會把你答錯的每一題（題目、四個選項、你選的、官方答案）全部帶進去</b>，請 AI 一題一題講解、最後歸納弱點主題。貼到 ChatGPT、Claude、Gemini 都可以。</p>
+    <button type="button" class="btn ghost" id="copy-ai-btn">複製這一回的 AI 提問</button>
+    <p class="copy-status" id="copy-status"></p>
+    <textarea id="ai-fallback" readonly hidden aria-label="AI 提問文字"></textarea>
+  </div>
+
+  <div class="pager">
+    <a href="exam-115-1-2.html">← 第2回 科目二</a>
+    <a href="exam-115-2-2.html">第3回 科目二 →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="checkin">
+    ① 科目一做完休息一下，接著做 <a href="exam-115-2-2.html">科目二</a>——正式考試兩科是同一天連考。<br>
+    ② 答錯的題目在 <a href="exam-review.html">考古題錯題複習</a> 會自動整理出來（三回六份一起看）。<br>
+    ③ 看不懂的觀念回頭翻對應週次：科目一在 <a href="w5-index.html">W5 總複習</a>、科目二在 <a href="w6-index.html">W6 總複習</a>。
+  </div>
+  <p>題目與答案取自 iPAS「115 年第二次初級 AI 應用規劃師 科目一」官方公告試題（考試日期 115/05/16），只轉成網頁作答格式，內容未改動。考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<div class="float-pill" aria-hidden="true">已選 <b id="float-count">0 / 50</b><span id="float-time" hidden></span></div>
+
+<script src="assets/config.js?v=8"></script>
+<script src="assets/quiz.js?v=8"></script>
+<script src="assets/data-exam.js?v=8"></script>
+<script>
+var EXAM = EXAM_QUESTIONS['exam115-2-1'];
+Study.initQuiz({
+  day: 'exam115-2-1',
+  week: 'STEP3',
+  dayLabel: '115年第二次 科目一',
+  dayTitle: EXAM.dayTitle,
+  pageFile: 'exam-115-2-1.html',
+  scopeWord: '這一回',
+  subject: EXAM.subject,
+  exam: true,
+  minutes: 75,
+  passLine: 70,
+  questions: EXAM.questions
+});
+</script>
+</body>
+</html>

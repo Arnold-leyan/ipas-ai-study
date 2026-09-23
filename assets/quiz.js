@@ -142,7 +142,53 @@
 
   /* ---------- 帶去自己的 AI 繼續問 ---------- */
 
+  /* 考古題頁：官方只公告答案、沒有解析，所以提問的重點是「請 AI 把答錯的題目講解清楚」。
+   * 答錯的題目連四個選項一起附上，AI 不用讀網頁也能講解。 */
+  function buildExamPrompt(cfg) {
+    var p = [
+      '我正在準備台灣 iPAS「初級 AI 應用規劃師」能力鑑定，' + cfg.subject + '。',
+      '我剛做完「' + cfg.dayTitle + '」的官方公告試題（' + cfg.questions.length + ' 題單選題）。',
+      '官方只公告答案、沒有解析，想請你幫我講解。',
+      ''
+    ];
+    var res = getDayResult(cfg.day);
+    if (!res || !res.answers || res.answers.length !== cfg.questions.length) {
+      p.push('（我還沒做完這份考古題。）請先用繁體中文，幫我整理這一科最常考的 10 個觀念，');
+      p.push('每個觀念附一個台灣職場情境的例子，以及一題四選一的練習題（先只給題目，等我回答再講解）。');
+      return p.join('\n');
+    }
+    var wrong = [], wrongCount = 0;
+    res.answers.forEach(function (pick, i) {
+      var q = cfg.questions[i];
+      if (pick === q.a) return;
+      wrongCount++;
+      wrong.push('第 ' + (i + 1) + ' 題：' + q.q);
+      q.o.forEach(function (text, j) { wrong.push('(' + KEYS[j] + ') ' + text); });
+      wrong.push('我選了：' + (pick === null ? '未作答' : KEYS[pick]) + '　官方答案：' + KEYS[q.a]);
+      wrong.push('');
+    });
+    if (!wrong.length) {
+      p.push('我 ' + res.total + ' 題全對。請針對這一科再出 10 題難度更高的四選一題目考我，');
+      p.push('先只給題目，等我回答完再一題一題講解。');
+      return p.join('\n');
+    }
+    if (wrong[wrong.length - 1] === '') wrong.pop();
+    p.push('我答錯了 ' + wrongCount + ' 題，題目、選項、我的答案與官方答案如下：');
+    p.push('');
+    p.push.apply(p, wrong);
+    p.push('');
+    p.push('請用繁體中文，一題一題幫我：');
+    p.push('1. 說明官方答案為什麼對，用白話講背後的觀念。');
+    p.push('2. 說明我選的選項錯在哪裡，跟正確答案差在哪個關鍵字。');
+    p.push('3. 如果其他選項也有容易混淆的名詞，順便對照一下。');
+    p.push('全部講完後，幫我歸納這些錯題集中在哪幾個主題，並建議考前優先複習的順序。');
+    p.push('');
+    p.push('注意：一律以官方公告答案為準。如果你認為某題答案有爭議，可以說明理由，但不要自行改答案。');
+    return p.join('\n');
+  }
+
   function buildAiPrompt(cfg) {
+    if (cfg.exam) return buildExamPrompt(cfg);
     var ai = cfg.ai || {};
     var base = global.SITE_BASE || (location.origin + location.pathname.replace(/[^/]*$/, ''));
     // 一般每日頁是 dayN.html；總測驗這類頁面用 cfg.pageFile 指定自己的檔名。
@@ -245,6 +291,60 @@
     });
   }
 
+  /* ---------- 考古題計時器 ----------
+   * cfg.minutes 有值時才啟用（考古題頁 = 正式考試的 75 分鐘）。按下才開始倒數，
+   * 開始時間存在 localStorage，重新整理頁面不會歸零。時間到只提醒、不強制交卷。 */
+  function initTimer(cfg) {
+    var noop = { stop: function () {} };
+    var btn = document.getElementById('timer-btn');
+    var floatTime = document.getElementById('float-time');
+    if (!cfg.minutes || !btn) return noop;
+
+    var key = dayKey(cfg.day) + '_timer';
+    var limit = cfg.minutes * 60;
+    var tick = null;
+
+    function fmt(sec) {
+      var m = Math.floor(sec / 60), s = sec % 60;
+      return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+    }
+    function paint() {
+      var start = Number(lsGet(key));
+      if (!start) return;
+      var left = limit - Math.floor((Date.now() - start) / 1000);
+      var text = left > 0 ? '剩 ' + fmt(left) : '時間到（可繼續作答）';
+      btn.textContent = '⏱ ' + text;
+      btn.classList.toggle('late', left <= 0);
+      if (floatTime) {
+        floatTime.textContent = left > 0 ? fmt(left) : '時間到';
+        floatTime.hidden = false;
+      }
+    }
+    function run() {
+      btn.disabled = true;
+      paint();
+      tick = global.setInterval(paint, 1000);
+    }
+    btn.addEventListener('click', function () {
+      if (!lsGet(key)) lsSet(key, String(Date.now()));
+      run();
+    });
+    if (lsGet(key)) run();
+
+    return {
+      stop: function () {
+        if (tick) global.clearInterval(tick);
+        var start = Number(lsGet(key));
+        if (start) {
+          var used = Math.round((Date.now() - start) / 60000);
+          btn.textContent = '⏱ 這次用了約 ' + used + ' 分鐘';
+        }
+        lsDel(key);
+        if (floatTime) floatTime.hidden = true;
+      }
+    };
+  }
+
   /* ---------- 每日測驗 ---------- */
   function initQuiz(cfg) {
     initAiCopy(cfg);
@@ -265,6 +365,8 @@
     var total = cfg.questions.length;
     var picked = new Array(total).fill(null);
     var graded = false;
+    var floatCount = document.getElementById('float-count');   // 考古題頁右下角的浮動進度，其他頁沒有
+    var timer = initTimer(cfg);
 
     function nameValue() {
       return nameInput ? nameInput.value.trim() : '';
@@ -350,6 +452,7 @@
           (hasName ? '' : '　·　請先填姓名');
       }
       if (submitBtn) submitBtn.disabled = n < total || !hasName;
+      if (floatCount) floatCount.textContent = n + ' / ' + total;
       // 題目都選完了卻還沒填姓名，把姓名欄標紅提醒
       if (nameInput) {
         if (!hasName && n === total) nameInput.classList.add('needed');
@@ -371,7 +474,7 @@
         var head = document.createElement('b');
         head.textContent = 'Ans（' + KEYS[b.item.a] + '）';
         b.exp.appendChild(head);
-        b.exp.appendChild(document.createTextNode('　' + b.item.e));
+        if (b.item.e) b.exp.appendChild(document.createTextNode('　' + b.item.e));
         b.exp.hidden = false;
       });
       if (submitBtn) submitBtn.hidden = true;
@@ -381,11 +484,16 @@
 
     function showResult(data) {
       if (resultBox) resultBox.hidden = false;
-      if (scoreBig) scoreBig.textContent = data.percent + '%';
+      if (scoreBig) scoreBig.textContent = cfg.passLine ? data.percent + ' 分' : data.percent + '%';
       if (scoreSub) {
         scoreSub.textContent = data.name
           ? data.name + '　答對 ' + data.correct + ' / ' + data.total + ' 題'
           : '答對 ' + data.correct + ' / ' + data.total + ' 題';
+        if (cfg.passLine) {
+          scoreSub.textContent += data.percent >= cfg.passLine
+            ? '　✓ 達單科及格線 ' + cfg.passLine + ' 分'
+            : '　距離單科及格線 ' + cfg.passLine + ' 分還差 ' + (cfg.passLine - data.percent) + ' 分';
+        }
       }
     }
 
@@ -429,6 +537,7 @@
           return;
         }
         var data = grade();
+        timer.stop();
         reveal(data.answers, true);
         showResult(data);
         submitResult(data, syncEl);
@@ -444,6 +553,7 @@
         // 頁面重載後 restoreFromBackend() 會馬上把剛清掉的答案又還原回來，
         // 使用者會看到「按了重做，畫面卻立刻跳回已完成」。
         lsSet(dayKey(cfg.day) + '_skiprestore', '1');
+        lsDel(dayKey(cfg.day) + '_timer');
         global.location.reload();
       });
     }
@@ -707,7 +817,7 @@
       var head = document.createElement('b');
       head.textContent = 'Ans（' + KEYS[qItem.a] + '）';
       exp.appendChild(head);
-      exp.appendChild(document.createTextNode('　' + qItem.e));
+      if (qItem.e) exp.appendChild(document.createTextNode('　' + qItem.e));
       box.appendChild(exp);
 
       return box;

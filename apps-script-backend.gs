@@ -169,7 +169,8 @@ function doGet(e) {
  * 同一天重複作答時，取試算表裡「最後一次」送出的那筆。
  *
  * 回傳格式：{ status:'ok', name:'本名', days:{ '6':{percent,dayTitle,week,correct,total,wrongList,detail}, 'w2test':{...} } }
- * key 是數字字串時對應每日頁的 data-day；'w1test'/'w2test' 對應各週總測驗。
+ * key 是數字字串時對應每日頁的 data-day；'w1test'/'w2test' 對應各週總測驗（'w5test'/'w6test' 是整合測驗）；
+ * 'exam114-4-1' 這類對應 STEP 3 考古題頁（週次欄 STEP3、天數欄「114年第四次 科目一」）。
  * detail 是每題選了哪個選項（{"Q1":"B",...}），前端用它把換裝置後空白的測驗頁
  * 還原成「已作答，看解析」的狀態，不用重新回答。
  */
@@ -196,8 +197,13 @@ function queryStatus_(rawName) {
         // 直接當全站編號用；否則就是「這週第幾天」，換算成全站編號。
         if (range && (n < range[0] || n > range[1])) n = range[0] + n - 1;
         key = String(n);
-      } else if (/總測驗/.test(label) && week) {
+      } else if (/總測驗|整合測驗/.test(label) && week) {
         key = week.toLowerCase() + 'test';
+      } else if (week === 'STEP3') {
+        // 考古題頁：天數欄是「114年第四次 科目一」→ 對應 exam-114-4-1.html 的 day 'exam114-4-1'
+        var CN = { '一': 1, '二': 2, '三': 3, '四': 4 };
+        var ex = label.match(/^(\d+)年第(.)次 科目(.)$/);
+        if (ex && CN[ex[2]] && CN[ex[3]]) key = 'exam' + ex[1] + '-' + CN[ex[2]] + '-' + CN[ex[3]];
       }
       if (!key) return;
 

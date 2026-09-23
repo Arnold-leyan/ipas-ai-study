@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>考古題錯題複習 — iPAS 考取衝刺班</title>
+<meta name="description" content="輸入姓名，把三回考古題（六份官方公告試題）答錯的題目與官方答案一起列出來複習。">
+<link rel="stylesheet" href="assets/style.css?v=8">
+</head>
+<body class="exam">
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">STEP 3 考古題 · 錯題複習</p>
+        <h1>把考古題錯的題目複習一遍</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p>輸入姓名，系統會去後端把三回、六份考古題裡你答錯的題目全部抓出來，標出你選的跟官方答案。官方沒有附解析，看不懂的題目回到那一份考古題頁，用「帶去你的 AI 繼續問」請 AI 講解。</p>
+    <div class="mast-meta">
+      <span class="tag">3 回 × 2 科</span>
+      <a class="tag" href="index.html">📚 課程首頁</a>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="考古題導覽">
+  <ul>
+    <li><a href="exam-index.html">總覽</a></li>
+    <li><a href="exam-114-4-1.html" data-day="exam114-4-1">第1回 科一</a></li>
+    <li><a href="exam-114-4-2.html" data-day="exam114-4-2">第1回 科二</a></li>
+    <li><a href="exam-115-1-1.html" data-day="exam115-1-1">第2回 科一</a></li>
+    <li><a href="exam-115-1-2.html" data-day="exam115-1-2">第2回 科二</a></li>
+    <li><a href="exam-115-2-1.html" data-day="exam115-2-1">第3回 科一</a></li>
+    <li><a href="exam-115-2-2.html" data-day="exam115-2-2">第3回 科二</a></li>
+    <li><a href="exam-review.html" aria-current="page">錯題複習</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <div class="namebar" id="lookup-bar">
+    <label for="lookup-name">輸入姓名，開始複習</label>
+    <p class="hint">跟平常測驗填的姓名一致就好，暱稱也可以（例如 Fanny、Emily、派瑞斯）。之前填過的話這裡會自動帶入、直接查一次。</p>
+    <div class="namerow">
+      <input type="text" id="lookup-name" placeholder="例：王小明" autocomplete="name">
+      <button type="button" class="btn" id="lookup-btn">開始複習</button>
+    </div>
+    <p class="sync idle" id="lookup-status"></p>
+  </div>
+
+  <div id="review-summary"></div>
+</section>
+
+<section id="review-list-section">
+  <div id="review-list"></div>
+</section>
+
+<footer>
+  <p>題目與答案取自 iPAS 官方公告試題，只轉成網頁格式，內容未改動。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=8"></script>
+<script src="assets/quiz.js?v=8"></script>
+<script src="assets/data-exam.js?v=8"></script>
+<script>
+Study.initReview({ week: 'STEP3', data: EXAM_QUESTIONS });
+</script>
+</body>
+</html>
