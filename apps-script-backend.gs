@@ -88,7 +88,8 @@ var NAME_MAP = {
   'Fanny': '陳詩婷',
   'Emily': '黃敬淳',
   '派瑞斯': '黃靖雯',
-  'EMMA': '連于萱'
+  'EMMA': '連于萱',
+  'Sylvia Ciou': '邱璽'
 };
 
 /* 每一週在網站上對應的全站唯一 day 編號範圍（跟每天頁面 initQuiz 裡的 day 一致）。
@@ -253,20 +254,29 @@ function queryStatus_(rawName) {
     });
   }
 
-  // 考古題「作答中」的進度（已交卷的不回傳），前端用來中斷接續
-  var drafts = {};
+  // 考古題「作答中」的進度（已交卷的不回傳），前端用來中斷接續。
+  // 同一個人用暱稱、本名各填過的話（例如 Sylvia Ciou／邱璽）同一份會有兩列，
+  // 所以不看列的順序，一律取「最後更新」最新的那一列；最新那列是「已交卷」就不回傳。
+  var drafts = {}, newest = {};
   var dspec = SPECS.draft;
   var dsheet = ss.getSheetByName(dspec.sheet);
   if (dsheet && dsheet.getLastRow() >= 2) {
     dsheet.getRange(2, 1, dsheet.getLastRow() - 1, dspec.header.length).getValues().forEach(function (r) {
-      if (normName_(r[1]) !== name || r[5] !== '作答中') return;
+      if (normName_(r[1]) !== name) return;
       var key = labelToKey_(String(r[2] || ''), String(r[3] || ''));
       if (!key) return;
+      var updated = r[0] instanceof Date ? r[0].getTime() : 0;
+      if (newest[key] && newest[key].updated >= updated) return;
+      newest[key] = { updated: updated, row: r };
+    });
+    Object.keys(newest).forEach(function (key) {
+      var r = newest[key].row;
+      if (r[5] !== '作答中') return;
       var info = null;
       try { info = JSON.parse(r[9]); } catch (err) { info = null; }
       if (!info) return;
       drafts[key] = {
-        updated: r[0] instanceof Date ? r[0].getTime() : 0,
+        updated: newest[key].updated,
         answered: Number(r[6]),
         total: Number(r[7]),
         elapsed: Number(info.elapsed) || 0,
