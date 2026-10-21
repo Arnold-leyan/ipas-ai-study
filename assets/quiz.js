@@ -105,19 +105,12 @@
     el.className = 'sync ' + (cls || 'idle');
   }
 
-  function submitResult(data, syncEl) {
-    var url = global.GAS_WEB_APP_URL;
-    if (!url) {
-      setSync(syncEl, '已完成作答（本站尚未啟用自動記錄，成績只留在這台裝置）', 'idle');
-      return;
-    }
-    if (data.submitted) {
-      setSync(syncEl, '✓ 已完成，成績已記錄', 'ok');
-      return;
-    }
-    setSync(syncEl, '正在回傳成績…', 'idle');
+  function isOffline() { return global.navigator && navigator.onLine === false; }
 
-    var payload = {
+  var OFFLINE_SAVED = '✈ 目前沒有網路，成績已先存在這台裝置。之後連上網路、打開本站任何一頁，就會自動補送到試算表。';
+
+  function dailyPayload(data) {
+    return {
       type: 'daily',
       name: data.name || '未具名',
       week: data.week || (global.WEEK_INFO && global.WEEK_INFO.week) || 'W1',
@@ -130,23 +123,141 @@
       wrongList: data.wrongList,
       detail: data.detail
     };
+  }
 
-    fetch(url, { method: 'POST', body: JSON.stringify(payload) })
+  /* 送出成績；成功就把本機紀錄標成 submitted。回傳 Promise<boolean>。 */
+  function postDaily(data) {
+    return fetch(global.GAS_WEB_APP_URL, { method: 'POST', body: JSON.stringify(dailyPayload(data)) })
       .then(function (res) { return res.json(); })
       .then(function (res) {
-        if (res && res.status === 'ok') {
-          data.submitted = true;
-          lsSet(dayKey(data.day), JSON.stringify(data));
-          setSync(syncEl, '✓ 已完成，成績已記錄', 'ok');
-        } else {
-          throw new Error('backend error');
-        }
+        if (!res || res.status !== 'ok') throw new Error('backend error');
+        data.submitted = true;
+        delete data.pending;
+        lsSet(dayKey(data.day), JSON.stringify(data));
+        return true;
+      });
+  }
+
+  function submitResult(data, syncEl) {
+    var url = global.GAS_WEB_APP_URL;
+    if (!url) {
+      setSync(syncEl, '已完成作答（本站尚未啟用自動記錄，成績只留在這台裝置）', 'idle');
+      return;
+    }
+    if (data.submitted) {
+      setSync(syncEl, '✓ 已完成，成績已記錄', 'ok');
+      return;
+    }
+
+    // 送不出去的成績標成 pending，連上網路後由 flushPending() 自動補送
+    function keepPending() {
+      data.pending = true;
+      lsSet(dayKey(data.day), JSON.stringify(data));
+    }
+    if (isOffline()) {
+      keepPending();
+      setSync(syncEl, OFFLINE_SAVED, 'warn');
+      return;
+    }
+    setSync(syncEl, '正在回傳成績…', 'idle');
+
+    postDaily(data)
+      .then(function () {
+        setSync(syncEl, '✓ 已完成，成績已記錄', 'ok');
       })
       .catch(function () {
+        keepPending();
+        if (isOffline()) {
+          setSync(syncEl, OFFLINE_SAVED, 'warn');
+          return;
+        }
         setSync(syncEl, '⚠ 成績回傳失敗（不影響你的作答）。請截圖此畫面回報召集人，或稍後按「重新回傳」。', 'warn');
         var retry = document.getElementById('retry-btn');
         if (retry) retry.hidden = false;
       });
+  }
+
+  /* ---------- 離線時沒送出去的東西，連上網路後自動補送 ---------- */
+  var OUTBOX_PREFIX = 'ipas_outbox_';   // 其他待送的 POST（考古題「已交卷」狀態），一份一個 key
+  var currentQuiz = null;                // 目前這一頁的測驗（補送成功時順便更新畫面上的狀態）
+  var flushing = false;
+
+  function flushPending() {
+    var url = global.GAS_WEB_APP_URL;
+    if (!url || flushing || isOffline()) return;
+    var keys = [];
+    try {
+      for (var i = 0; i < localStorage.length; i++) keys.push(localStorage.key(i));
+    } catch (e) { return; }
+
+    var jobs = [];
+    keys.forEach(function (k) {
+      if (/^ipas_w1_day[^_]+$/.test(k)) {
+        var data = null;
+        try { data = JSON.parse(lsGet(k)); } catch (e) { data = null; }
+        if (!data || !data.pending || data.submitted) return;
+        jobs.push(function () {
+          return postDaily(data).then(function () {
+            if (currentQuiz && String(currentQuiz.day) === String(data.day)) {
+              setSync(currentQuiz.syncEl, '✓ 已補送成功，成績已記錄', 'ok');
+              if (currentQuiz.retryBtn) currentQuiz.retryBtn.hidden = true;
+            }
+          });
+        });
+      } else if (k.indexOf(OUTBOX_PREFIX) === 0) {
+        jobs.push(function () {
+          return fetch(url, { method: 'POST', body: lsGet(k) })
+            .then(function (r) { return r.json(); })
+            .then(function (r) {
+              if (!r || r.status !== 'ok') throw new Error('backend');
+              lsDel(k);
+            });
+        });
+      }
+    });
+    if (!jobs.length) return;
+
+    // 一筆一筆送，前一筆失敗也繼續送下一筆；沒送成的下次再補
+    flushing = true;
+    jobs.reduce(function (p, job) {
+      return p.then(function () { return job().catch(function () {}); });
+    }, Promise.resolve()).then(function () { flushing = false; });
+  }
+
+  /* ---------- 離線版：註冊 Service Worker，把全站存進這台裝置 ---------- */
+  function initOffline() {
+    var el = document.getElementById('offline-status');
+    function say(text, cls) {
+      if (!el) return;
+      el.textContent = text;
+      el.className = 'sync ' + (cls || 'idle');
+    }
+
+    if (/\bLine\//i.test(global.navigator.userAgent)) {
+      say('⚠ 你現在是在 LINE 裡面開的，這裡存不了離線版。請按右上角「⋯」→「以預設瀏覽器開啟」，用 Safari 或 Chrome 再開一次。', 'warn');
+    }
+    if (!('serviceWorker' in navigator) || !global.isSecureContext) {
+      if (!/\bLine\//i.test(navigator.userAgent)) say('⚠ 這個瀏覽器不支援離線版，請改用 Safari 或 Chrome 開啟。', 'warn');
+      return;
+    }
+
+    if (!navigator.serviceWorker.controller) {
+      say(isOffline() ? '目前沒有網路，離線版還沒存好——連上網路後再打開這一頁。' : '離線版下載中…請保持連線，停在這一頁幾秒鐘。', 'idle');
+    }
+    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).catch(function () {
+      say('⚠ 離線版下載失敗，請確認網路正常後重新整理這一頁。', 'warn');
+    });
+    navigator.serviceWorker.ready.then(function () {
+      if (/\bLine\//i.test(navigator.userAgent) || !global.caches) return;
+      return caches.keys().then(function (names) {
+        var name = names.filter(function (n) { return n.indexOf('ipas-offline-') === 0; }).pop();
+        if (!name) return;
+        return caches.open(name).then(function (c) { return c.keys(); }).then(function (reqs) {
+          var pages = reqs.filter(function (r) { return /\.html$/.test(new URL(r.url).pathname); }).length;
+          say('✈ 離線版已存好：全站 ' + pages + ' 頁都在這台裝置裡，沒網路也能打開、作答。（記得用同一個瀏覽器開）', 'ok');
+        });
+      });
+    }).catch(function () {});
   }
 
   /* ---------- 帶去自己的 AI 繼續問 ---------- */
@@ -404,6 +515,8 @@
     var resultBox = document.getElementById('result-box');
     var scoreBig = document.getElementById('result-score');
     var scoreSub = document.getElementById('result-sub');
+
+    currentQuiz = { day: cfg.day, syncEl: syncEl, retryBtn: retryBtn };
 
     var total = cfg.questions.length;
     var picked = new Array(total).fill(null);
@@ -769,6 +882,11 @@
         var name = nameValue();
         if (!url || !name || graded || sending) return;
         if (!answeredCount() && !timer.elapsed()) return;
+        if (isOffline()) {
+          // 本機已經存了（saveLocal），dirty 留著，等有網路時下一次 changed／暫存再送
+          if (!keepalive) say('✈ 目前沒有網路，進度存在這台裝置（關掉再開會接著做）。落地連網後會再存到雲端。', 'ok', '✈ 已存本機');
+          return;
+        }
         sending = true;
         dirty = false;
         var payload = {
@@ -844,11 +962,18 @@
           var name = nameValue();
           if (!url || !name) return;
           // 狀態改成「已交卷」，換裝置時就不會再跳出「接續作答」
-          fetch(url, { method: 'POST', body: JSON.stringify({
+          var body = JSON.stringify({
             type: 'draft', status: '已交卷', name: name,
             week: cfg.week || '', dayLabel: cfg.dayLabel || '', dayTitle: cfg.dayTitle,
             answered: answeredCount(), total: total, elapsed: 0, answers: answersObj()
-          }) }).catch(function () {});
+          });
+          // 送不出去（飛機上）就放進待送區，連上網路後 flushPending() 補送
+          var outKey = OUTBOX_PREFIX + 'draft_' + cfg.day;
+          if (isOffline()) { lsSet(outKey, body); return; }
+          fetch(url, { method: 'POST', body: body })
+            .then(function (r) { return r.json(); })
+            .then(function (r) { if (!r || r.status !== 'ok') throw new Error('backend'); })
+            .catch(function () { lsSet(outKey, body); });
         }
       };
     }
@@ -863,6 +988,11 @@
       showResult(prev);
       if (prev.submitted) {
         setSync(syncEl, '✓ 已完成，成績已記錄', 'ok');
+      } else if (prev.pending && isOffline()) {
+        setSync(syncEl, OFFLINE_SAVED, 'warn');
+      } else if (prev.pending) {
+        setSync(syncEl, '成績補送中…（作答時沒有網路，現在自動補送；一直沒反應可以按「重新回傳」）', 'idle');
+        if (retryBtn) retryBtn.hidden = false;
       } else {
         setSync(syncEl, '成績尚未回傳成功，可按「重新回傳」再試一次。', 'warn');
         if (retryBtn) retryBtn.hidden = false;
@@ -943,6 +1073,8 @@
     function runQuery(name) {
       var url = global.GAS_WEB_APP_URL;
       if (!url) { say('本站尚未啟用自動記錄，無法查詢。', 'idle'); return; }
+      // 沒網路就不要清畫面，保留這台裝置自己的完成狀態
+      if (isOffline()) { say('✈ 目前沒有網路，下面顯示的是這台裝置上的作答狀態。', 'idle'); return; }
       resetBadges();   // 先清掉畫面上可能殘留的上一個人的查詢結果，避免舊資料混進新的一次查詢
       say('查詢中…', 'idle');
       fetch(url + '?name=' + encodeURIComponent(name))
@@ -1068,6 +1200,7 @@
     function runQuery(name) {
       var url = global.GAS_WEB_APP_URL;
       if (!url) { say('本站尚未啟用自動記錄，無法查詢。', 'idle'); return; }
+      if (isOffline()) { say('✈ 錯題回顧要連網路才查得到雲端紀錄，落地後再來看。', 'warn'); return; }
       say('查詢中…', 'idle');
       if (summaryEl) summaryEl.innerHTML = '';
       if (listEl) listEl.innerHTML = '';
@@ -1165,5 +1298,8 @@
     initTheme();
     markNav();
     paintDayCards();
+    initOffline();
+    flushPending();
   });
+  global.addEventListener('online', flushPending);
 })(window);
