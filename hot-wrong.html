@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>全班常錯題 — iPAS 考取衝刺班</title>
+<meta name="description" content="統計三回考古題全班答錯率最高的題目，連同官方答案與最多人誤選的選項整理成一頁，考前最後複習用。">
+<link rel="stylesheet" href="assets/style.css?v=8">
+<style>
+.hw-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:18px 0 4px}
+.hw-chip{
+  font:inherit;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;
+  background:var(--surface);border:1.5px solid var(--rule);border-radius:999px;padding:6px 15px;
+}
+.hw-chip:hover{border-color:var(--primary)}
+.hw-chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hw-chip[aria-pressed="true"]{color:#fff;background:var(--primary);border-color:var(--primary)}
+.hw-hide{margin-left:auto;font-size:14px;color:var(--muted);display:flex;gap:6px;align-items:center;cursor:pointer}
+.hw-progress{color:var(--muted);font-size:13.5px;margin:6px 0 0}
+.hw-top{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:baseline;margin-bottom:10px}
+.hw-rank{font-family:var(--mono);font-weight:700;color:var(--muted);font-size:13px}
+.hw-rate{font-weight:800;font-size:18px;color:var(--accent-deep)}
+.hw-rate.hot{color:var(--warn)}
+.hw-n{font-size:13px;color:var(--muted)}
+.hw-card.is-done{opacity:.55}
+.hw-card .opt{cursor:default}
+.hw-card .opt .t{flex:1}
+.hw-card .opt .hw-cnt{flex-shrink:0;font-size:12.5px;font-weight:600;color:var(--muted);white-space:nowrap}
+.hw-card .opt.right .hw-cnt,.hw-card .opt.wrong .hw-cnt{color:inherit}
+.hw-actions{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px dashed var(--rule)}
+.hw-actions label{display:flex;gap:6px;align-items:center;font-size:14px;cursor:pointer}
+.hw-actions .btn{padding:6px 14px;font-size:13.5px}
+.hw-copy-status{font-size:13px;color:var(--good)}
+.hw-fallback{width:100%;margin-top:8px;font:inherit;font-size:13px;min-height:120px;padding:8px;border:1px solid var(--rule);border-radius:8px;background:var(--surface-2);color:var(--ink)}
+.hw-empty{color:var(--muted);text-align:center;padding:28px 0}
+</style>
+</head>
+<body class="exam">
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <div>
+        <p class="eyebrow">STEP 3 考古題 · 全班常錯題</p>
+        <h1>全班最常錯的考古題</h1>
+      </div>
+      <button type="button" class="theme-btn" aria-label="切換主題">☾</button>
+    </div>
+    <p id="hw-lede">統計中…</p>
+    <div class="mast-meta">
+      <span class="tag" id="hw-tag-people"></span>
+      <span class="tag" id="hw-tag-count"></span>
+      <a class="tag" href="index.html">📚 課程首頁</a>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="考古題導覽">
+  <ul>
+    <li><a href="exam-index.html">總覽</a></li>
+    <li><a href="exam-114-4-1.html" data-day="exam114-4-1">第1回 科一</a></li>
+    <li><a href="exam-114-4-2.html" data-day="exam114-4-2">第1回 科二</a></li>
+    <li><a href="exam-115-1-1.html" data-day="exam115-1-1">第2回 科一</a></li>
+    <li><a href="exam-115-1-2.html" data-day="exam115-1-2">第2回 科二</a></li>
+    <li><a href="exam-115-2-1.html" data-day="exam115-2-1">第3回 科一</a></li>
+    <li><a href="exam-115-2-2.html" data-day="exam115-2-2">第3回 科二</a></li>
+    <li><a href="exam-review.html">錯題複習</a></li>
+    <li><a href="hot-wrong.html" aria-current="page">常錯題</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<section>
+  <div class="note">
+    <span class="lbl">怎麼用</span>
+    題目依<b>全班答錯率</b>由高到低排。每題標出官方答案（綠）、<b>最多人誤選的選項（紅）</b>，
+    和每個選項各有幾人選。看懂的題目勾「我記住了」就會淡掉；官方沒附解析，想知道為什麼，按「複製 AI 提問」貼給 ChatGPT／Claude／Gemini 問。
+    <p class="sync idle" id="offline-status"></p>
+  </div>
+
+  <div class="hw-bar" role="group" aria-label="篩選科目">
+    <button type="button" class="hw-chip" data-filter="all" aria-pressed="true">全部</button>
+    <button type="button" class="hw-chip" data-filter="1" aria-pressed="false">科目一</button>
+    <button type="button" class="hw-chip" data-filter="2" aria-pressed="false">科目二</button>
+    <label class="hw-hide"><input type="checkbox" id="hw-hide-done"> 隱藏已記住的</label>
+  </div>
+  <p class="hw-progress" id="hw-progress"></p>
+
+  <div id="hw-list"></div>
+</section>
+
+<footer>
+  <p>統計來自本梯次同仁已交卷的考古題作答，只算每份「最後一次交卷」，不顯示任何人的姓名。人數少，答錯率只當作參考。</p>
+  <p>題目與答案出自 iPAS 官方公告試題；考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+</footer>
+
+</div>
+
+<script src="assets/config.js?v=8"></script>
+<script src="assets/quiz.js?v=8"></script>
+<script src="assets/data-exam.js?v=11"></script>
+<script src="assets/data-hotwrong.js"></script>
+<script>
+(function () {
+  'use strict';
+  var KEYS = ['A', 'B', 'C', 'D'];
+  var DONE_KEY = 'ipas_hotwrong_done';
+  var H = window.HOTWRONG, E = window.EXAM_QUESTIONS;
+  var list = document.getElementById('hw-list');
+  var filter = 'all', hideDone = false;
+
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  var done = {};
+  try { (JSON.parse(lsGet(DONE_KEY) || '[]') || []).forEach(function (id) { done[id] = true; }); } catch (e) { done = {}; }
+  function saveDone() { lsSet(DONE_KEY, JSON.stringify(Object.keys(done))); }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined) n.textContent = text;
+    return n;
+  }
+  // 官方試卷最後一題結尾印的「《以下空白》」是版面標記，不是題目內容，這頁不顯示
+  function clean(s) { return String(s).replace(/\s*《以下空白》\s*$/, ''); }
+  function pct(it) { return Math.round(it.w / it.n * 100); }
+  function subjectNo(it) { return it.k.slice(-1); }          // 'exam114-4-1' → '1'
+  function subjectName(it) { return '科目' + (subjectNo(it) === '1' ? '一' : '二'); }
+
+  function buildPrompt(it, q, ex, topWrong) {
+    var lines = [
+      '我正在準備台灣 iPAS「初級 AI 應用規劃師」能力鑑定，' + ex.subject + '。',
+      '下面是官方公告試題（' + ex.sitting + ' ' + subjectName(it) + ' 第 ' + (it.i + 1) + ' 題），官方只公告答案、沒有解析。',
+      '這題我們讀書會 ' + it.n + ' 個人裡有 ' + it.w + ' 個人答錯' +
+        (topWrong >= 0 ? '，最多人誤選的是 ' + KEYS[topWrong] : '') + '。', '',
+      '題目：' + q.q
+    ];
+    q.o.forEach(function (o, j) { lines.push(KEYS[j] + '. ' + clean(o)); });
+    lines.push('官方答案：' + KEYS[q.a], '',
+      '請你：',
+      '1. 說明為什麼答案是 ' + KEYS[q.a] + '。',
+      '2. 另外三個選項各自錯在哪裡（特別是 ' + (topWrong >= 0 ? KEYS[topWrong] : '最容易選錯的那個') + '）。',
+      '3. 給我一個好記的判斷原則或口訣，讓我下次不要再選錯。',
+      '請用繁體中文，簡短一點，我明天就要考試了。');
+    return lines.join('\n');
+  }
+
+  function render(it, rank) {
+    var ex = E[it.k], q = ex && ex.questions[it.i];
+    if (!q) return null;
+    var id = it.k + ':' + it.i;
+
+    // 最多人誤選：答錯的選項裡人數最多的那個（平手取字母在前）
+    var topWrong = -1;
+    it.p.forEach(function (c, j) {
+      if (j !== q.a && c > 0 && (topWrong < 0 || c > it.p[topWrong])) topWrong = j;
+    });
+
+    var card = el('article', 'q hw-card' + (done[id] ? ' is-done' : ''));
+    card.setAttribute('data-id', id);
+    card.setAttribute('data-subject', subjectNo(it));
+
+    var top = el('div', 'hw-top');
+    top.appendChild(el('span', 'hw-rank', '#' + rank));
+    top.appendChild(el('span', 'hw-rate' + (pct(it) >= 70 ? ' hot' : ''), '答錯率 ' + pct(it) + '%'));
+    top.appendChild(el('span', 'hw-n', it.w + ' / ' + it.n + ' 人答錯'));
+    card.appendChild(top);
+
+    var stem = el('div', 'stem');
+    stem.appendChild(el('span', 'qn', 'Q' + (it.i + 1)));
+    stem.appendChild(el('span', '', q.q));
+    card.appendChild(stem);
+    card.appendChild(el('p', 'src', ex.sitting + ' ' + subjectName(it) + ' · 第 ' + (it.i + 1) + ' 題'));
+
+    var opts = el('div', 'opts');
+    q.o.forEach(function (text, j) {
+      var o = el('div', 'opt' + (j === q.a ? ' right' : j === topWrong ? ' wrong' : ''));
+      o.appendChild(el('span', 'k', KEYS[j]));
+      o.appendChild(el('span', 't', clean(text)));
+      var cnt = it.p[j];
+      var label = j === q.a ? '✓ 官方答案 · ' + cnt + ' 人選'
+        : j === topWrong ? '最多人誤選 · ' + cnt + ' 人'
+        : cnt ? cnt + ' 人選' : '';
+      if (label) o.appendChild(el('span', 'hw-cnt', label));
+      opts.appendChild(o);
+    });
+    card.appendChild(opts);
+
+    var act = el('div', 'hw-actions');
+    var lab = el('label');
+    var cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = !!done[id];
+    cb.addEventListener('change', function () {
+      if (cb.checked) done[id] = true; else delete done[id];
+      saveDone();
+      card.classList.toggle('is-done', cb.checked);
+      apply();
+    });
+    lab.appendChild(cb);
+    lab.appendChild(document.createTextNode('我記住了'));
+    act.appendChild(lab);
+
+    var btn = el('button', 'btn ghost', '複製 AI 提問');
+    btn.type = 'button';
+    var status = el('span', 'hw-copy-status');
+    var fallback = el('textarea', 'hw-fallback');
+    fallback.readOnly = true;
+    fallback.hidden = true;
+    btn.addEventListener('click', function () {
+      var text = buildPrompt(it, q, ex, topWrong);
+      function showFallback() {
+        fallback.value = text;
+        fallback.hidden = false;
+        fallback.focus();
+        fallback.select();
+        status.textContent = '請長按上面的文字全選、複製';
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          fallback.hidden = true;
+          status.textContent = '✓ 已複製，貼到 ChatGPT／Claude／Gemini';
+        }).catch(showFallback);
+      } else {
+        showFallback();
+      }
+    });
+    act.appendChild(btn);
+    act.appendChild(status);
+    act.appendChild(fallback);
+    card.appendChild(act);
+    return card;
+  }
+
+  // 篩選＋隱藏已記住：只切換顯示，不重畫
+  var cards = [];
+  function apply() {
+    var shown = 0, doneCount = 0;
+    cards.forEach(function (c) {
+      var isDone = !!done[c.getAttribute('data-id')];
+      if (isDone) doneCount++;
+      var ok = (filter === 'all' || c.getAttribute('data-subject') === filter) && !(hideDone && isDone);
+      c.hidden = !ok;
+      if (ok) shown++;
+    });
+    document.getElementById('hw-progress').textContent =
+      '已記住 ' + doneCount + ' / ' + cards.length + ' 題　·　目前顯示 ' + shown + ' 題';
+    var empty = document.getElementById('hw-empty');
+    if (empty) empty.hidden = shown !== 0;
+  }
+
+  if (!H || !E || !H.items.length) {
+    list.appendChild(el('p', 'hw-empty', '目前沒有統計資料。'));
+    return;
+  }
+
+  document.getElementById('hw-lede').textContent =
+    '把三回考古題（六份官方公告試題）裡，全班答錯率 ' + Math.round(H.threshold * 100) + '% 以上的 ' +
+    H.items.length + ' 題挑出來，由最容易錯的排起。考前把這幾題看懂，比重寫一整份有效率。';
+  document.getElementById('hw-tag-people').textContent = H.people + ' 人 · ' + H.submissions + ' 份交卷';
+  document.getElementById('hw-tag-count').textContent = '統計到 ' + H.generated.replace(/-/g, '/');
+
+  var frag = document.createDocumentFragment();
+  H.items.forEach(function (it, idx) {
+    var c = render(it, idx + 1);
+    if (c) { cards.push(c); frag.appendChild(c); }
+  });
+  var empty = el('p', 'hw-empty', '這個條件下沒有題目了 🎉');
+  empty.id = 'hw-empty';
+  empty.hidden = true;
+  frag.appendChild(empty);
+  list.appendChild(frag);
+
+  Array.prototype.forEach.call(document.querySelectorAll('.hw-chip'), function (chip) {
+    chip.addEventListener('click', function () {
+      filter = chip.getAttribute('data-filter');
+      Array.prototype.forEach.call(document.querySelectorAll('.hw-chip'), function (c) {
+        c.setAttribute('aria-pressed', c === chip ? 'true' : 'false');
+      });
+      apply();
+    });
+  });
+  document.getElementById('hw-hide-done').addEventListener('change', function (e) {
+    hideDone = e.target.checked;
+    apply();
+  });
+  apply();
+})();
+</script>
+</body>
+</html>

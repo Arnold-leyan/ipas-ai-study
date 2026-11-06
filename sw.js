@@ -8,7 +8,7 @@
  * 寫入成績的 Apps Script、iPAS 官網這些別的網域不經過這裡，照常走網路。
  * 版號跟著內容變，有新版時瀏覽器會在連網時自動下載、換掉舊的。
  */
-var VERSION = '5bc5527610';
+var VERSION = 'adb57a1180';
 var CACHE = 'ipas-offline-' + VERSION;
 var FILES = [
   "./",
@@ -51,6 +51,7 @@ var FILES = [
   "exam-115-2-2.html",
   "exam-index.html",
   "exam-review.html",
+  "hot-wrong.html",
   "w1-index.html",
   "w1-review.html",
   "w1-test.html",
@@ -71,6 +72,7 @@ var FILES = [
   "w6-test.html",
   "assets/config.js",
   "assets/data-exam.js",
+  "assets/data-hotwrong.js",
   "assets/data-w1.js",
   "assets/data-w2.js",
   "assets/data-w3.js",
