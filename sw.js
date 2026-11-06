@@ -8,7 +8,7 @@
  * 寫入成績的 Apps Script、iPAS 官網這些別的網域不經過這裡，照常走網路。
  * 版號跟著內容變，有新版時瀏覽器會在連網時自動下載、換掉舊的。
  */
-var VERSION = 'adb57a1180';
+var VERSION = 'e5c14a6c38';
 var CACHE = 'ipas-offline-' + VERSION;
 var FILES = [
   "./",
@@ -72,6 +72,7 @@ var FILES = [
   "w6-test.html",
   "assets/config.js",
   "assets/data-exam.js",
+  "assets/data-hotwrong-explain.js",
   "assets/data-hotwrong.js",
   "assets/data-w1.js",
   "assets/data-w2.js",

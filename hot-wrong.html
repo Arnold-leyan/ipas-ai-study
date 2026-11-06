@@ -24,9 +24,50 @@
 .hw-n{font-size:13px;color:var(--muted)}
 .hw-card.is-done{opacity:.55}
 .hw-card .opt{cursor:default}
-.hw-card .opt .t{flex:1}
-.hw-card .opt .hw-cnt{flex-shrink:0;font-size:12.5px;font-weight:600;color:var(--muted);white-space:nowrap}
+.hw-card .opt .body{flex:1;min-width:0}
+.hw-card .opt .t{display:block;overflow-wrap:anywhere}
+.hw-card .opt .hw-cnt{display:block;margin-top:4px;font-size:12.5px;font-weight:700;color:var(--muted)}
 .hw-card .opt.right .hw-cnt,.hw-card .opt.wrong .hw-cnt{color:inherit}
+.hw-exp{margin-top:14px;border:1px solid var(--rule);border-radius:12px;background:var(--surface-2)}
+.hw-exp>summary{
+  list-style:none;cursor:pointer;padding:12px 15px;font-weight:700;font-size:15px;color:var(--primary);
+  display:flex;align-items:center;gap:8px;min-height:44px;
+}
+.hw-exp>summary::-webkit-details-marker{display:none}
+.hw-exp>summary::after{content:'展開 ▾';margin-left:auto;font-size:13px;font-weight:600;color:var(--muted)}
+.hw-exp[open]>summary::after{content:'收合 ▴'}
+.hw-exp[open]>summary{border-bottom:1px dashed var(--rule)}
+.hw-exp-body{padding:4px 15px 14px;font-size:14.5px;line-height:1.85}
+.hw-exp-body h4{margin:16px 0 6px;font-size:14px;letter-spacing:.02em}
+.hw-exp-topic{display:inline-block;margin-top:12px;padding:3px 11px;border-radius:999px;background:var(--hl);color:var(--ink);font-size:13px;font-weight:700}
+.hw-exp-body p{margin:0}
+.hw-why{border-left:4px solid var(--good);padding:2px 0 2px 12px}
+.hw-wr{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px dashed var(--rule)}
+.hw-wr:first-of-type{border-top:0}
+.hw-wk{
+  flex-shrink:0;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-weight:700;font-size:13px;color:var(--warn);border:1.5px solid var(--warn);margin-top:2px;
+}
+.hw-wr .hw-wt{flex:1;min-width:0;overflow-wrap:anywhere}
+.hw-wr .hw-top-wrong{display:block;font-size:12px;font-weight:700;color:var(--warn);margin-bottom:1px}
+.hw-tip{margin-top:6px;padding:10px 13px;border-radius:10px;background:var(--hl);color:var(--ink)}
+.hw-toggle-all{margin-left:auto}
+@media (max-width:520px){
+  .wrap{padding-left:14px;padding-right:14px}
+  .hw-card{padding:15px 13px}
+  .hw-card .opt{padding:10px 11px;gap:8px;font-size:15px}
+  .hw-card .src{margin-left:0}
+  .hw-top{margin-bottom:8px}
+  .hw-rate{font-size:17px}
+  .hw-bar{gap:8px}
+  .hw-hide{margin-left:0;flex-basis:100%}
+  .hw-toggle-all{margin-left:0}
+  .hw-chip{padding:8px 15px}
+  .hw-actions{gap:10px}
+  .hw-actions .btn{padding:9px 16px;font-size:14px}
+  .hw-exp-body{padding:2px 12px 14px;font-size:15px}
+  .hw-copy-status{flex-basis:100%}
+}
 .hw-actions{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px dashed var(--rule)}
 .hw-actions label{display:flex;gap:6px;align-items:center;font-size:14px;cursor:pointer}
 .hw-actions .btn{padding:6px 14px;font-size:13.5px}
@@ -75,7 +116,7 @@
   <div class="note">
     <span class="lbl">怎麼用</span>
     題目依<b>全班答錯率</b>由高到低排。每題標出官方答案（綠）、<b>最多人誤選的選項（紅）</b>，
-    和每個選項各有幾人選。看懂的題目勾「我記住了」就會淡掉；官方沒附解析，想知道為什麼，按「複製 AI 提問」貼給 ChatGPT／Claude／Gemini 問。
+    和每個選項各有幾人選。每題點「📖 詳細解析」看為什麼對、其他選項為什麼錯，還有好記的口訣。看懂的題目勾「我記住了」就會淡掉；還是不懂，按「複製 AI 提問」貼給 ChatGPT／Claude／Gemini 問。
     <p class="sync idle" id="offline-status"></p>
   </div>
 
@@ -83,6 +124,7 @@
     <button type="button" class="hw-chip" data-filter="all" aria-pressed="true">全部</button>
     <button type="button" class="hw-chip" data-filter="1" aria-pressed="false">科目一</button>
     <button type="button" class="hw-chip" data-filter="2" aria-pressed="false">科目二</button>
+    <button type="button" class="hw-chip hw-toggle-all" id="hw-toggle-all" aria-pressed="false">📖 展開全部解析</button>
     <label class="hw-hide"><input type="checkbox" id="hw-hide-done"> 隱藏已記住的</label>
   </div>
   <p class="hw-progress" id="hw-progress"></p>
@@ -92,7 +134,8 @@
 
 <footer>
   <p>統計來自本梯次同仁已交卷的考古題作答，只算每份「最後一次交卷」，不顯示任何人的姓名。人數少，答錯率只當作參考。</p>
-  <p>題目與答案出自 iPAS 官方公告試題；考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
+  <p>題目與答案出自 iPAS 官方公告試題；官方沒有附解析，「詳細解析」是另外撰寫的整理，一律以官方答案為準。部分題目（如 MCP、GRPO、Sora、人工智慧基本法）超出學習指引範圍，請把重點放在關鍵字對應。</p>
+  <p>考試相關公告以 <a href="https://www.ipas.org.tw/" target="_blank" rel="noopener">iPAS 官網</a>為準。</p>
 </footer>
 
 </div>
@@ -101,6 +144,7 @@
 <script src="assets/quiz.js?v=8"></script>
 <script src="assets/data-exam.js?v=11"></script>
 <script src="assets/data-hotwrong.js"></script>
+<script src="assets/data-hotwrong-explain.js"></script>
 <script>
 (function () {
   'use strict';
@@ -146,6 +190,38 @@
     return lines.join('\n');
   }
 
+  // 詳細解析：點開才展開，預設收合（50 題全展開會很長）
+  function renderExplain(X, q, topWrong) {
+    var d = el('details', 'hw-exp');
+    d.appendChild(el('summary', '', '📖 詳細解析'));
+    var b = el('div', 'hw-exp-body');
+    if (X.t) b.appendChild(el('span', 'hw-exp-topic', '考點：' + X.t));
+
+    b.appendChild(el('h4', '', '✅ 為什麼選 ' + KEYS[q.a]));
+    b.appendChild(el('p', 'hw-why', X.why));
+
+    b.appendChild(el('h4', '', '❌ 其他選項為什麼錯'));
+    var wrap = el('div');
+    KEYS.forEach(function (k, j) {
+      if (j === q.a || !X.w || !X.w[k]) return;
+      var row = el('div', 'hw-wr');
+      row.appendChild(el('span', 'hw-wk', k));
+      var t = el('div', 'hw-wt');
+      if (j === topWrong) t.appendChild(el('span', 'hw-top-wrong', '最多人誤選'));
+      t.appendChild(document.createTextNode(X.w[k]));
+      row.appendChild(t);
+      wrap.appendChild(row);
+    });
+    b.appendChild(wrap);
+
+    if (X.tip) {
+      b.appendChild(el('h4', '', '💡 記憶口訣／判斷原則'));
+      b.appendChild(el('p', 'hw-tip', X.tip));
+    }
+    d.appendChild(b);
+    return d;
+  }
+
   function render(it, rank) {
     var ex = E[it.k], q = ex && ex.questions[it.i];
     if (!q) return null;
@@ -177,15 +253,21 @@
     q.o.forEach(function (text, j) {
       var o = el('div', 'opt' + (j === q.a ? ' right' : j === topWrong ? ' wrong' : ''));
       o.appendChild(el('span', 'k', KEYS[j]));
-      o.appendChild(el('span', 't', clean(text)));
+      // 人數標籤放在選項文字「下面」，手機上才不會把文字擠成窄窄一欄
+      var body = el('div', 'body');
+      body.appendChild(el('span', 't', clean(text)));
       var cnt = it.p[j];
       var label = j === q.a ? '✓ 官方答案 · ' + cnt + ' 人選'
-        : j === topWrong ? '最多人誤選 · ' + cnt + ' 人'
+        : j === topWrong ? '✗ 最多人誤選 · ' + cnt + ' 人'
         : cnt ? cnt + ' 人選' : '';
-      if (label) o.appendChild(el('span', 'hw-cnt', label));
+      if (label) body.appendChild(el('span', 'hw-cnt', label));
+      o.appendChild(body);
       opts.appendChild(o);
     });
     card.appendChild(opts);
+
+    var X = window.HOTWRONG_EXPLAIN && window.HOTWRONG_EXPLAIN[id];
+    if (X) card.appendChild(renderExplain(X, q, topWrong));
 
     var act = el('div', 'hw-actions');
     var lab = el('label');
@@ -272,14 +354,22 @@
   frag.appendChild(empty);
   list.appendChild(frag);
 
-  Array.prototype.forEach.call(document.querySelectorAll('.hw-chip'), function (chip) {
+  // 只抓科目篩選鈕（有 data-filter）；「展開全部解析」雖然共用 hw-chip 樣式，但不是篩選鈕
+  Array.prototype.forEach.call(document.querySelectorAll('.hw-chip[data-filter]'), function (chip) {
     chip.addEventListener('click', function () {
       filter = chip.getAttribute('data-filter');
-      Array.prototype.forEach.call(document.querySelectorAll('.hw-chip'), function (c) {
+      Array.prototype.forEach.call(document.querySelectorAll('.hw-chip[data-filter]'), function (c) {
         c.setAttribute('aria-pressed', c === chip ? 'true' : 'false');
       });
       apply();
     });
+  });
+  var toggleAll = document.getElementById('hw-toggle-all');
+  toggleAll.addEventListener('click', function () {
+    var open = toggleAll.getAttribute('aria-pressed') !== 'true';
+    toggleAll.setAttribute('aria-pressed', open ? 'true' : 'false');
+    toggleAll.textContent = open ? '📖 收合全部解析' : '📖 展開全部解析';
+    Array.prototype.forEach.call(document.querySelectorAll('.hw-exp'), function (d) { d.open = open; });
   });
   document.getElementById('hw-hide-done').addEventListener('change', function (e) {
     hideDone = e.target.checked;
